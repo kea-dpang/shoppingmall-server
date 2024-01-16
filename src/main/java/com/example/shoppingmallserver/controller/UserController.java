@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
-    @GetMapping("/user/{userId}")
+
+    @GetMapping("/{userId}")
     public UserReadDto getUser(@PathVariable Long userId) {
         return userService.getUserById(userId);
     }
