@@ -1,17 +1,15 @@
 package com.example.shoppingmallserver.entity;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "cart")
-public class Cart extends BaseEntity{
+public class Cart extends BaseEntity {
 
     // 카트 ID (PK) -> N번째 카트 이름이 아닌 카트에 든 데이터의 N번째 수
     @Id

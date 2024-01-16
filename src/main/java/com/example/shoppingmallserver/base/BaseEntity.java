@@ -1,4 +1,4 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.base;
 
 import jakarta.persistence.MappedSuperclass;
 
