@@ -1,15 +1,15 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.order;
 
-import com.example.shoppingmallserver.base.BaseEntity;
+import com.example.shoppingmallserver.entity.BaseEntity;
+import com.example.shoppingmallserver.entity.user.User;
+
 import jakarta.persistence.*;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "order")
 public class Order extends BaseEntity {
@@ -24,9 +24,19 @@ public class Order extends BaseEntity {
     @JoinColumn(referencedColumnName = "id")
     private User user;
 
-    // 주문 날짜
-    private LocalDate order_date;
-
     // 주문 및 배송 상태
     private LocalDate status;
+
+    // 배송시 요청사항
+    private String delivery_request;
+
+    // 결제 금액
+    private int payment_amount;
+
+    // 생성 날짜
+    private LocalDate create_at;
+
+    // 변경 날짜
+    private LocalDate updated_at;
+
 }

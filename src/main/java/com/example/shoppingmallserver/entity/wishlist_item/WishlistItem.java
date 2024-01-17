@@ -1,21 +1,22 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.wishlist_item;
 
-import com.example.shoppingmallserver.base.BaseEntity;
+import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "wishlist")
-public class Wishlist extends BaseEntity {
+@Table(name = "wishlist_item")
+public class WishlistItem {
 
-    // 카트 ID (PK) -> N번째 카트 이름이 아닌 카트에 든 데이터의 N번째 수
+    // 위시리스트 아이템 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long wishlist_item_id;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -24,4 +25,8 @@ public class Wishlist extends BaseEntity {
 
     // 상품 ID (FK인데 변경 예정)
     private Long item_id;
+
+    // 추가된 날짜
+    private LocalDate added_at;
+
 }
