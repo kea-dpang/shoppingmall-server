@@ -21,7 +21,7 @@ public interface UserService {
     UserDetail getAdminUserById(Long user_id);
 
     // 관리자의 사용자 정보 리스트 조회
-    List<User> getUserList(Optional<String> keyword);
+    List<UserDetail> getUserList(Optional<String> keyword);
 
     // 관리자의 사용자 정보 수정
     User updateUser(Long user_id, UpdateUserDto updateUserDto);
