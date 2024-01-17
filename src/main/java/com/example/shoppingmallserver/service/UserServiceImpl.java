@@ -21,16 +21,16 @@ public class UserServiceImpl implements UserService {
 
     // 사용자 정보 조회
     @Override
-    public UserDetail getUserById(Long id) {
-        return userDetailRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public UserDetail getUserById(Long user_id) {
+        return userDetailRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(user_id));
     }
 
     // ==========================관리자===========================
 
     // 관리자의 사용자 정보 조회
     @Override
-    public User getAdminUserById(Long user_id) {
-        return null;
+    public UserDetail getAdminUserById(Long user_id) {
+        return userDetailRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(user_id));
     }
 
     // 관리자의 사용자 정보 리스트 조회

@@ -1,8 +1,7 @@
 package com.example.shoppingmallserver.dto;
 
-import com.example.shoppingmallserver.entity.user.User;
-
 import com.example.shoppingmallserver.entity.user.UserDetail;
+
 import lombok.Getter;
 
 import java.time.LocalDate;

@@ -18,7 +18,7 @@ public interface UserService {
     // ==========================관리자===========================
 
     // 관리자의 사용자 정보 조회
-    User getAdminUserById(Long user_id);
+    UserDetail getAdminUserById(Long user_id);
 
     // 관리자의 사용자 정보 리스트 조회
     List<User> getUserList(Optional<String> keyword);
