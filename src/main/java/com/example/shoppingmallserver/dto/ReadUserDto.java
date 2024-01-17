@@ -7,14 +7,14 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class UserReadDto {
+public class ReadUserDto {
 
     private final Long employeeNumber;
     private final String name;
     private final String email;
     private final LocalDate join_date;
 
-    public UserReadDto(User user) {
+    public ReadUserDto(User user) {
         this.employeeNumber = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();

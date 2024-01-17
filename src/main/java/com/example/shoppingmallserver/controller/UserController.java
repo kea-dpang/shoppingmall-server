@@ -1,7 +1,7 @@
 package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.UserReadDto;
+import com.example.shoppingmallserver.dto.ReadUserDto;
 import com.example.shoppingmallserver.entity.User;
 import com.example.shoppingmallserver.service.UserService;
 
@@ -20,9 +20,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<SuccessResponse<UserReadDto>> getUser(@PathVariable Long userId) {
+    public ResponseEntity<SuccessResponse<ReadUserDto>> getUser(@PathVariable Long userId) {
         User user = userService.getUserById(userId);
-        UserReadDto data = new UserReadDto(user);
+        ReadUserDto data = new ReadUserDto(user);
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
