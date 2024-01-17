@@ -1,7 +1,8 @@
 package com.example.shoppingmallserver.dto;
 
-import com.example.shoppingmallserver.entity.User;
+import com.example.shoppingmallserver.entity.user.User;
 
+import com.example.shoppingmallserver.entity.user.UserDetail;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,10 +15,10 @@ public class ReadUserDto {
     private final String email;
     private final LocalDate join_date;
 
-    public ReadUserDto(User user) {
-        this.employeeNumber = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.join_date = user.getJoin_date();
+    public ReadUserDto(UserDetail user_detail) {
+        this.employeeNumber = user_detail.getEmployee_number();
+        this.name = user_detail.getName();
+        this.email = user_detail.getEmail();
+        this.join_date = user_detail.getJoin_date();
     }
 }

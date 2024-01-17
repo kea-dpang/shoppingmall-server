@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.repository;
 
-import com.example.shoppingmallserver.entity.User;
+import com.example.shoppingmallserver.entity.user.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

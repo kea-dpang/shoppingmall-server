@@ -1,11 +1,10 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.Cart;
-import com.example.shoppingmallserver.entity.Mileage;
-import com.example.shoppingmallserver.entity.User;
-import com.example.shoppingmallserver.entity.Wishlist;
+import com.example.shoppingmallserver.entity.user.User;
+import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
+import com.example.shoppingmallserver.repository.UserDetailRepository;
 import com.example.shoppingmallserver.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserDetailRepository userDetailRepository;
+
     // 사용자 정보 조회
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public UserDetail getUserById(Long id) {
+        return userDetailRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     // ==========================관리자===========================

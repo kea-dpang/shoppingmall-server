@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.entity.cart;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "cart_item")
-public class CartItem {
+public class CartItem extends BaseEntity {
 
     // 장바구니 아이템 ID (PK)
     @Id

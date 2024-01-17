@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.entity.order;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "order_recipient")
-public class OrderRecipient {
+public class OrderRecipient extends BaseEntity {
 
     // 주문 ID (FK)
     @Id

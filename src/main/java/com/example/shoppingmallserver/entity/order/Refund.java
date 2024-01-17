@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.entity.order;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "refund")
-public class Refund {
+public class Refund extends BaseEntity {
 
     // 환불 ID (PK)
     @Id

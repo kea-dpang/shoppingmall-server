@@ -1,5 +1,6 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.mileage;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;

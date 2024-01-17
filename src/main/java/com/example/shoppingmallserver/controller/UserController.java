@@ -2,7 +2,8 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.ReadUserDto;
-import com.example.shoppingmallserver.entity.User;
+import com.example.shoppingmallserver.entity.user.User;
+import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<SuccessResponse<ReadUserDto>> getUser(@PathVariable Long userId) {
-        User user = userService.getUserById(userId);
-        ReadUserDto data = new ReadUserDto(user);
+        UserDetail user_detail = userService.getUserById(userId);
+        ReadUserDto data = new ReadUserDto(user_detail);
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),

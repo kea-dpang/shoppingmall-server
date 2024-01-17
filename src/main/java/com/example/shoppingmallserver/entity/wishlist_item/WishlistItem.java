@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.entity.wishlist_item;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "wishlist_item")
-public class WishlistItem {
+public class WishlistItem extends BaseEntity {
 
     // 위시리스트 아이템 ID (PK)
     @Id

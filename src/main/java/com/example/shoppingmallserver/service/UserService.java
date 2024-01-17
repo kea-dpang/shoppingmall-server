@@ -1,11 +1,8 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.Cart;
-import com.example.shoppingmallserver.entity.Mileage;
-import com.example.shoppingmallserver.entity.User;
-
-import com.example.shoppingmallserver.entity.Wishlist;
+import com.example.shoppingmallserver.entity.user.User;
+import com.example.shoppingmallserver.entity.user.UserDetail;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +13,7 @@ import java.util.Optional;
 public interface UserService {
 
     // 사용자 정보 조회
-    User getUserById(Long user_id);
+    UserDetail getUserById(Long user_id);
 
     // ==========================관리자===========================
 

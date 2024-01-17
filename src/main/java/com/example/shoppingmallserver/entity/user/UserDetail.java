@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.entity.user;
 
-import com.example.shoppingmallserver.entity.BaseEntity;
+import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 

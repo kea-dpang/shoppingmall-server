@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.entity.mileage;
 
+import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "charge_request")
-public class ChargeRequest {
+public class ChargeRequest extends BaseEntity {
 
     // 충전 요청 ID (PK)
     @Id
