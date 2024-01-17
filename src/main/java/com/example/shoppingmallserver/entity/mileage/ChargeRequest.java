@@ -1,26 +1,26 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.mileage;
 
+import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "wishlist")
-public class Wishlist extends BaseEntity {
+@Table(name = "charge_request")
+public class ChargeRequest {
 
-    // 카트 ID (PK) -> N번째 카트 이름이 아닌 카트에 든 데이터의 N번째 수
+    // 충전 요청 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long charge_request_id;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
     private User user;
 
-    // 상품 ID (FK인데 변경 예정)
-    private Long item_id;
+
+
 }

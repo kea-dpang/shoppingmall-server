@@ -1,7 +1,7 @@
 package com.example.shoppingmallserver.entity;
 
+import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +26,5 @@ public class Mileage extends BaseEntity {
 
     // 개인 충전 마일리지
     private int personal_charged_mileage;
+
 }

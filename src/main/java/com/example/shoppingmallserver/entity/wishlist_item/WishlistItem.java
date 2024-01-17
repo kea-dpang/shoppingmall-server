@@ -1,8 +1,7 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.wishlist_item;
 
+import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
-
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,25 +10,23 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "order")
-public class OrderDetail extends BaseEntity {
+@Table(name = "wishlist_item")
+public class WishlistItem {
 
-    // 주문 상세 ID (PK)
+    // 위시리스트 아이템 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long wishlist_item_id;
 
-    // 주문 ID (FK)
+    // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
-    private Order order;
+    private User user;
 
     // 상품 ID (FK인데 변경 예정)
     private Long item_id;
 
-    // 수량
-    private int quantity;
+    // 추가된 날짜
+    private LocalDate added_at;
 
-    // 리뷰 작성 가능 여부
-    private LocalDate status;
 }

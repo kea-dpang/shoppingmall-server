@@ -1,4 +1,6 @@
-package com.example.shoppingmallserver.entity;
+package com.example.shoppingmallserver.entity.user;
+
+import com.example.shoppingmallserver.entity.BaseEntity;
 
 import jakarta.persistence.*;
 
@@ -10,16 +12,16 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
-public class User extends BaseEntity {
+@Table(name = "user_detail")
+public class UserDetail extends BaseEntity {
 
-    // 사용자 ID (PK)
+    // 사용자 ID (FK)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "user_id")
+    private User user;
 
     // 사원번호
-    @Id
     @Column(nullable = false)
     private Long employee_number;
 
@@ -31,9 +33,6 @@ public class User extends BaseEntity {
 
     // 이메일
     private String email;
-
-    // 비밀번호
-    private String password;
 
     // 전화번호
     private String phone_number;
@@ -47,6 +46,4 @@ public class User extends BaseEntity {
     // 상세주소
     private String detail_address;
 
-    // 역할
-    private String role;
 }
