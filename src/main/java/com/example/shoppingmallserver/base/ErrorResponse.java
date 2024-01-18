@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
  */
 
 public class ErrorResponse extends BaseResponse {
-    private String error;
-    private String path;
-    private LocalDateTime timestamp;
+    private final String error;
+    private final String path;
+    private final LocalDateTime timestamp;
 
     public ErrorResponse(int status, String message, String error, String path, LocalDateTime timestamp) {
         super(status, message);

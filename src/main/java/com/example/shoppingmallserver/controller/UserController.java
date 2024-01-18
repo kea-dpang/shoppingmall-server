@@ -63,8 +63,8 @@ public class UserController {
         );
     }
 
-    @DeleteMapping("/admin/delete/{userIds}")
-    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@PathVariable List<Long> userIds) {
+    @DeleteMapping("/admin/delete")
+    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody List<Long> userIds) {
         userService.deleteUser(userIds);
 
         return new ResponseEntity<>(

@@ -22,8 +22,8 @@ public class CartItem extends BaseEntity {
     @Column(name = "cart_item_id")
     private Long cartItemId;
 
-    // 사용자 ID (FK)
-    @OneToOne(fetch = FetchType.LAZY)
+    // 사용자 ID (FK) -> 사용자와 일대다
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "user_id")
     private User user;
 

@@ -20,9 +20,9 @@ public class WishlistItem extends BaseEntity {
     @Column(name = "wishlist_item_id")
     private Long wishlistItemId;
 
-    // 사용자 ID (FK)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id")
+    // 사용자 ID (FK) -> 사용자와 일대다
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "user_id")
     private User user;
 
     // 상품 ID (FK인데 변경 예정)

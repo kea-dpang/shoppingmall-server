@@ -52,15 +52,8 @@ public class UserServiceImpl implements UserService {
         for(Long userId : userIds) {
             // 사용자 조회, 없을 경우 예외 발생
             User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-            UserDetail userDetail = userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-
-            // 장바구니와 위시리스트와 마일리지 삭제
-            cartRepository.deleteById(userId);
-            wishlistRepository.deleteById(userId);
-            mileageRepository.deleteById(userId);
 
             // 사용자 삭제
-            userDetailRepository.delete(userDetail);
             userRepository.delete(user);
         }
     }

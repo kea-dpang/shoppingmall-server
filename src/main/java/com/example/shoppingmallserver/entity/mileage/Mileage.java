@@ -20,7 +20,7 @@ public class Mileage extends BaseEntity {
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "user_id")
     private User user;
 
     // 사원 마일리지
