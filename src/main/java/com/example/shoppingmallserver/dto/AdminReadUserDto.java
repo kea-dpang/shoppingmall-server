@@ -13,13 +13,13 @@ public class AdminReadUserDto {
     private final String defaultAddress;
 
     public AdminReadUserDto (UserDetail user_detail) {
-        this.userId = user_detail.getUser().getUser_id();
-        this.employeeNumber = user_detail.getEmployee_number();
+        this.userId = user_detail.getUser().getUserId();
+        this.employeeNumber = user_detail.getEmployeeNumber();
         this.name = user_detail.getName();
         this.email = user_detail.getEmail();
-        this.joinDate = user_detail.getJoin_date();
-        this.defaultAddress = user_detail.getZip_code() + " "
+        this.joinDate = user_detail.getJoinDate();
+        this.defaultAddress = user_detail.getZipCode() + " "
                 + user_detail.getAddress() + " " +
-                user_detail.getDetail_address();
+                user_detail.getDetailAddress();
     }
 }

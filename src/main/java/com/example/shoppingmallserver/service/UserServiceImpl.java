@@ -19,9 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
-    private final CartRepository cartRepository;
-    private final WishlistRepository wishlistRepository;
-    private final MileageRepository mileageRepository;
 
     // 사용자 정보 조회
     @Override

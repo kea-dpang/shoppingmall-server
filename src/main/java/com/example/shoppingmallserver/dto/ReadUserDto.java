@@ -15,9 +15,9 @@ public class ReadUserDto {
     private final LocalDate join_date;
 
     public ReadUserDto(UserDetail user_detail) {
-        this.employeeNumber = user_detail.getEmployee_number();
+        this.employeeNumber = user_detail.getEmployeeNumber();
         this.name = user_detail.getName();
         this.email = user_detail.getEmail();
-        this.join_date = user_detail.getJoin_date();
+        this.join_date = user_detail.getJoinDate();
     }
 }

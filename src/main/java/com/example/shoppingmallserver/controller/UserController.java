@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 
-@RestController("/user")
+@RestController("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -30,8 +30,8 @@ public class UserController {
     // 사용자 정보 조회
     @GetMapping("/{userId}")
     public ResponseEntity<SuccessResponse<ReadUserDto>> getUser(@PathVariable Long userId) {
-        UserDetail user_detail = userService.getUserById(userId);
-        ReadUserDto data = new ReadUserDto(user_detail);
+        UserDetail userDetail = userService.getUserById(userId);
+        ReadUserDto data = new ReadUserDto(userDetail);
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),

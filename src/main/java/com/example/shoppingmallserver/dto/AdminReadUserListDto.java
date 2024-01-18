@@ -12,10 +12,10 @@ public class AdminReadUserListDto {
     private final LocalDate joinDate;
 
     public AdminReadUserListDto(UserDetail userDetail) {
-        this.userId = userDetail.getUser().getUser_id();
-        this.employeeNumber = userDetail.getEmployee_number();
+        this.userId = userDetail.getUser().getUserId();
+        this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
         this.email = userDetail.getEmail();
-        this.joinDate = userDetail.getJoin_date();
+        this.joinDate = userDetail.getJoinDate();
     }
 }

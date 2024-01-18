@@ -1,7 +1,6 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 
 import org.springframework.stereotype.Service;
