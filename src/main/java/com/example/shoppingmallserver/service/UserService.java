@@ -23,12 +23,6 @@ public interface UserService {
     // 관리자의 사용자 정보 리스트 조회
     List<UserDetail> getUserList(String keyword);
 
-    // 관리자의 사용자 정보 수정
-    User updateUser(Long user_id, UpdateUserDto updateUserDto);
-
-    // 관리자의 사용자 정보 등록
-    User createUser(CreateUserDto userCreateDto);
-
     // 관리자의 사용자 정보 삭제
     void deleteUser(Long userId);
 }

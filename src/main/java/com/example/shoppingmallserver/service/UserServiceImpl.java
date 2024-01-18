@@ -44,18 +44,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // 관리자의 사용자 정보 수정
-    @Override
-    public User updateUser(Long userId, UpdateUserDto updateUserDto) {
-        return null;
-    }
-
-    // 관리자의 사용자 정보 등록
-    @Override
-    public User createUser(CreateUserDto userCreateDto) {
-        return null;
-    }
-
     // 관리자의 사용자 정보 삭제
     @Override
     public void deleteUser(Long userId) {
