@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/admin/find")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam Optional<String> keyword) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) String keyword) {
         List<UserDetail> userDetails = userService.getUserList(keyword);
         List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
 

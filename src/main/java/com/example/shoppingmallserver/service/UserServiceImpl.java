@@ -35,9 +35,9 @@ public class UserServiceImpl implements UserService {
 
     // 관리자의 사용자 정보 리스트 조회
     @Override
-    public List<UserDetail> getUserList(Optional<String> keyword) {
-        if(keyword.isPresent()) {
-            return userDetailRepository.findByNameContaining(keyword.get());
+    public List<UserDetail> getUserList(String keyword) {
+        if(keyword != null) {
+            return userDetailRepository.findByNameContaining(keyword);
         }
         else {
             return userDetailRepository.findAll();
