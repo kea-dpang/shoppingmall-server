@@ -1,9 +1,10 @@
 package com.example.shoppingmallserver.entity.user;
 
-import com.example.shoppingmallserver.entity.BaseEntity;
+import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,11 +23,12 @@ public class UserDetail extends BaseEntity {
     private User user;
 
     // 사원번호
-    @Column(nullable = false)
-    private Long employee_number;
+    @Column(name = "employee_number")
+    private Long employeeNumber;
 
     // 입사 날짜
-    private LocalDate join_date;
+    @Column(name = "join_date")
+    private LocalDate joinDate;
 
     // 이름
     private String name;
@@ -35,15 +37,32 @@ public class UserDetail extends BaseEntity {
     private String email;
 
     // 전화번호
-    private String phone_number;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     // 우편번호
-    private String zip_code;
+    @Column(name = "zip_code")
+    private String zipCode;
 
     // 주소
     private String address;
 
     // 상세주소
-    private String detail_address;
+    @Column(name = "detail_address")
+    private String detailAddress;
+
+    @Builder
+    public UserDetail(User user, Long employeeNumber, String email, String name, LocalDate joinDate,
+                      String phoneNumber, String zipCode, String address, String detailAddress) {
+        this.user = user;
+        this.employeeNumber = employeeNumber;
+        this.email = email;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.phoneNumber = phoneNumber;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+    }
 
 }

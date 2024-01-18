@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class SuccessResponse<T> extends BaseResponse {
-    private T data;
+    private final T data;
 
     public SuccessResponse(int status, String message, T data) {
         super(status, message);

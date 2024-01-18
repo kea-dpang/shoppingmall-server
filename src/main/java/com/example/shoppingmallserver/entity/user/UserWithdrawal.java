@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.entity.user;
 
-import com.example.shoppingmallserver.entity.BaseEntity;
+import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
@@ -28,6 +28,7 @@ public class UserWithdrawal extends BaseEntity {
     private String message;
 
     // 탈퇴 날짜
-    private LocalDate withdrawal_date;
+    @Column(name = "withdrawal_date")
+    private LocalDate withdrawalDate;
 
 }

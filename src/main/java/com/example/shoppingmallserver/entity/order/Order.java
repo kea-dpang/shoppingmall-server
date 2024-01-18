@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.entity.order;
 
-import com.example.shoppingmallserver.entity.BaseEntity;
+import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 
 import jakarta.persistence.*;
@@ -17,7 +17,8 @@ public class Order extends BaseEntity {
     // 주문 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "order_id")
+    private Long orderId;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -28,13 +29,16 @@ public class Order extends BaseEntity {
     private LocalDate status;
 
     // 배송시 요청사항
-    private String delivery_request;
+    @Column(name = "delivery_request")
+    private String deliveryRequest;
 
     // 결제 금액
-    private int payment_amount;
+    @Column(name = "payment_amount")
+    private int paymentAmount;
 
     // 생성 날짜
-    private LocalDate create_at;
+    @Column(name = "create_at")
+    private LocalDate createAt;
 
     // 변경 날짜
     private LocalDate updated_at;
