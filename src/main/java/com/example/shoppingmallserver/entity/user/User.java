@@ -8,6 +8,7 @@ import com.example.shoppingmallserver.entity.wishlist_item.WishlistItem;
 
 import jakarta.persistence.*;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -51,5 +52,12 @@ public class User extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "mileage_id")
     private Mileage mileage;
+
+    @Builder
+    public User(UserStatus status, LocalDate createdAt, LocalDate updatedAt) {
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
 }

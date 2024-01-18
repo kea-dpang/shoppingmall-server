@@ -15,6 +15,9 @@ public interface UserService {
     // 사용자 정보 조회
     UserDetail getUserById(Long userId);
 
+    // 회원가입시 사용자 정보 등록 (회원가입 시 입력했던 정보를 등록)
+    UserDetail createUser(CreateUserDto createUserDto);
+
     // ==========================관리자===========================
 
     // 관리자의 사용자 정보 조회

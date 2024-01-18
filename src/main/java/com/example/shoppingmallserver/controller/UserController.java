@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.controller;
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.AdminReadUserDto;
 import com.example.shoppingmallserver.dto.AdminReadUserListDto;
+import com.example.shoppingmallserver.dto.CreateUserDto;
 import com.example.shoppingmallserver.dto.ReadUserDto;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.service.UserService;
@@ -35,6 +36,18 @@ public class UserController {
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
                 HttpStatus.OK
+        );
+    }
+
+    // 회원가입시 사용자 정보 등록 (회원가입 시 입력했던 정보를 등록)
+    @PostMapping
+    public ResponseEntity<SuccessResponse<CreateUserDto>> createUser(@RequestBody CreateUserDto createUserDto) {
+        UserDetail userDetail = userService.createUser(createUserDto);
+        CreateUserDto data = new CreateUserDto(userDetail);
+
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.CREATED.value(), "사용자 정보를 성공적으로 생성하였습니다.", data),
+                HttpStatus.CREATED
         );
     }
 

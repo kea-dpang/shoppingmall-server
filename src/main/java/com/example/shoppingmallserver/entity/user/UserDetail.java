@@ -4,6 +4,7 @@ import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -49,5 +50,19 @@ public class UserDetail extends BaseEntity {
     // 상세주소
     @Column(name = "detail_address")
     private String detailAddress;
+
+    @Builder
+    public UserDetail(User user, Long employeeNumber, String email, String name, LocalDate joinDate,
+                      String phoneNumber, String zipCode, String address, String detailAddress) {
+        this.user = user;
+        this.employeeNumber = employeeNumber;
+        this.email = email;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.phoneNumber = phoneNumber;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+    }
 
 }
