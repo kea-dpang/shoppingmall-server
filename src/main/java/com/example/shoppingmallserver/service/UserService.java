@@ -24,5 +24,6 @@ public interface UserService {
     List<UserDetail> getUserList(String keyword);
 
     // 관리자의 사용자 정보 삭제
-    void deleteUser(Long userId);
+    void deleteUser(List<Long> userIds);
+
 }

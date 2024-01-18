@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +24,7 @@ import static java.util.Arrays.stream;
 public class UserController {
 
     private final UserService userService;
+    private final List<Long> userIds;
 
     // 사용자 정보 조회
     @GetMapping("/{userId}")
@@ -61,6 +59,16 @@ public class UserController {
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/admin/delete/{userIds}")
+    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@PathVariable List<Long> userIds) {
+        userService.deleteUser(userIds);
+
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 삭제하였습니다.", "Deleted user IDs: " + userIds),
                 HttpStatus.OK
         );
     }
