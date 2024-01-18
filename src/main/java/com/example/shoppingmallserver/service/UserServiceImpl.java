@@ -21,16 +21,16 @@ public class UserServiceImpl implements UserService {
 
     // 사용자 정보 조회
     @Override
-    public UserDetail getUserById(Long user_id) {
-        return userDetailRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(user_id));
+    public UserDetail getUserById(Long userId) {
+        return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     // ==========================관리자===========================
 
     // 관리자의 사용자 정보 조회
     @Override
-    public UserDetail getAdminUserById(Long user_id) {
-        return userDetailRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(user_id));
+    public UserDetail getAdminUserById(Long userId) {
+        return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     // 관리자의 사용자 정보 리스트 조회
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     // 관리자의 사용자 정보 수정
     @Override
-    public User updateUser(Long user_id, UpdateUserDto updateUserDto) {
+    public User updateUser(Long userId, UpdateUserDto updateUserDto) {
         return null;
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     // 관리자의 사용자 정보 삭제
     @Override
-    public void deleteUser(Long user_id) {
+    public void deleteUser(Long userId) {
 
     }
 }

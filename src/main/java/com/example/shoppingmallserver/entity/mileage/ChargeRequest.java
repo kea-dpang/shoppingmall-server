@@ -15,13 +15,12 @@ public class ChargeRequest extends BaseEntity {
     // 충전 요청 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long charge_request_id;
+    @Column(name = "charge_request_id")
+    private Long chargeRequestId;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "user_id")
     private User user;
-
-
 
 }

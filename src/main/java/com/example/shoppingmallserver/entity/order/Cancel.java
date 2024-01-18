@@ -22,9 +22,11 @@ public class Cancel extends BaseEntity {
     private Order order;
 
     // 취소 요청 날짜
-    private LocalDate cancel_request_date;
+    @Column(name = "cancel_request_date")
+    private LocalDate cancelRequestDate;
 
     // 취소 완료 날짜
-    private LocalDate cancel_complete_date;
+    @Column(name = "cancel_complete_date")
+    private LocalDate cancelCompleteDate;
 
 }

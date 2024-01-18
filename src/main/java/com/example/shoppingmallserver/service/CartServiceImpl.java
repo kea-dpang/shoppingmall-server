@@ -17,25 +17,25 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 조회
     @Override
-    public List<CartItem> getCartItemByUserId(Long user_id) {
+    public List<CartItem> getCartItemByUserId(Long userId) {
         return null;
     }
 
     // 장바구니 상품 추가
     @Override
-    public CartItem addCartItem(Long user_id, AddCartItemDto addCartItemDto) {
+    public CartItem addCartItem(Long userId, AddCartItemDto addCartItemDto) {
         return null;
     }
 
     // 장바구니 상품 삭제
     @Override
-    public void deleteCartItem(Long user_id) {
+    public void deleteCartItem(Long userId) {
 
     }
 
     // 장바구니 상품 구매
     @Override
-    public List<CartItem> purchaseCartItem(Long id, PurchaseCartItemDto purchaseCartItemDto) {
+    public List<CartItem> purchaseCartItem(Long userId, PurchaseCartItemDto purchaseCartItemDto) {
         return null;
     }
 

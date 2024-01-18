@@ -45,8 +45,8 @@ public class UserController {
     // 관리자의 사용자 정보 조회
     @GetMapping("/admin/{userId}")
     public ResponseEntity<SuccessResponse<AdminReadUserDto>> adminGetUser(@PathVariable Long userId) {
-        UserDetail user_detail = userService.getAdminUserById(userId);
-        AdminReadUserDto data = new AdminReadUserDto(user_detail);
+        UserDetail userDetail = userService.getAdminUserById(userId);
+        AdminReadUserDto data = new AdminReadUserDto(userDetail);
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
@@ -56,8 +56,8 @@ public class UserController {
 
     @GetMapping("/admin/find")
     public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam Optional<String> keyword) {
-        List<UserDetail> user_details = userService.getUserList(keyword);
-        List<AdminReadUserListDto> data = user_details.stream().map(AdminReadUserListDto::new).toList();
+        List<UserDetail> userDetails = userService.getUserList(keyword);
+        List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),

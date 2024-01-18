@@ -13,12 +13,12 @@ import java.util.Optional;
 public interface UserService {
 
     // 사용자 정보 조회
-    UserDetail getUserById(Long user_id);
+    UserDetail getUserById(Long userId);
 
     // ==========================관리자===========================
 
     // 관리자의 사용자 정보 조회
-    UserDetail getAdminUserById(Long user_id);
+    UserDetail getAdminUserById(Long userId);
 
     // 관리자의 사용자 정보 리스트 조회
     List<UserDetail> getUserList(Optional<String> keyword);
@@ -30,5 +30,5 @@ public interface UserService {
     User createUser(CreateUserDto userCreateDto);
 
     // 관리자의 사용자 정보 삭제
-    void deleteUser(Long user_id);
+    void deleteUser(Long userId);
 }

@@ -28,6 +28,7 @@ public class UserWithdrawal extends BaseEntity {
     private String message;
 
     // 탈퇴 날짜
-    private LocalDate withdrawal_date;
+    @Column(name = "withdrawal_date")
+    private LocalDate withdrawalDate;
 
 }

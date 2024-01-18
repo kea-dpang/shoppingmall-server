@@ -17,7 +17,8 @@ public class WishlistItem extends BaseEntity {
     // 위시리스트 아이템 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlist_item_id;
+    @Column(name = "wishlist_item_id")
+    private Long wishlistItemId;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -25,9 +26,11 @@ public class WishlistItem extends BaseEntity {
     private User user;
 
     // 상품 ID (FK인데 변경 예정)
-    private Long item_id;
+    @Column(name = "item_id")
+    private Long itemId;
 
     // 추가된 날짜
-    private LocalDate added_at;
+    @Column(name = "added_at")
+    private LocalDate addedAt;
 
 }

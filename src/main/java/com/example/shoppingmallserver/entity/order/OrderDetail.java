@@ -18,7 +18,8 @@ public class OrderDetail extends BaseEntity {
     // 주문 상세 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long order_detail_id;
+    @Column(name = "order_detail_id")
+    private Long orderDetailId;
 
     // 주문 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
@@ -26,7 +27,8 @@ public class OrderDetail extends BaseEntity {
     private Order order;
 
     // 상품 ID (FK인데 변경 예정)
-    private Long item_id;
+    @Column(name = "item_id")
+    private Long itemId;
 
     // 수량
     private int quantity;

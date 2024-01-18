@@ -19,14 +19,19 @@ public class Recall extends BaseEntity {
     private Refund refund;
 
     // 회수자명
-    private String retrieval_name;
+    @Column(name = "retrieval_name")
+    private String retrievalName;
 
     // 회수자 연락처
-    private String retrieval_phone_number;
+    @Column(name = "retrieval_phone_number")
+    private String retrievalPhoneNumber;
 
     // 회수자 주소
-    private String retrieval_address;
+    @Column(name = "retrieval_address")
+    private String retrievalAddress;
 
     // 회수 메시지
-    private String retrieval_message;
+    @Column(name = "retrieval_message")
+    private String retrievalMessage;
+
 }
