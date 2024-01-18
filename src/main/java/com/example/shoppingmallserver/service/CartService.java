@@ -11,7 +11,7 @@ import java.util.List;
 public interface CartService {
 
     // 장바구니 상품 조회
-    List<CartItem> getCartItemByUserId(Long userId);
+    List<CartItem> getCartItemsByUserId(Long userId);
 
     // 장바구니 상품 추가
     CartItem addCartItem(Long userId, AddCartItemDto addCartItemDto);
