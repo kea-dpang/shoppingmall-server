@@ -17,8 +17,8 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 조회
     @Override
-    public List<CartItem> getCartItemByUserId(Long userId) {
-        return null;
+    public List<CartItem> getCartItemsByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 
     // 장바구니 상품 추가
