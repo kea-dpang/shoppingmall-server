@@ -27,8 +27,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     // 위시리스트 상품 삭제
     @Override
-    public void deleteWishlistItem(Long userId) {
-
+    public void deleteWishlistItem(Long userId, Long itemId) {
+        wishlistRepository.deleteByUserIdAndWishlistItemId(userId, itemId);
     }
 
     // ==========================관리자===========================
