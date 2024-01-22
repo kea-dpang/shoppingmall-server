@@ -1,8 +1,5 @@
 package com.example.shoppingmallserver.dto;
 
-import com.example.shoppingmallserver.entity.cart.CartItem;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 
 import java.util.List;

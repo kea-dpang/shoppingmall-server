@@ -14,7 +14,7 @@ public interface CartService {
     List<CartItem> getCartItemsByUserId(Long userId);
 
     // 장바구니 상품 추가
-    CartItem addCartItem(Long userId, AddCartItemInfoDto itemInfo);
+    CartItem addCartItem(Long userId, Long itemId);
 
     // 장바구니 상품 삭제
     void deleteCartItem(Long userId, Long itemId);

@@ -74,8 +74,8 @@ public class CartController {
         // 아이템 서버에서 받아온 아이템 정보 반환
         AddCartItemInfoDto itemInfo = itemServiceCartItemClient.getItemInfo(itemId);
 
-        // 아이템 정보와 사용자 아이디를 통해 데이터 구성
-        CartItem cartItem = cartService.addCartItem(userId, itemInfo);
+        // 아이템 정보와 사용자 아이디를 통해 카트 아이템 불러오기
+        CartItem cartItem = cartService.addCartItem(userId, itemId);
 
         // 아이템 정보와 수량으로 데이터 구성
         AddCartItemDto data = new AddCartItemDto(itemInfo, cartItem.getQuantity());
