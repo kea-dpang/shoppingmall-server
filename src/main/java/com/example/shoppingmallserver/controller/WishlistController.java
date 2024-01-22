@@ -1,9 +1,8 @@
 package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.AddCartItemDto;
-import com.example.shoppingmallserver.dto.ReadCartItemDto;
-import com.example.shoppingmallserver.dto.ReadWishlistItemDto;
+import com.example.shoppingmallserver.dto.*;
+import com.example.shoppingmallserver.entity.cart.CartItem;
 import com.example.shoppingmallserver.entity.wishlist_item.WishlistItem;
 import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.WishlistService;
@@ -12,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +24,29 @@ public class WishlistController {
     private final WishlistService wishlistService;
     private final ItemServiceCartItemClient itemServiceCartItemClient;
 
-    // 위시리스트 상품 조회
+    // 위시리스트 상품 추가
     @PostMapping("/{userId}/{itemId}")
-    public ResponseEntity<SuccessResponse<List<ReadWishlistItemDto>>> addWishlistItem(@PathVariable Long userId, Long itemId) {
+    public ResponseEntity<SuccessResponse<AddWishlistItemDto>> addWishlistItem(@PathVariable Long userId, Long itemId) {
+
+        // 아이템 서버에서 받아온 아이템 정보 반환
+        AddWishlistItemDto itemInfo = itemServiceCartItemClient.getWishlistItemsInfo(itemId);
+
+        // 상품 정보와 사용자 아이디를 통해 상품 추가
+        wishlistService.addWishlistItem(userId, itemId);
+
+        // 아이템 정보로 데이터 구성
+        AddWishlistItemDto data = new AddWishlistItemDto(itemInfo);
+
+        // API 호출한 곳에 전달
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "장바구니에 상품을 성공적으로 추가하였습니다.", data),
+                HttpStatus.OK
+        );
+    }
+
+    // 위시리스트 상품 조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<SuccessResponse<List<ReadWishlistItemDto>>> addWishlistItem(@PathVariable Long userId) {
 
         // 사용자 ID를 기반으로 위시리스트 아이템 목록을 조회
         List<WishlistItem> wishlistItems = wishlistService.getWishlistItemByUserId(userId);

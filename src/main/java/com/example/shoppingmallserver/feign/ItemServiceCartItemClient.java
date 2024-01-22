@@ -1,6 +1,7 @@
 package com.example.shoppingmallserver.feign;
 
 import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
+import com.example.shoppingmallserver.dto.AddWishlistItemDto;
 import com.example.shoppingmallserver.dto.ReadCartItemInfoDto;
 
 import com.example.shoppingmallserver.dto.ReadWishlistItemDto;
@@ -28,4 +29,8 @@ public interface ItemServiceCartItemClient {
     // 위시리스트 상품 조회를 위한 정보 요청
     @GetMapping("/items/wishlist")
     List<ReadWishlistItemDto> getWishlistItemsInfo(@RequestParam("itemIds") List<Long> itemIds);
+
+    // 위시리스트 상품 추가를 위한 정보 요청
+    @GetMapping("/items/wishlist/{itemId}")
+    AddWishlistItemDto getWishlistItemsInfo(@PathVariable("itemId") Long itemId);
 }

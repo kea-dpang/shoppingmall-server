@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface WishlistRepository extends JpaRepository<WishlistItem, Long> {
 
+    WishlistItem findWishlistItemByUserId(Long userId);
+
     List<WishlistItem> findWishlistItemListByUserId(Long userId);
 
     void deleteByUserIdAndWishlistItemId(Long userId, Long wishlistItemId);

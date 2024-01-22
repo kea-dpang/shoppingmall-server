@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.entity.wishlist_item;
 import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,12 @@ public class WishlistItem extends BaseEntity {
     // 추가된 날짜
     @Column(name = "added_at")
     private LocalDate addedAt;
+
+    @Builder
+    public WishlistItem(User user, Long itemId, LocalDate addedAt) {
+        this.user = user;
+        this.itemId = itemId;
+        this.addedAt = addedAt;
+    }
 
 }

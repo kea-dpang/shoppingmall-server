@@ -13,7 +13,7 @@ import java.util.List;
 public interface WishlistService {
 
     // 위시리스트 상품 추가
-    WishlistItem addWishlistItem(Long userId, AddWishlistItemDto addWishlistItemDto);
+    WishlistItem addWishlistItem(Long userId, Long itemId);
 
     // 위시리스트 목록 조회
     List<WishlistItem> getWishlistItemByUserId(Long userId);
