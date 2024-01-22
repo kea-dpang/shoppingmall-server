@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,4 +86,27 @@ public class CartController {
                 HttpStatus.OK
         );
     }
+
+    /**
+     * 사용자가 선택한 한 개의 장바구니 항목을 삭제하는 API를 제공합니다.
+     * HTTP DELETE 메소드를 이용하며, 선택한 장바구니 항목이 삭제된 후에는 성공 메시지와 함께 HTTP 상태 코드 200(OK)를 반환합니다.
+     *
+     * @param userId 사용자 ID
+     * @param wishlistItemId 삭제할 장바구니 항목 ID
+     * @return 성공 메시지와 함께 HTTP 상태 코드 200(OK)를 반환
+     */
+    @DeleteMapping("/{userId}/{wishlistItemId}")
+    public ResponseEntity<SuccessResponse<Void>> deleteSingleCartItem(@PathVariable Long userId, @PathVariable Long wishlistItemId) {
+
+        // 사용자 아이디와 아이템 정보를 통해 삭제
+        cartService.deleteCartItem(userId, wishlistItemId);
+
+        // API 호출한 곳에 전달
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "장바구니에서 상품을 성공적으로 삭제하였습니다.", null),
+                HttpStatus.OK
+        );
+    }
+
+
 }

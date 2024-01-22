@@ -54,11 +54,11 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 삭제
     @Override
-    public void deleteCartItem(Long userId) {
-
+    public void deleteCartItem(Long userId, Long itemId) {
+        cartRepository.deleteByUserIdAndCartItemId(userId, itemId);
     }
 
-    // 장바구니 상품 구매
+    // 장바구니 상품 구매 -> 주문 개발 후에 추후 개발하기로 함
     @Override
     public List<CartItem> purchaseCartItem(Long userId, PurchaseCartItemDto purchaseCartItemDto) {
         return null;

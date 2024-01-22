@@ -27,5 +27,7 @@ public interface CartRepository extends JpaRepository<CartItem, Long> {
    * @return 조회된 장바구니 항목
    */
   CartItem findCartItemByUserId(Long userId);
+
+  void deleteByUserIdAndCartItemId(Long userId, Long wishlistItemId);
   
 }
