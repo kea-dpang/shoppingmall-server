@@ -21,8 +21,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     // 위시리스트 목록 조회
     @Override
-    public List<WishlistItem> getWishlistItemList(Long userId) {
-        return null;
+    public List<WishlistItem> getWishlistItemByUserId(Long userId) {
+        return wishlistRepository.findWishlistItemListByUserId(userId);
     }
 
     // 위시리스트 상품 삭제

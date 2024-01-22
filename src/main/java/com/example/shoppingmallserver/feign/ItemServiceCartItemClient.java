@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.feign;
 import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
 import com.example.shoppingmallserver.dto.ReadCartItemInfoDto;
 
+import com.example.shoppingmallserver.dto.ReadWishlistItemDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,5 +24,8 @@ public interface ItemServiceCartItemClient {
     @GetMapping("/items/cart/{itemId}")
     AddCartItemInfoDto getItemInfo(@PathVariable("itemId") Long itemId);
     // 추가할 상품 ID를 파라미터로 전달
-  
+
+    // 위시리스트 상품 조회를 위한 정보 요청
+    @GetMapping("/items/wishlist")
+    List<ReadWishlistItemDto> getWishlistItemsInfo(@RequestParam("itemIds") List<Long> itemIds);
 }

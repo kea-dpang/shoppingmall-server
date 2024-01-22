@@ -16,7 +16,7 @@ public interface WishlistService {
     WishlistItem addWishlistItem(Long userId, AddWishlistItemDto addWishlistItemDto);
 
     // 위시리스트 목록 조회
-    List<WishlistItem> getWishlistItemList(Long userId);
+    List<WishlistItem> getWishlistItemByUserId(Long userId);
 
     // 위시리스트 상품 삭제
     void deleteWishlistItem(Long userId, Long itemId);
