@@ -48,10 +48,11 @@ public class CartController {
 
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", data),
-                HttpStatus.OK
+                
+          HttpStatus.OK
         );
     }
-
+  
     // 장바구니 아이템 추가
     @PostMapping("/{userId}/{itemId}")
     public ResponseEntity<SuccessResponse<AddCartItemDto>> addCartItem(@PathVariable Long userId, Long itemId) {
@@ -67,5 +68,4 @@ public class CartController {
                 HttpStatus.OK
         );
     }
-
 }

@@ -12,11 +12,13 @@ import java.util.List;
 
 @FeignClient(name = "item-service", url = "${feign.client.item-service.url}")
 public interface ItemServiceCartItemClient {
+  
     @GetMapping("/items/cart")
     List<ReadCartItemInfoDto> getCartItemInfo(@RequestParam("itemIds") List<Long> itemIds);
     // 상품 ID 목록을 쿼리 파라미터로 전달
-
+  
     @GetMapping("/items/cart/{itemId}")
     AddCartItemInfoDto getItem(@PathVariable("itemId") Long itemId);
     // 추가할 상품 ID를 파라미터로 전달
+  
 }
