@@ -21,7 +21,7 @@ public interface ItemServiceCartItemClient {
 
     // 장바구니 상품 추가를 위한 정보 요청
     @GetMapping("/items/cart/{itemId}")
-    AddCartItemInfoDto getItem(@PathVariable("itemId") Long itemId);
+    AddCartItemInfoDto getItemInfo(@PathVariable("itemId") Long itemId);
     // 추가할 상품 ID를 파라미터로 전달
   
 }
