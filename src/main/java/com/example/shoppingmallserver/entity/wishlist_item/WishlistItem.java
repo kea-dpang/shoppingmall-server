@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * 위시리스트 항목을 나타내는 엔티티 클래스입니다.
+ * 위시리스트 항목 ID, 사용자, 상품 ID, 추가된 날짜 정보를 포함합니다.
+ */
 @Getter
 @NoArgsConstructor
 @Entity

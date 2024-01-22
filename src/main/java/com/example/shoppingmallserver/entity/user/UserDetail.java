@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * 사용자의 상세 정보를 나타내는 엔티티 클래스입니다.
+ * 사용자, 사원 번호, 입사 날짜, 이름, 이메일, 전화번호, 우편번호, 주소, 상세주소 정보를 포함합니다.
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -51,6 +55,19 @@ public class UserDetail extends BaseEntity {
     @Column(name = "detail_address")
     private String detailAddress;
 
+    /**
+     * 사용자, 사원 번호, 이메일, 이름, 입사 날짜, 전화번호, 우편번호, 주소, 상세주소를 이용하여 새로운 UserDetail 엔티티를 생성합니다.
+     *
+     * @param user 사용자
+     * @param employeeNumber 사원 번호
+     * @param email 이메일
+     * @param name 이름
+     * @param joinDate 입사 날짜
+     * @param phoneNumber 전화번호
+     * @param zipCode 우편번호
+     * @param address 주소
+     * @param detailAddress 상세주소
+     */
     @Builder
     public UserDetail(User user, Long employeeNumber, String email, String name, LocalDate joinDate,
                       String phoneNumber, String zipCode, String address, String detailAddress) {

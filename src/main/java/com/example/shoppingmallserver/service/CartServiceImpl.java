@@ -31,18 +31,22 @@ public class CartServiceImpl implements CartService {
     @Transactional
     @Override
     public CartItem addCartItem(Long userId, AddCartItemInfoDto itemInfo) {
+
+        // userId에 해당하는 사용자 찾아오기
         Optional<User> optionalUser = userRepository.findById(userId);
         User user = null;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
         }
 
+        // 새 CartItem 생성
         CartItem cartItem = CartItem.builder()
                 .user(user)
                 .quantity(1)
                 .addedAt(LocalDate.now())
                 .build();
 
+        // 저장
         cartRepository.save(cartItem);
 
         return cartRepository.findCartItemByUserId(userId);
