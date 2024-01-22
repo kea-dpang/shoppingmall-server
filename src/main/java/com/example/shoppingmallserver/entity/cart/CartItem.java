@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * 장바구니 항목을 나타내는 엔티티 클래스입니다.
+ * 장바구니 항목 ID, 사용자, 상품 ID, 수량, 추가된 날짜 정보를 포함합니다.
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -40,6 +44,14 @@ public class CartItem extends BaseEntity {
     @Column(name = "added_at")
     private LocalDate addedAt;
 
+    /**
+     * 사용자, 상품 ID, 수량, 추가된 날짜를 이용하여 새로운 CartItem 엔티티를 생성합니다.
+     *
+     * @param user 장바구니 항목을 소유한 사용자
+     * @param itemId 장바구니에 추가된 상품의 ID
+     * @param quantity 장바구니 항목의 수량
+     * @param addedAt 장바구니 항목이 추가된 날짜
+     */
     @Builder
     public CartItem(User user, Long itemId, int quantity, LocalDate addedAt) {
         this.user = user;
