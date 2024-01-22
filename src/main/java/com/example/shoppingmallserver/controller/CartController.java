@@ -42,7 +42,7 @@ public class CartController {
         // 조회한 장바구니 아이템 목록에서 아이템 ID만을 추출하여 새로운 리스트를 생성
         List<Long> itemIds = cartItems.stream()
                 .map(CartItem::getItemId)
-                .collect(Collectors.toList());
+                .toList();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadCartItemInfoDto> itemInfos = itemServiceCartItemClient.getCartItemInfo(itemIds);
@@ -50,7 +50,7 @@ public class CartController {
         // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
         List<ReadCartItemDto> data = IntStream.range(0, itemInfos.size())
                 .mapToObj(i -> new ReadCartItemDto(itemInfos.get(i), cartItems.get(i).getQuantity()))
-                .collect(Collectors.toList());
+                .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
