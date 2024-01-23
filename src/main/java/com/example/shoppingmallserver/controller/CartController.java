@@ -49,7 +49,7 @@ public class CartController {
 
         // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
         List<ReadCartItemDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadCartItemDto(itemInfos.get(i), cartItems.get(i).getQuantity()))
+                .mapToObj(i -> new ReadCartItemDto(cartItems.get(i), itemInfos.get(i)))
                 .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
@@ -78,7 +78,7 @@ public class CartController {
         CartItem cartItem = cartService.addCartItem(userId, itemId);
 
         // 아이템 정보와 수량으로 데이터 구성
-        AddCartItemDto data = new AddCartItemDto(itemInfo, cartItem.getQuantity());
+        AddCartItemDto data = new AddCartItemDto(cartItem, itemInfo);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(

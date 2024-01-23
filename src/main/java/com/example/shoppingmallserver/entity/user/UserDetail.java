@@ -55,6 +55,12 @@ public class UserDetail extends BaseEntity {
     @Column(name = "detail_address")
     private String detailAddress;
 
+    public void changeAddress(UserDetail userDetail) {
+        this.zipCode = userDetail.getZipCode();
+        this.address = userDetail.getAddress();
+        this.detailAddress = userDetail.getDetailAddress();
+    }
+
     /**
      * 사용자, 사원 번호, 이메일, 이름, 입사 날짜, 전화번호, 우편번호, 주소, 상세주소를 이용하여 새로운 UserDetail 엔티티를 생성합니다.
      *
@@ -81,5 +87,7 @@ public class UserDetail extends BaseEntity {
         this.address = address;
         this.detailAddress = detailAddress;
     }
+
+
 
 }

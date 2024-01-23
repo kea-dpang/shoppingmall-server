@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
         return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    // 사용자 생성
     @Transactional
     @Override
     public UserDetail createUser(CreateUserDto createUserDto) {
@@ -59,6 +60,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return  userDetailRepository.save(userDetail);
+    }
+
+    @Override
+    // 사용자 주소 변경
+    public void updateAddress(Long userId, String zipCode, String address, String detailAddress) {
+        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        userDetail.changeAddress(userDetail);
     }
 
     // ==========================관리자===========================

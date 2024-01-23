@@ -29,4 +29,6 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      * @return 주어진 이메일을 가진 사용자의 상세 정보를 포함하는 Optional 객체
      */
     Optional<UserDetail> findByEmail(String email);
+
+    UserDetail findByUserId(Long userId);
 }

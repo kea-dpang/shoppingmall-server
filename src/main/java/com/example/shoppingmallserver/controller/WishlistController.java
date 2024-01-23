@@ -32,10 +32,10 @@ public class WishlistController {
         AddWishlistItemDto itemInfo = itemServiceCartItemClient.getWishlistItemsInfo(itemId);
 
         // 상품 정보와 사용자 아이디를 통해 상품 추가
-        wishlistService.addWishlistItem(userId, itemId);
+        WishlistItem wishlistItem = wishlistService.addWishlistItem(userId, itemId);
 
         // 아이템 정보로 데이터 구성
-        AddWishlistItemDto data = new AddWishlistItemDto(itemInfo);
+        AddWishlistItemDto data = new AddWishlistItemDto(wishlistItem, itemInfo);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
@@ -61,7 +61,7 @@ public class WishlistController {
 
         // 아이템 정보를 이용하여 응답 DTO를 생성
         List<ReadWishlistItemDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadWishlistItemDto(itemInfos.get(i)))
+                .mapToObj(i -> new ReadWishlistItemDto(wishlistItems.get(i), itemInfos.get(i)))
                 .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
