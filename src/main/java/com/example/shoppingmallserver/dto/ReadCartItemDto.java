@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.dto;
 
+import com.example.shoppingmallserver.entity.cart.CartItem;
 import lombok.Getter;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 @Getter
 public class ReadCartItemDto {
+    private final Long cartItemId;
     private final String image; // 상품 이미지 URL
     private final String name; // 상품 이름
     private final int price; // 상품 가격
@@ -18,13 +20,14 @@ public class ReadCartItemDto {
     /**
      * ReadCartItemInfoDto와 수량을 이용하여 ReadCartItemDto를 생성합니다.
      *
+     * @param cartItem 장바구니 상품 정보를 담은 엔티티
      * @param readCartItemInfoDto 장바구니 상품 정보를 담은 DTO
-     * @param quantity 상품 수량
      */
-    public ReadCartItemDto(ReadCartItemInfoDto readCartItemInfoDto, int quantity) {
+    public ReadCartItemDto(CartItem cartItem, ReadCartItemInfoDto readCartItemInfoDto) {
+        this.cartItemId = cartItem.getCartItemId();
         this.image = readCartItemInfoDto.getImage();
         this.name = readCartItemInfoDto.getName();
         this.price = readCartItemInfoDto.getPrice();
-        this.quantity = quantity;
+        this.quantity = cartItem.getQuantity();
     }
 }

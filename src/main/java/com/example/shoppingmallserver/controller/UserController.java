@@ -5,6 +5,7 @@ import com.example.shoppingmallserver.dto.AdminReadUserDto;
 import com.example.shoppingmallserver.dto.AdminReadUserListDto;
 import com.example.shoppingmallserver.dto.CreateUserDto;
 import com.example.shoppingmallserver.dto.ReadUserDto;
+import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.service.UserService;
 
@@ -42,8 +43,11 @@ public class UserController {
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getUserById(userId);
 
+        // 사용자 정보를 이용하여 사용자 생성
+        User user = userDetail.getUser();
+
         // 조회한 사용자 정보를 이용하여 응답 DTO를 생성
-        ReadUserDto data = new ReadUserDto(userDetail);
+        ReadUserDto data = new ReadUserDto(user, userDetail);
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보가 성공적으로 조회되었음을 알림
@@ -63,11 +67,14 @@ public class UserController {
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateUserDto>> createUser(@RequestBody CreateUserDto createUserDto) {
 
-        // 요청 본문으로 받은 사용자 정보를 이용하여 새로운 사용자를 생성
+        // 요청 본문으로 받은 사용자 정보를 이용하여 새로운 사용자 정보를 생성
         UserDetail userDetail = userService.createUser(createUserDto);
 
+        // 사용자 정보를 이용하여 사용자 생성
+        User user = userDetail.getUser();
+
         // 생성한 사용자 정보를 이용하여 응답 DTO를 생성
-        CreateUserDto data = new CreateUserDto(userDetail);
+        CreateUserDto data = new CreateUserDto(user, userDetail);
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보가 성공적으로 생성되었음을 알림

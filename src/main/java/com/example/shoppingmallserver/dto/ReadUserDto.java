@@ -1,5 +1,6 @@
 package com.example.shoppingmallserver.dto;
 
+import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
  */
 @Getter
 public class ReadUserDto {
+    private final Long userId;
     private final Long employeeNumber;
     private final String name;
     private final String email;
@@ -22,7 +24,8 @@ public class ReadUserDto {
      *
      * @param userDetail 조회하는 사용자의 상세 정보를 담은 엔티티
      */
-    public ReadUserDto(UserDetail userDetail) {
+    public ReadUserDto(User user, UserDetail userDetail) {
+        this.userId = user.getUserId();
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
         this.email = userDetail.getEmail();
