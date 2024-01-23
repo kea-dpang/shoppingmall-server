@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품 추가
     @Transactional
     @Override
-    public CartItem addCartItem(Long userId, AddCartItemInfoDto itemInfo) {
+    public CartItem addCartItem(Long userId, Long itemId) {
 
         // userId에 해당하는 사용자 찾아오기
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -42,6 +42,7 @@ public class CartServiceImpl implements CartService {
         // 새 CartItem 생성
         CartItem cartItem = CartItem.builder()
                 .user(user)
+                .itemId(itemId)
                 .quantity(1)
                 .addedAt(LocalDate.now())
                 .build();

@@ -42,7 +42,7 @@ public class CartController {
         // 조회한 장바구니 아이템 목록에서 아이템 ID만을 추출하여 새로운 리스트를 생성
         List<Long> itemIds = cartItems.stream()
                 .map(CartItem::getItemId)
-                .collect(Collectors.toList());
+                .toList();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadCartItemInfoDto> itemInfos = itemServiceCartItemClient.getCartItemInfo(itemIds);
@@ -50,7 +50,7 @@ public class CartController {
         // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
         List<ReadCartItemDto> data = IntStream.range(0, itemInfos.size())
                 .mapToObj(i -> new ReadCartItemDto(itemInfos.get(i), cartItems.get(i).getQuantity()))
-                .collect(Collectors.toList());
+                .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
@@ -72,10 +72,10 @@ public class CartController {
     public ResponseEntity<SuccessResponse<AddCartItemDto>> addCartItem(@PathVariable Long userId, Long itemId) {
 
         // 아이템 서버에서 받아온 아이템 정보 반환
-        AddCartItemInfoDto itemInfo = itemServiceCartItemClient.getItem(itemId);
+        AddCartItemInfoDto itemInfo = itemServiceCartItemClient.getItemInfo(itemId);
 
-        // 아이템 정보와 사용자 아이디를 통해 데이터 구성
-        CartItem cartItem = cartService.addCartItem(userId, itemInfo);
+        // 아이템 정보와 사용자 아이디를 통해 카트 아이템 불러오기
+        CartItem cartItem = cartService.addCartItem(userId, itemId);
 
         // 아이템 정보와 수량으로 데이터 구성
         AddCartItemDto data = new AddCartItemDto(itemInfo, cartItem.getQuantity());
@@ -88,18 +88,17 @@ public class CartController {
     }
 
     /**
-     * 사용자가 선택한 한 개의 장바구니 항목을 삭제하는 API를 제공합니다.
-     * HTTP DELETE 메소드를 이용하며, 선택한 장바구니 항목이 삭제된 후에는 성공 메시지와 함께 HTTP 상태 코드 200(OK)를 반환합니다.
+     * 사용자의 장바구니에서 한 개의 장바구니 항목을 삭제합니다.
      *
      * @param userId 사용자 ID
-     * @param wishlistItemId 삭제할 장바구니 항목 ID
+     * @param cartItemId 삭제할 장바구니 항목 ID
      * @return 성공 메시지와 함께 HTTP 상태 코드 200(OK)를 반환
      */
-    @DeleteMapping("/{userId}/{wishlistItemId}")
-    public ResponseEntity<SuccessResponse<Void>> deleteSingleCartItem(@PathVariable Long userId, @PathVariable Long wishlistItemId) {
+    @DeleteMapping("/{userId}/{cartItemId}")
+    public ResponseEntity<SuccessResponse<Void>> deleteCartItem(@PathVariable Long userId, @PathVariable Long cartItemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 삭제
-        cartService.deleteCartItem(userId, wishlistItemId);
+        cartService.deleteCartItem(userId, cartItemId);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
