@@ -26,5 +26,6 @@ public class AddCartItemDto {
         this.image = addCartItemInfoDto.getImage();
         this.name = addCartItemInfoDto.getName();
         this.price = addCartItemInfoDto.getPrice();
-        this.quantity = cartItem.getQuantity()+1; // 아이템 추가이므로 +1한 값을 전달
+        this.quantity = cartItem.getQuantity() + 1; // 아이템 추가이므로 +1한 값을 전달
+    }
 }
