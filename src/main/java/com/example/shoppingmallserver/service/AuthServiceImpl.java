@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void register(String email, String password, Role role) {
+    public Auth register(String email, String password, Role role) {
 
         // 이메일로 사용자 찾기
         Optional<Auth> auth = authRepository.findByEmail(email);
@@ -79,8 +79,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         // 사용자 저장
-        authRepository.save(newUser);
-
+        return authRepository.save(newUser);
     }
 
     /**

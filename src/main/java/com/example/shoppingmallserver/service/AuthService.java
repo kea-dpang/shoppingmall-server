@@ -1,6 +1,7 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
+import com.example.shoppingmallserver.entity.auth.Auth;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,7 @@ public interface AuthService {
      * 권한을 별도로 지정하지 않은 경우, 기본적으로 'USER' 권한을 부여합니다.
      * 지정된 권한이 있는 경우, 해당 권한으로 계정을 생성합니다.
      */
-    void register(String email, String password, Role role);
+    Auth register(String email, String password, Role role);
 
     /**
      * 사용자 검증 메서드.
