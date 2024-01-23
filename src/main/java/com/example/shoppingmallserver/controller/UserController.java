@@ -85,6 +85,20 @@ public class UserController {
 
     }
 
+    @PatchMapping("/{userId}/address")
+    public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable Long userId, @RequestBody String zipCode, String address, String detailAddress) {
+
+        // 받은 정보를 통해 주소지 변경
+        userService.updateAddress(userId, zipCode, address, detailAddress);
+
+        //  변경 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
+        // 이를 통해 API 호출한 클라이언트에게 사용자 주소가 성공적으로 변경되었음을 알림
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.NO_CONTENT.value(), "사용자의 주소를 성공적으로 변경하였습니다.", null),
+                HttpStatus.NO_CONTENT
+        );
+    }
+
     // ==========================관리자===========================
 
     /**
