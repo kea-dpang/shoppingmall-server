@@ -1,16 +1,14 @@
 package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.SuccessResponse;
+import com.example.shoppingmallserver.dto.RegisterRequestDto;
 import com.example.shoppingmallserver.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 인증 관련 요청을 처리하는 컨트롤러입니다.
@@ -22,6 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    /**
+     * 사용자를 등록하는 API입니다.
+     *
+     * @param requestDto 사용자 등록 요청 정보
+     * @return HTTP 상태 코드 201 (CREATED)
+     */
+    @PostMapping("/register")
+    public ResponseEntity<SuccessResponse<Void>> register(@RequestBody RegisterRequestDto requestDto) {
+
+        // 사용자 등록
+        authService.register(requestDto.getEmail(), requestDto.getPassword(), requestDto.getRole());
+
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.CREATED.value(), "사용자가 성공적으로 등록되었습니다.", null),
+                HttpStatus.CREATED
+        );
+    }
 
     /**
      * 사용자가 요청한 이메일로 인증 코드를 전송합니다.

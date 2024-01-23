@@ -3,10 +3,7 @@ package com.example.shoppingmallserver.service;
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
 import com.example.shoppingmallserver.entity.auth.Auth;
-import com.example.shoppingmallserver.exception.AuthNotFoundException;
-import com.example.shoppingmallserver.exception.InvalidPasswordException;
-import com.example.shoppingmallserver.exception.InvalidVerificationCodeException;
-import com.example.shoppingmallserver.exception.VerificationCodeNotFoundException;
+import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.NotificationFeignClient;
 import com.example.shoppingmallserver.redis.entity.VerificationCode;
 import com.example.shoppingmallserver.redis.repository.VerificationCodeRepository;
@@ -21,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -61,7 +59,28 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(String email, String password, Role role) {
-        // TODO: Not yet implemented
+
+        // 이메일로 사용자 찾기
+        Optional<Auth> auth = authRepository.findByEmail(email);
+
+        // 사용자가 이미 존재하는 경우 예외 발생
+        if (auth.isPresent()) {
+            throw new EmailAlreadyExistsException(email);
+        }
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(password);
+
+        // 사용자 정보 생성
+        Auth newUser = Auth.builder()
+                .email(email)
+                .password(encodedPassword)
+                .role(role)
+                .build();
+
+        // 사용자 저장
+        authRepository.save(newUser);
+
     }
 
     /**
