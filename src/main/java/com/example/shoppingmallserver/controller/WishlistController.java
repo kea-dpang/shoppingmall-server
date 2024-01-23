@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@RestController("/wishlists")
+/**
+ * 위시리스트 상품 정보를 관리하는 Controller 클래스입니다.
+ * 위시리스트 상품 조회, 추가, 삭제 기능을 제공합니다.
+ */
+@RestController
+@RequestMapping("/api/wishlists")
 @RequiredArgsConstructor
 public class WishlistController {
 
