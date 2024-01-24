@@ -1,15 +1,16 @@
 package com.example.shoppingmallserver.controller;
 
+import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.LoginRequestDto;
 import com.example.shoppingmallserver.dto.RegisterRequestDto;
 import com.example.shoppingmallserver.dto.Token;
-import com.example.shoppingmallserver.entity.auth.Auth;
 import com.example.shoppingmallserver.exception.AuthNotFoundException;
 import com.example.shoppingmallserver.exception.InvalidPasswordException;
 import com.example.shoppingmallserver.service.AuthService;
 
 import com.example.shoppingmallserver.utils.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Array;
-import java.util.ArrayList;
 
 /**
  * 인증 관련 요청을 처리하는 컨트롤러입니다.
@@ -42,22 +40,14 @@ public class AuthController {
      * @return HTTP 상태 코드 201 (CREATED)
      */
     @PostMapping("/register")
-    public ResponseEntity<SuccessResponse<Token>> register(@RequestBody RegisterRequestDto requestDto) throws Exception {
+    public ResponseEntity<BaseResponse> register(@RequestBody RegisterRequestDto requestDto) {
 
         // 사용자 등록
-        Auth newUser = authService.register(requestDto.getEmail(), requestDto.getPassword(), requestDto.getRole());
-
-        // 등록된 사용자 로그인 처리
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword())
-        );
-
-        // JWT 토큰 생성 (사용자 등록 하자마자 로그인이 된다면 필요)
-        Token jwtToken = jwtTokenProvider.createTokens(authentication, newUser.getUserIdx());
+        authService.register(requestDto.getEmail(), requestDto.getPassword(), requestDto.getRole());
 
         // 생성된 토큰과 함께 응답 반환
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.CREATED.value(), "사용자가 성공적으로 등록되었습니다.", jwtToken),
+                new BaseResponse(HttpStatus.CREATED.value(), "사용자가 성공적으로 등록되었습니다."),
                 HttpStatus.CREATED
         );
     }
@@ -69,18 +59,25 @@ public class AuthController {
      * @return 사용자의 식별자를 담은 ResponseEntity. 사용자 인증에 실패했을 경우 400 상태 코드를 반환
      */
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
-        try {
-            // 등록된 사용자 로그인 처리
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
-            );
+    public ResponseEntity<SuccessResponse<Token>> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
+            // 사용자가 입력한 이메일과 비밀번호를 이용해 UsernamePasswordAuthenticationToken 객체 생성
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+
+            // AuthenticationManager를 이용해 생성한 토큰으로 사용자 인증 시도
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+            // authService를 이용해 사용자 인증 정보 검증
             Long userId = authService.verifyUser(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+
+            // 인증된 사용자에 대한 JWT 토큰 생성
             Token jwtToken = jwtTokenProvider.createTokens(authentication, userId);
-            return ResponseEntity.ok(userId);
-        } catch (AuthNotFoundException | InvalidPasswordException e) {
-            return ResponseEntity.badRequest().build();
-        }
+
+            return new ResponseEntity<>(
+                    new SuccessResponse<>(HttpStatus.OK.value(), "성공적으로 로그인 하였습니다.", jwtToken),
+                    HttpStatus.OK
+            );
+
     }
 
     /**
