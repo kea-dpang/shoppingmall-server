@@ -212,7 +212,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void deleteAccount(int identifier) {
-        // TODO: Not yet implemented
+    public void deleteAccount(Long identifier) {
+
+        // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
+        Auth auth = authRepository.findById(identifier)
+                .orElseThrow(() -> new AuthNotFoundException(String.valueOf(identifier)));
+
+        // 계정 삭제
+        authRepository.delete(auth);
     }
 }

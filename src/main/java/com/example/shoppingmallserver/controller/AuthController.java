@@ -60,6 +60,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<SuccessResponse<Token>> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
+
             // 사용자가 입력한 이메일과 비밀번호를 이용해 UsernamePasswordAuthenticationToken 객체 생성
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
@@ -80,6 +81,7 @@ public class AuthController {
 
     }
 
+
     /**
      * 사용자가 요청한 이메일로 인증 코드를 전송합니다.
      *
@@ -95,6 +97,70 @@ public class AuthController {
         // 전송했다는것 반환
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "인증코드 전송에 성공하였습니다.", null),
+                HttpStatus.OK
+        );
+    }
+
+    /**
+     * 사용자가 제공한 이메일과 인증 코드, 새로운 비밀번호를 이용해 비밀번호를 재설정합니다.
+     * 인증 코드가 일치하지 않거나, 인증 코드가 존재하지 않는 경우 예외가 발생합니다.
+     *
+     * @param email      사용자의 이메일
+     * @param code       사용자가 제공한 인증 코드
+     * @param newPassword 사용자의 새로운 비밀번호
+     * @return 성공 응답을 포함한 ResponseEntity. 비밀번호 재설정이 성공하면 200 상태 코드와 성공 메시지를 반환
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<BaseResponse> resetPassword(@RequestParam String email, @RequestParam String code, @RequestParam String newPassword) {
+
+        // 이메일, 인증 코드, 새로운 비밀번호로 비밀번호 재설정
+        authService.verifyCodeAndResetPassword(email, code, newPassword);
+
+        // 성공 응답 생성 및 반환
+        return new ResponseEntity<>(
+               new BaseResponse(HttpStatus.OK.value(), "비밀번호가 재설정되었습니다."),
+                HttpStatus.OK
+        );
+    }
+
+    /**
+     * 사용자가 제공한 이메일과 기존 비밀번호, 새로운 비밀번호를 이용해 비밀번호를 변경합니다.
+     *
+     * @param email      사용자의 이메일
+     * @param oldPassword 사용자가 제공한 기존 비밀번호
+     * @param newPassword 사용자의 새로운 비밀번호
+     * @return 성공 응답을 포함한 ResponseEntity. 비밀번호 변경이 성공하면 200 상태 코드와 성공 메시지를 반환
+     */
+    @PostMapping("/change-password")
+    public ResponseEntity<BaseResponse> changePassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+
+        // 이메일, 기존 비밀번호, 새로운 비밀번호로 비밀번호 변경
+        authService.changePassword(email, oldPassword, newPassword);
+
+        // 성공 응답 생성 및 반환
+        return new ResponseEntity<>(
+                new BaseResponse(HttpStatus.OK.value(), "비밀번호가 재설정되었습니다."),
+                HttpStatus.OK
+        );
+    }
+
+    /**
+     * 클라이언트가 제공한 식별자를 이용하여 계정을 삭제하고, 성공 메시지를 반환합니다.
+     * 계정 삭제가 실패하면 AuthNotFoundException이 발생하게 됩니다.
+     *
+     * @param id 삭제할 계정의 식별자
+     * @return 성공 응답을 포함한 ResponseEntity. 계정 삭제가 성공하면 200 상태 코드와 성공 메시지를 반환
+     * @throws AuthNotFoundException 삭제할 계정이 존재하지 않는 경우 발생
+     */
+    @DeleteMapping("/delete-account/{id}")
+    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable Long id) {
+
+        // 식별자로 계정 삭제
+        authService.deleteAccount(id);
+
+        // 성공 응답 생성 및 반환
+        return new ResponseEntity<>(
+                new BaseResponse(HttpStatus.OK.value(), "계정이 삭제되었습니다."),
                 HttpStatus.OK
         );
     }
