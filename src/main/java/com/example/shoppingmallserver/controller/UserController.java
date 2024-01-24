@@ -25,7 +25,8 @@ import static java.util.Arrays.stream;
  * 사용자 정보를 관리하는 Controller 클래스입니다.
  * 사용자 정보 조회, 생성, 관리자에 의한 조회 및 삭제 기능을 제공합니다.
  */
-@RestController("/users")
+@RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
