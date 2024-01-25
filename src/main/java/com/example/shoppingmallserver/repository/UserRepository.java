@@ -1,6 +1,5 @@
 package com.example.shoppingmallserver.repository;
 
-import com.example.shoppingmallserver.entity.auth.Auth;
 import com.example.shoppingmallserver.entity.user.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;

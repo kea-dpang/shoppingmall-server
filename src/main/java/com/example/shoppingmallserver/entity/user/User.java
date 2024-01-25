@@ -1,10 +1,8 @@
 package com.example.shoppingmallserver.entity.user;
 
 import com.example.shoppingmallserver.base.BaseEntity;
-
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.entity.cart.Cart;
-import com.example.shoppingmallserver.entity.mileage.Mileage;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 
 import jakarta.persistence.*;
@@ -15,8 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 사용자를 나타내는 엔티티 클래스입니다.
@@ -65,16 +61,10 @@ public class User extends BaseEntity {
     private Cart cart;
 
     // 유저와 위시리스트는 일대다 관계 (유저가 삭제되면 연쇄적으로 삭제)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Wishlist> wishlists;
-
-    // 유저와 마일리지는 일대일 관계 (유저가 삭제되면 연쇄적으로 삭제)
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "mileage_id")
-    private Mileage mileage;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Wishlist wishlist;
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }
-
 }

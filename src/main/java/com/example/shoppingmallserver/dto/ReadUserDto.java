@@ -24,11 +24,11 @@ public class ReadUserDto {
      *
      * @param userDetail 조회하는 사용자의 상세 정보를 담은 엔티티
      */
-    public ReadUserDto(User user, UserDetail userDetail) {
-        this.userId = user.getUserId();
+    public ReadUserDto(UserDetail userDetail) {
+        this.userId = userDetail.getUser().getUserId();
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
-        this.email = userDetail.getEmail();
+        this.email = userDetail.getUser().getEmail();
         this.join_date = userDetail.getJoinDate();
     }
 }
