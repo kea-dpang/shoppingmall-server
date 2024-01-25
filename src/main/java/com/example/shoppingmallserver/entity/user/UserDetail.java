@@ -4,6 +4,7 @@ import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import java.time.LocalDate;
  * 사용자, 사원 번호, 입사 날짜, 이름, 이메일, 전화번호, 우편번호, 주소, 상세주소 정보를 포함합니다.
  */
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user_detail")
 public class UserDetail extends BaseEntity {
@@ -37,9 +40,6 @@ public class UserDetail extends BaseEntity {
     // 이름
     private String name;
 
-    // 이메일
-    private String email;
-
     // 전화번호
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -60,34 +60,4 @@ public class UserDetail extends BaseEntity {
         this.address = userDetail.getAddress();
         this.detailAddress = userDetail.getDetailAddress();
     }
-
-    /**
-     * 사용자, 사원 번호, 이메일, 이름, 입사 날짜, 전화번호, 우편번호, 주소, 상세주소를 이용하여 새로운 UserDetail 엔티티를 생성합니다.
-     *
-     * @param user 사용자
-     * @param employeeNumber 사원 번호
-     * @param email 이메일
-     * @param name 이름
-     * @param joinDate 입사 날짜
-     * @param phoneNumber 전화번호
-     * @param zipCode 우편번호
-     * @param address 주소
-     * @param detailAddress 상세주소
-     */
-    @Builder
-    public UserDetail(User user, Long employeeNumber, String email, String name, LocalDate joinDate,
-                      String phoneNumber, String zipCode, String address, String detailAddress) {
-        this.user = user;
-        this.employeeNumber = employeeNumber;
-        this.email = email;
-        this.name = name;
-        this.joinDate = joinDate;
-        this.phoneNumber = phoneNumber;
-        this.zipCode = zipCode;
-        this.address = address;
-        this.detailAddress = detailAddress;
-    }
-
-
-
 }
