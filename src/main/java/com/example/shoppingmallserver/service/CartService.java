@@ -10,7 +10,7 @@ public interface CartService {
     Cart getCartItemList(Long userId);
 
     // 장바구니 상품 추가
-    Cart addCartItem(Long userId, Long itemId);
+    void addCartItem(Long userId, Long itemId);
 
     // 장바구니 상품 삭제
     void deleteCartItem(Long userId, Long itemId);

@@ -24,10 +24,10 @@ public class Cart extends BaseEntity {
     // 장바구니 ID (PK) = 유저 아이디와 동일하다고 보면 됨
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_id")
+    @Column(name = "cart_id")
     private Long cartId;
 
-    // 상품 ID (FK인데 변경 예정)
+    // 상품 ID
     @ElementCollection
     @Column(name = "item_id")
     private List<Long> itemIds;

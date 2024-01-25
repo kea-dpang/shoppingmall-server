@@ -4,7 +4,7 @@ import com.example.shoppingmallserver.base.BaseEntity;
 
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.mileage.Mileage;
-import com.example.shoppingmallserver.entity.wishlist_item.WishlistItem;
+import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 
 import jakarta.persistence.*;
 
@@ -54,7 +54,7 @@ public class User extends BaseEntity {
 
     // 유저와 위시리스트는 일대다 관계 (유저가 삭제되면 연쇄적으로 삭제)
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<WishlistItem> wishlistItems;
+    private List<Wishlist> wishlists;
 
     // 유저와 마일리지는 일대일 관계 (유저가 삭제되면 연쇄적으로 삭제)
     @OneToOne(cascade = CascadeType.REMOVE)
