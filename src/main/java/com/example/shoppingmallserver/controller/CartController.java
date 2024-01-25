@@ -2,8 +2,6 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.AddCartItemDto;
-import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
 import com.example.shoppingmallserver.dto.ReadCartItemDto;
 import com.example.shoppingmallserver.dto.ReadCartItemInfoDto;
 import com.example.shoppingmallserver.entity.cart.Cart;

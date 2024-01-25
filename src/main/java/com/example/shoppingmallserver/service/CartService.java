@@ -1,10 +1,7 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.PurchaseCartItemDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public interface CartService {

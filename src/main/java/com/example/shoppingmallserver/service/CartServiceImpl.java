@@ -1,18 +1,11 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.PurchaseCartItemDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
-import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.repository.CartRepository;
 import com.example.shoppingmallserver.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
