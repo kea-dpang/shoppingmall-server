@@ -92,7 +92,7 @@ public class CartController {
     }
 
     /**
-     * 사용자의 장바구니에서 한 개의 장바구니 항목을 삭제합니다.
+     * 사용자의 장바구니에서 아이템에 해당하는 장바구니 항목을 삭제합니다.
      *
      * @param userId 사용자 ID
      * @param cartItemId 삭제할 장바구니 항목 ID
