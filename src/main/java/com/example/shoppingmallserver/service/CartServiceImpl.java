@@ -21,7 +21,7 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 추가
     @Override
-    public Cart addCartItem(Long userId, Long itemId) {
+    public void addCartItem(Long userId, Long itemId) {
 
         // Cart에 상품 추가(빌더)
         Cart cart = Cart.builder()
@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService {
         // 저장
         cartRepository.save(cart);
 
-        return cartRepository.findCartByUserId(userId);
+        cartRepository.findCartByUserId(userId);
     }
 
     // 장바구니 상품 삭제

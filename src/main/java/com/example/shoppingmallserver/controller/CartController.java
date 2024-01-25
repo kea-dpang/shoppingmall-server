@@ -30,7 +30,7 @@ public class CartController {
     private final ItemServiceCartItemClient itemServiceCartItemClient;
 
     /**
-     * 사용자의 장바구니 내용을 조회합니다.
+     * 사용자의 장바구니의 목록을 조회합니다.
      *
      * @param userId 사용자 ID
      * @return 성공 응답 메시지와 함께 장바구니 내용을 담은 DTO를 반환
@@ -56,8 +56,7 @@ public class CartController {
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
         return new ResponseEntity<>(
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", data),
-                
-          HttpStatus.OK
+                HttpStatus.OK
         );
     }
 
@@ -71,13 +70,13 @@ public class CartController {
     @PostMapping("/{itemId}")
     public ResponseEntity<BaseResponse> addCartItem(@PathVariable Long userId, @PathVariable Long itemId) {
 
-        // 아이템 정보와 사용자 아이디를 통해 카트에 아이템 추가
+        // 상품 정보와 사용자 아이디를 통해 장바구니에 아이템 추가
         cartService.addCartItem(userId, itemId);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
                     new BaseResponse(HttpStatus.CREATED.value(), "장바구니에 상품을 성공적으로 추가하였습니다."),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 

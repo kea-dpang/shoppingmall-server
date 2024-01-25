@@ -16,10 +16,9 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
    * 사용자 ID로 장바구니를 조회합니다.
    *
    * @param userId 조회할 사용자의 ID
-   * @return 조회된 장바구니 항목
+   * @return 조회된 장바구니
    */
   Cart findCartByUserId(Long userId);
-
 
   void deleteByUserIdAndItemId(Long userId, Long itemId);
   
