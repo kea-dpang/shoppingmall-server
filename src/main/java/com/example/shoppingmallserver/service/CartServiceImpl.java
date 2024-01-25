@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final UserRepository userRepository;
     private final CartRepository cartRepository;
 
     // 장바구니 상품 조회

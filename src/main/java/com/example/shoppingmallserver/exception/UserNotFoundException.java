@@ -7,7 +7,7 @@ package com.example.shoppingmallserver.exception;
 public class UserNotFoundException extends RuntimeException {
 
     /**
-     * 찾을 수 없는 사용자의 ID를 파라미터로 받아서 예외 메시지를 생성합니다.
+     * 사용자 ID를 통해 사용자를 찾을 수 없을 때 이 예외를 생성합니다.
      *
      * @param userId 찾을 수 없는 사용자의 ID
      */
@@ -15,4 +15,12 @@ public class UserNotFoundException extends RuntimeException {
         super("해당 ID의 사용자를 찾을 수 없습니다. ID: " + userId);
     }
 
+    /**
+     * 이메일을 통해 사용자를 찾을 수 없을 때 이 예외를 생성합니다.
+     *
+     * @param email 찾을 수 없는 사용자의 이메일
+     */
+    public UserNotFoundException(String email) {
+        super("해당 이메일을 가진 사용자를 찾을 수 없습니다: " + email);
+    }
 }

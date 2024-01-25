@@ -2,17 +2,20 @@ package com.example.shoppingmallserver.entity.user;
 
 import com.example.shoppingmallserver.base.BaseEntity;
 
+import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.mileage.Mileage;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +24,10 @@ import java.util.List;
  * 사용자 상세, 장바구니 항목, 위시리스트 항목, 마일리지와의 관계를 정의합니다.
  */
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "user")
 public class User extends BaseEntity {
 
@@ -31,6 +36,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
+
+    private String email;  // 이메일
+
+    private String password;  // 비밀번호
+
+    @Enumerated(EnumType.STRING)
+    private Role role;  // 권한*/
 
     // 활성화 상태 (회원, 탈퇴)
     private UserStatus status;
@@ -61,18 +73,8 @@ public class User extends BaseEntity {
     @JoinColumn(name = "mileage_id")
     private Mileage mileage;
 
-    /**
-     * 상태, 생성 날짜, 변경 날짜를 이용하여 새로운 User 엔티티를 생성합니다.
-     *
-     * @param status 사용자의 상태(활성화 상태)
-     * @param createdAt 사용자가 생성된 날짜
-     * @param updatedAt 사용자 정보가 변경된 날짜
-     */
-    @Builder
-    public User(UserStatus status, LocalDate createdAt, LocalDate updatedAt) {
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
     }
 
 }
