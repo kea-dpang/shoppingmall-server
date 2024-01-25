@@ -16,10 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
 
 /**
  * 사용자 정보를 관리하는 Controller 클래스입니다.
