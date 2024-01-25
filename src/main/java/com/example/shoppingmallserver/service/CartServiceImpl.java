@@ -1,9 +1,8 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
 import com.example.shoppingmallserver.dto.PurchaseCartItemDto;
-import com.example.shoppingmallserver.entity.cart.CartItem;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.repository.CartRepository;
 import com.example.shoppingmallserver.repository.UserRepository;
@@ -23,48 +22,29 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 조회
     @Override
-    public List<CartItem> getCartItemsByUserId(Long userId) {
-        return cartRepository.findCartItemListByUserId(userId);
+    public Cart getCartItemList(Long userId) {
+        return cartRepository.findCartByUserId(userId);
     }
 
     // 장바구니 상품 추가
-    @Transactional
     @Override
-    public CartItem addCartItem(Long userId, Long itemId) {
+    public Cart addCartItem(Long userId, Long itemId) {
 
-        // userId에 해당하는 사용자 찾아오기
-        Optional<User> optionalUser = userRepository.findById(userId);
-        User user = null;
-        if (optionalUser.isPresent()) {
-            user = optionalUser.get();
-        }
-
-        // 새 CartItem 생성
-        CartItem cartItem = CartItem.builder()
-                .user(user)
+        // Cart에 상품 추가(빌더)
+        Cart cart = Cart.builder()
                 .itemId(itemId)
                 .quantity(1)
-                .addedAt(LocalDate.now())
                 .build();
 
         // 저장
-        cartRepository.save(cartItem);
+        cartRepository.save(cart);
 
-        return cartRepository.findCartItemByUserId(userId);
+        return cartRepository.findCartByUserId(userId);
     }
 
     // 장바구니 상품 삭제
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
-        cartRepository.deleteByUserIdAndCartItemId(userId, itemId);
+        cartRepository.deleteByUserIdAndItemId(userId, itemId);
     }
-
-    // 장바구니 상품 구매 -> 주문 개발 후에 추후 개발하기로 함
-    @Override
-    public List<CartItem> purchaseCartItem(Long userId, PurchaseCartItemDto purchaseCartItemDto) {
-        return null;
-    }
-
-    // ==========================관리자===========================
-
 }

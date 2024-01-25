@@ -2,7 +2,7 @@ package com.example.shoppingmallserver.entity.user;
 
 import com.example.shoppingmallserver.base.BaseEntity;
 
-import com.example.shoppingmallserver.entity.cart.CartItem;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.mileage.Mileage;
 import com.example.shoppingmallserver.entity.wishlist_item.WishlistItem;
 
@@ -48,9 +48,9 @@ public class User extends BaseEntity {
     @JoinColumn(name = "user_detail_id")
     private UserDetail userDetail;
 
-    // 유저와 카트는 일대다 관계 (유저가 삭제되면 연쇄적으로 삭제)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<CartItem> cartItems;
+    // 유저와 카트는 일대일 관계 (유저가 삭제되면 연쇄적으로 삭제)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Cart cart;
 
     // 유저와 위시리스트는 일대다 관계 (유저가 삭제되면 연쇄적으로 삭제)
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

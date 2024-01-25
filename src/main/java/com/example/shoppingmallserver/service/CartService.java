@@ -1,8 +1,7 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
 import com.example.shoppingmallserver.dto.PurchaseCartItemDto;
-import com.example.shoppingmallserver.entity.cart.CartItem;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,17 +10,12 @@ import java.util.List;
 public interface CartService {
 
     // 장바구니 상품 조회
-    List<CartItem> getCartItemsByUserId(Long userId);
+    Cart getCartItemList(Long userId);
 
     // 장바구니 상품 추가
-    CartItem addCartItem(Long userId, Long itemId);
+    Cart addCartItem(Long userId, Long itemId);
 
     // 장바구니 상품 삭제
     void deleteCartItem(Long userId, Long itemId);
-
-    // 장바구니 상품 구매
-    List<CartItem> purchaseCartItem(Long userId, PurchaseCartItemDto purchaseCartItemDto);
-
-    // ==========================관리자===========================
 
 }

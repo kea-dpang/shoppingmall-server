@@ -11,7 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReadCartItemInfoDto {
-    private String image;
-    private String name;
-    private int price;
+    private Long itemId; // 상품 ID
+    private String image; // 상품 이미지 URL
+    private String name; // 상품 이름
+    private int price; // 상품 정가
+    private int discountRate; // 할인율
+    private int discountPrice; // 상품 판매가
 }
