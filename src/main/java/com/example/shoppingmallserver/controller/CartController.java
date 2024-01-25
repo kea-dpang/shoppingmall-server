@@ -1,11 +1,10 @@
 package com.example.shoppingmallserver.controller;
 
+import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.AddCartItemDto;
-import com.example.shoppingmallserver.dto.AddCartItemInfoDto;
 import com.example.shoppingmallserver.dto.ReadCartItemDto;
 import com.example.shoppingmallserver.dto.ReadCartItemInfoDto;
-import com.example.shoppingmallserver.entity.cart.CartItem;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.CartService;
 
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -24,7 +22,7 @@ import java.util.stream.IntStream;
  * 장바구니 상품 조회, 추가, 삭제 기능을 제공합니다.
  */
 @RestController
-@RequestMapping("/api/carts")
+@RequestMapping("/api/carts/{userId}")
 @RequiredArgsConstructor
 public class CartController {
 
@@ -37,23 +35,21 @@ public class CartController {
      * @param userId 사용자 ID
      * @return 성공 응답 메시지와 함께 장바구니 내용을 담은 DTO를 반환
      */
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<SuccessResponse<List<ReadCartItemDto>>> getCartItemList(@PathVariable Long userId) {
 
-        // 사용자 ID를 기반으로 장바구니 아이템 목록을 조회
-        List<CartItem> cartItems = cartService.getCartItemsByUserId(userId);
+        // 사용자 ID를 기반으로 장바구니 조회
+        Cart cart = cartService.getCartItemList(userId);
 
-        // 조회한 장바구니 아이템 목록에서 아이템 ID만을 추출하여 새로운 리스트를 생성
-        List<Long> itemIds = cartItems.stream()
-                .map(CartItem::getItemId)
-                .toList();
+        // 장바구니를 기반으로 장바구니 아이템 목록을 조회
+        List<Long> itemIds = cart.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadCartItemInfoDto> itemInfos = itemServiceCartItemClient.getCartItemInfo(itemIds);
 
         // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
         List<ReadCartItemDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadCartItemDto(cartItems.get(i), itemInfos.get(i)))
+                .mapToObj(i -> new ReadCartItemDto(cart, itemInfos.get(i)))
                 .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
@@ -70,23 +66,17 @@ public class CartController {
      *
      * @param userId 사용자 ID
      * @param itemId 추가할 아이템의 ID
-     * @return 성공 응답 메시지와 함께 추가된 아이템 정보를 담은 DTO를 반환
+     * @return 성공 메시지와 함께 HTTP 상태 코드 201(CREATED)를 반환
      */
-    @PostMapping("/{userId}/{itemId}")
-    public ResponseEntity<SuccessResponse<AddCartItemDto>> addCartItem(@PathVariable Long userId, Long itemId) {
+    @PostMapping("/{itemId}")
+    public ResponseEntity<BaseResponse> addCartItem(@PathVariable Long userId, @PathVariable Long itemId) {
 
-        // 아이템 서버에서 받아온 아이템 정보 반환
-        AddCartItemInfoDto itemInfo = itemServiceCartItemClient.getItemInfo(itemId);
-
-        // 아이템 정보와 사용자 아이디를 통해 카트 아이템 불러오기
-        CartItem cartItem = cartService.addCartItem(userId, itemId);
-
-        // 아이템 정보와 수량으로 데이터 구성
-        AddCartItemDto data = new AddCartItemDto(cartItem, itemInfo);
+        // 아이템 정보와 사용자 아이디를 통해 카트에 아이템 추가
+        cartService.addCartItem(userId, itemId);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "장바구니에 상품을 성공적으로 추가하였습니다.", data),
+                    new BaseResponse(HttpStatus.CREATED.value(), "장바구니에 상품을 성공적으로 추가하였습니다."),
                 HttpStatus.OK
         );
     }
@@ -95,21 +85,19 @@ public class CartController {
      * 사용자의 장바구니에서 아이템에 해당하는 장바구니 항목을 삭제합니다.
      *
      * @param userId 사용자 ID
-     * @param cartItemId 삭제할 장바구니 항목 ID
-     * @return 성공 메시지와 함께 HTTP 상태 코드 200(OK)를 반환
+     * @param itemId 삭제할 장바구니 항목 ID
+     * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
-    @DeleteMapping("/{userId}/{cartItemId}")
-    public ResponseEntity<SuccessResponse<Void>> deleteCartItem(@PathVariable Long userId, @PathVariable Long cartItemId) {
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<BaseResponse> deleteCartItem(@PathVariable Long userId, @PathVariable Long itemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 삭제
-        cartService.deleteCartItem(userId, cartItemId);
+        cartService.deleteCartItem(userId, itemId);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "장바구니에서 상품을 성공적으로 삭제하였습니다.", null),
-                HttpStatus.OK
+                new BaseResponse(HttpStatus.NO_CONTENT.value(), "장바구니에서 상품을 성공적으로 삭제하였습니다."),
+                HttpStatus.NO_CONTENT
         );
     }
-
-
 }

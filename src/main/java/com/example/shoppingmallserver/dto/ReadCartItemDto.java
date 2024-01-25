@@ -1,9 +1,7 @@
 package com.example.shoppingmallserver.dto;
 
-import com.example.shoppingmallserver.entity.cart.CartItem;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import lombok.Getter;
-
-import java.util.List;
 
 /**
  * 장바구니 상품을 조회하기 위한 DTO 클래스입니다.
@@ -11,23 +9,27 @@ import java.util.List;
  */
 @Getter
 public class ReadCartItemDto {
-    private final Long cartItemId;
+    private final Long itemId; // 상품 ID
     private final String image; // 상품 이미지 URL
     private final String name; // 상품 이름
     private final int price; // 상품 가격
+    private final int discountRate; // 이벤트 할인률
+    private final int discountPrice; // 이벤트 할인가
     private final int quantity; // 수량
 
     /**
      * ReadCartItemInfoDto와 수량을 이용하여 ReadCartItemDto를 생성합니다.
      *
-     * @param cartItem 장바구니 상품 정보를 담은 엔티티
+     * @param cart 장바구니 상품 정보를 담은 엔티티
      * @param readCartItemInfoDto 장바구니 상품 정보를 담은 DTO
      */
-    public ReadCartItemDto(CartItem cartItem, ReadCartItemInfoDto readCartItemInfoDto) {
-        this.cartItemId = cartItem.getCartItemId();
+    public ReadCartItemDto(Cart cart, ReadCartItemInfoDto readCartItemInfoDto) {
+        this.itemId = readCartItemInfoDto.getItemId();
         this.image = readCartItemInfoDto.getImage();
         this.name = readCartItemInfoDto.getName();
         this.price = readCartItemInfoDto.getPrice();
-        this.quantity = cartItem.getQuantity();
+        this.discountRate = readCartItemInfoDto.getDiscountRate();
+        this.discountPrice = readCartItemInfoDto.getDiscountPrice();
+        this.quantity = cart.getQuantity();
     }
 }
