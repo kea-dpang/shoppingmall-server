@@ -2,7 +2,6 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.cart.CartItem;
 import com.example.shoppingmallserver.entity.wishlist_item.WishlistItem;
 import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.WishlistService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
