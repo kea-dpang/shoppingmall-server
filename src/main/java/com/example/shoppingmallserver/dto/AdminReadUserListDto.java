@@ -1,6 +1,8 @@
 package com.example.shoppingmallserver.dto;
 
+import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
@@ -8,6 +10,7 @@ import java.time.LocalDate;
  * 관리자가 조회하는 사용자 정보 목록을 담는 DTO 클래스입니다.
  * 사용자 ID, 사원 번호, 이름, 이메일, 입사일을 포함합니다.
  */
+@Getter
 public class AdminReadUserListDto {
     private final Long userId;
     private final Long employeeNumber;
@@ -24,7 +27,7 @@ public class AdminReadUserListDto {
         this.userId = userDetail.getUser().getUserId();
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
-        this.email = userDetail.getEmail();
+        this.email = userDetail.getUser().getEmail();
         this.joinDate = userDetail.getJoinDate();
     }
 }
