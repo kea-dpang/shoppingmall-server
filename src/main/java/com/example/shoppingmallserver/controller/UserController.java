@@ -8,6 +8,9 @@ import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.service.UserService;
 
 import com.example.shoppingmallserver.utils.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import java.util.List;
  * 사용자 정보를 관리하는 Controller 클래스입니다.
  * 사용자 정보 조회, 생성, 관리자에 의한 조회 및 삭제 기능을 제공합니다.
  */
+@Tag(name = "User", description = "User 서비스 API")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -39,7 +43,8 @@ public class UserController {
      * @return HTTP 상태 코드 201 (CREATED)
      */
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse> register(@RequestBody RegisterRequestDto requestDto) {
+    @Operation(summary = "사용자 등록", description = "사용자를 생성합니다.")
+    public ResponseEntity<BaseResponse> register(@RequestBody @Parameter(description = "사용자 등록 정보") RegisterRequestDto requestDto) {
 
         // 사용자 등록
         userService.register(
@@ -48,7 +53,8 @@ public class UserController {
                 requestDto.getRole(),
                 requestDto.getEmployeeNumber(),
                 requestDto.getName(),
-                requestDto.getJoinDate());
+                requestDto.getJoinDate()
+        );
 
         // 성공 응답 반환
         return new ResponseEntity<>(
@@ -64,7 +70,8 @@ public class UserController {
      * @return 사용자의 식별자를 담은 ResponseEntity. 사용자 인증에 실패했을 경우 400 상태 코드를 반환
      */
     @PostMapping("/login")
-    public ResponseEntity<SuccessResponse<Token>> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
+    @Operation(summary = "사용자 로그인", description = "사용자의 정보로 로그인합니다.")
+    public ResponseEntity<SuccessResponse<Token>> login(@RequestBody @Parameter(description = "사용자 로그인 정보") LoginRequestDto loginRequestDto) throws Exception {
 
         // 사용자가 입력한 이메일과 비밀번호를 이용해 UsernamePasswordAuthenticationToken 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -93,7 +100,8 @@ public class UserController {
      * @return 인증 코드 전송 성공 메시지와 HTTP 상태 코드를 포함하는 응답 엔티티
      */
     @PostMapping("/send-verification-code")
-    public ResponseEntity<BaseResponse> sendVerificationCode(@RequestParam String email) {
+    @Operation(summary = "이메일로 인증코드 전송", description = "사용자의 이메일 정보로 인증코드를 전송합니다.")
+    public ResponseEntity<BaseResponse> sendVerificationCode(@RequestParam @Parameter(description = "사용자 이메일") String email) {
 
         // 이메일로 인증코드 전송
         userService.requestPasswordReset(email);
@@ -115,7 +123,8 @@ public class UserController {
      * @return 성공 응답을 포함한 ResponseEntity. 비밀번호 재설정이 성공하면 200 상태 코드와 성공 메시지를 반환
      */
     @PostMapping("/reset-password")
-    public ResponseEntity<BaseResponse> resetPassword(@RequestParam String email, @RequestParam String code, @RequestParam String newPassword) {
+    @Operation(summary = "사용자 비밀번호 재설정", description = "인증코드가 제대로 되었을 때, 사용자가 입력한 비밀번호로 재설정합니다.")
+    public ResponseEntity<BaseResponse> resetPassword(@RequestParam @Parameter(description = "사용자 이메일", example = "qwer1234@naver.com") String email, @RequestParam @Parameter(description = "사용자에게 보낸 인증 코드", example = "1234") String code, @RequestParam @Parameter(description = "사용자가 입력한 새 비밀번호", example = "qwer1234!@#$") String newPassword) {
 
         // 이메일, 인증 코드, 새로운 비밀번호로 비밀번호 재설정
         userService.verifyCodeAndResetPassword(email, code, newPassword);
@@ -136,7 +145,8 @@ public class UserController {
      * @return 성공 응답을 포함한 ResponseEntity. 비밀번호 변경이 성공하면 200 상태 코드와 성공 메시지를 반환
      */
     @PostMapping("/change-password")
-    public ResponseEntity<BaseResponse> changePassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    @Operation(summary = "사용자 비밀번호 변경", description = "사용자가 입력한 비밀번호로 변경합니다.")
+    public ResponseEntity<BaseResponse> changePassword(@RequestParam @Parameter(description = "사용자 이메일", example = "qwer1234@naver.com") String email, @RequestParam @Parameter(description = "사용자의 이전 비밀번호", example = "qwer1234!@#$") String oldPassword, @RequestParam @Parameter(description = "사용자가 입력한 새 비밀번호", example = " newqwer1234!@#$") String newPassword) {
 
         // 이메일, 기존 비밀번호, 새로운 비밀번호로 비밀번호 변경
         userService.changePassword(email, oldPassword, newPassword);
@@ -156,7 +166,8 @@ public class UserController {
      * @return 성공 응답을 포함한 ResponseEntity. 계정 삭제가 성공하면 200 상태 코드와 성공 메시지를 반환
      */
     @DeleteMapping("/delete-account/{id}")
-    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable Long id) {
+    @Operation(summary = "사용자 탈퇴", description = "사용자가 탈퇴를 했을 때, 정보를 삭제합니다.")
+    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id) {
 
         // 사용자 ID로 계정 삭제
         userService.deleteAccount(id);
@@ -175,7 +186,8 @@ public class UserController {
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<SuccessResponse<ReadUserDto>> getUser(@PathVariable Long userId) {
+    @Operation(summary = "사용자 상세 정보 조회", description = "사용자의 상세 정보를 조회합니다.")
+    public ResponseEntity<SuccessResponse<ReadUserDto>> getUser(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getUserById(userId);
@@ -199,10 +211,11 @@ public class UserController {
      * @return 성공 응답 메시지와 204코드 반환
      */
     @PatchMapping("/{userId}/address")
-    public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable Long userId, @RequestBody String zipCode, String address, String detailAddress) {
+    @Operation(summary = "사용자 주소 변경", description = "사용자가 입력한 주소로 변경합니다.")
+    public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Parameter(description = "사용자가 입력한 주소") AddressDto addressDto) {
 
         // 받은 정보를 통해 주소지 변경
-        userService.updateAddress(userId, zipCode, address, detailAddress);
+        userService.updateAddress(userId, addressDto.getZipCode(), addressDto.getAddress(), addressDto.getDetailAddress());
 
         //  변경 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 주소가 성공적으로 변경되었음을 알림
@@ -221,7 +234,8 @@ public class UserController {
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
     @GetMapping("/admin/{userId}")
-    public ResponseEntity<SuccessResponse<AdminReadUserDto>> adminGetUser(@PathVariable Long userId) {
+    @Operation(summary = "(관리자) 사용자 상세 정보 조회", description = "관리자가 사용자 상세 정보를 조회합니다.")
+    public ResponseEntity<SuccessResponse<AdminReadUserDto>> adminGetUser(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getAdminUserById(userId);
@@ -246,7 +260,8 @@ public class UserController {
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보 목록을 담은 DTO 목록을 반환
      */
     @GetMapping("/admin/find")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) String keyword) {
+    @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
         List<UserDetail> userDetails = userService.getUserList(keyword);
@@ -270,7 +285,8 @@ public class UserController {
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
     @DeleteMapping("/admin/delete")
-    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody List<Long> userIds) {
+    @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
+    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") List<Long> userIds) {
 
         // 요청 본문으로 받은 사용자 ID 목록을 이용하여 해당 사용자들을 삭제
         userService.deleteUser(userIds);
