@@ -7,6 +7,9 @@ import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.WishlistService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import java.util.stream.IntStream;
  * 위시리스트 상품 정보를 관리하는 Controller 클래스입니다.
  * 위시리스트 상품 조회, 추가, 삭제 기능을 제공합니다.
  */
+@Tag(name = "Wishlist", description = "Wishlist 서비스 API")
 @RestController
 @RequestMapping("/api/wishlists/{userId}")
 @RequiredArgsConstructor
@@ -35,7 +39,8 @@ public class WishlistController {
      * @return 성공 응답 메시지와 함께 위시리스트 내용을 담은 DTO를 반환
      */
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<ReadItemsInfoDto>>> getWishlistItemList(@PathVariable Long userId) {
+    @Operation(summary = "위시리스트 목록 조회", description = "사용자가 위시리스트 목록을 조회합니다.")
+    public ResponseEntity<SuccessResponse<List<ReadItemsInfoDto>>> getWishlistItemList(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 위시리스트 조회
         Wishlist wishlist = wishlistService.getWishlistItemList(userId);
@@ -67,7 +72,8 @@ public class WishlistController {
      * @return 성공 메시지와 함께 HTTP 상태 코드 201(CREATED)를 반환
      */
     @PostMapping("/{itemId}")
-    public ResponseEntity<BaseResponse> addWishlistItem(@PathVariable Long userId, Long itemId) {
+    @Operation(summary = "위시리스트 상품 추가", description = "사용자가 위시리스트 상품을 추가합니다.")
+    public ResponseEntity<BaseResponse> addWishlistItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "1") Long itemId) {
 
         // 상품 정보와 사용자 아이디를 통해 위시리스트에 상품 추가
         wishlistService.addWishlistItem(userId, itemId);
@@ -87,14 +93,15 @@ public class WishlistController {
      * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<SuccessResponse<Void>> deleteWishlistItem(@PathVariable Long userId, @PathVariable Long itemId) {
+    @Operation(summary = "위시리스트 상품 삭제", description = "사용자가 위시리스트 상품을 삭제합니다.")
+    public ResponseEntity<BaseResponse> deleteWishlistItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "1") Long itemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 삭제
         wishlistService.deleteWishlistItem(userId, itemId);
 
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.NO_CONTENT.value(), "위시리스트에서 상품을 성공적으로 삭제하였습니다.", null),
+                new BaseResponse(HttpStatus.NO_CONTENT.value(), "위시리스트에서 상품을 성공적으로 삭제하였습니다."),
                 HttpStatus.NO_CONTENT
         );
     }
