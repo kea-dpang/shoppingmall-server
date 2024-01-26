@@ -26,7 +26,7 @@ import javax.crypto.SecretKey;
 @Component
 public class JwtTokenProvider {
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     // 1시간을 밀리초로 표현한 값입니다.
     private static final long ONE_HOUR = 1000L * 60 * 60;

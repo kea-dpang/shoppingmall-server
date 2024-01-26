@@ -2,14 +2,13 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.ReadCartItemDto;
-import com.example.shoppingmallserver.dto.ReadCartItemInfoDto;
+import com.example.shoppingmallserver.dto.ReadItemsDto;
+import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.CartService;
 
-import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,16 @@ import java.util.stream.IntStream;
  */
 @RestController
 @RequestMapping("/api/carts/{userId}")
-@RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
     private final ItemServiceCartItemClient itemServiceCartItemClient;
+
+    @Autowired
+    public CartController(CartService cartService, ItemServiceCartItemClient itemServiceCartItemClient) {
+        this.cartService = cartService;
+        this.itemServiceCartItemClient = itemServiceCartItemClient;
+    }
 
     /**
      * 사용자의 장바구니의 목록을 조회합니다.
@@ -36,7 +40,7 @@ public class CartController {
      * @return 성공 응답 메시지와 함께 장바구니 내용을 담은 DTO를 반환
      */
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<ReadCartItemDto>>> getCartItemList(@PathVariable Long userId) {
+    public ResponseEntity<SuccessResponse<List<ReadItemsDto>>> getCartItemList(@PathVariable Long userId) {
 
         // 사용자 ID를 기반으로 장바구니 조회
         Cart cart = cartService.getCartItemList(userId);
@@ -45,11 +49,11 @@ public class CartController {
         List<Long> itemIds = cart.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadCartItemInfoDto> itemInfos = itemServiceCartItemClient.getCartItemInfo(itemIds);
+        List<ReadItemsInfoDto> itemInfos = itemServiceCartItemClient.getItemsInfo(itemIds);
 
         // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
-        List<ReadCartItemDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadCartItemDto(cart, itemInfos.get(i)))
+        List<ReadItemsDto> data = IntStream.range(0, itemInfos.size())
+                .mapToObj(i -> new ReadItemsDto(cart, itemInfos.get(i)))
                 .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환

@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "wishlist_item")
+@Table(name = "wishlist")
 public class Wishlist extends BaseEntity {
 
     // 위시리스트 ID (PK) = 유저 아이디와 동일하다고 보면 됨
@@ -31,6 +31,10 @@ public class Wishlist extends BaseEntity {
     @ElementCollection
     @Column(name = "item_id")
     private List<Long> itemIds;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Wishlist(Long itemId) {

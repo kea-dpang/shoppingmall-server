@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -243,7 +245,7 @@ public class UserServiceImpl implements UserService {
     @Override
     // 사용자 주소 변경
     public void updateAddress(Long userId, String zipCode, String address, String detailAddress) {
-        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        UserDetail userDetail = userDetailRepository.findByUser_UserId(userId);
         userDetail.changeAddress(userDetail);
     }
 

@@ -5,7 +5,9 @@ import com.example.shoppingmallserver.repository.UserRepository;
 import com.example.shoppingmallserver.repository.WishlistRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService {
 
@@ -20,7 +22,7 @@ public class WishlistServiceImpl implements WishlistService {
      */
     @Override
     public Wishlist getWishlistItemList(Long userId) {
-        return wishlistRepository.findWishlistByUserId(userId);
+        return wishlistRepository.findWishlistByUser_UserId(userId);
     }
 
     /**
@@ -40,7 +42,7 @@ public class WishlistServiceImpl implements WishlistService {
         // 저장
         wishlistRepository.save(wishlist);
 
-        wishlistRepository.findWishlistByUserId(userId);
+        wishlistRepository.findWishlistByUser_UserId(userId);
     }
 
     /**
@@ -51,6 +53,6 @@ public class WishlistServiceImpl implements WishlistService {
      */
     @Override
     public void deleteWishlistItem(Long userId, Long itemId) {
-        wishlistRepository.deleteByUserIdAndWishlistItemId(userId, itemId);
+        wishlistRepository.deleteByUser_UserIdAndItemId(userId, itemId);
     }
 }

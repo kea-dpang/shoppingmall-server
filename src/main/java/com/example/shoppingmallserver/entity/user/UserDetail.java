@@ -23,8 +23,12 @@ import java.time.LocalDate;
 @Table(name = "user_detail")
 public class UserDetail extends BaseEntity {
 
-    // 사용자 ID (FK)
+    // PK
     @Id
+    @Column(name = "user_detail")
+    private Long userDetail;
+
+    // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "user_id")
     private User user;

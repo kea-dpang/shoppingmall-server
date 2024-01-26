@@ -8,7 +8,7 @@ import lombok.Getter;
  * 상품 이미지 URL, 상품 이름, 상품 가격, 수량 정보를 포함합니다.
  */
 @Getter
-public class ReadCartItemDto {
+public class ReadItemsDto {
     private final Long itemId; // 상품 ID
     private final String image; // 상품 이미지 URL
     private final String name; // 상품 이름
@@ -21,15 +21,15 @@ public class ReadCartItemDto {
      * ReadCartItemInfoDto와 수량을 이용하여 ReadCartItemDto를 생성합니다.
      *
      * @param cart 장바구니 상품 정보를 담은 엔티티
-     * @param readCartItemInfoDto 장바구니 상품 정보를 담은 DTO
+     * @param readItemsInfoDto 장바구니 상품 정보를 담은 DTO
      */
-    public ReadCartItemDto(Cart cart, ReadCartItemInfoDto readCartItemInfoDto) {
-        this.itemId = readCartItemInfoDto.getItemId();
-        this.image = readCartItemInfoDto.getImage();
-        this.name = readCartItemInfoDto.getName();
-        this.price = readCartItemInfoDto.getPrice();
-        this.discountRate = readCartItemInfoDto.getDiscountRate();
-        this.discountPrice = readCartItemInfoDto.getDiscountPrice();
+    public ReadItemsDto(Cart cart, ReadItemsInfoDto readItemsInfoDto) {
+        this.itemId = readItemsInfoDto.getItemId();
+        this.image = readItemsInfoDto.getImage();
+        this.name = readItemsInfoDto.getName();
+        this.price = readItemsInfoDto.getPrice();
+        this.discountRate = readItemsInfoDto.getDiscountRate();
+        this.discountPrice = readItemsInfoDto.getDiscountPrice();
         this.quantity = cart.getQuantity();
     }
 }

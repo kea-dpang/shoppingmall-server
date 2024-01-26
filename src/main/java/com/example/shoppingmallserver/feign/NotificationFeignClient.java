@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * Notification 서비스와의 통신을 위한 Feign 클라이언트 인터페이스입니다.
  * 이 인터페이스를 통해 Notification 서비스의 이메일 알림 API를 호출할 수 있습니다.
  */
-@FeignClient(name = "notificationService", url = "${services.notification.url}")
+@FeignClient(name = "notificationService")
 public interface NotificationFeignClient {
 
     /**
