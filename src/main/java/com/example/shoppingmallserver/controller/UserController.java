@@ -180,11 +180,8 @@ public class UserController {
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getUserById(userId);
 
-        // 사용자 정보를 이용하여 사용자 생성
-        User user = userDetail.getUser();
-
         // 조회한 사용자 정보를 이용하여 응답 DTO를 생성
-        ReadUserDto data = new ReadUserDto(user, userDetail);
+        ReadUserDto data = new ReadUserDto(userDetail);
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보가 성공적으로 조회되었음을 알림

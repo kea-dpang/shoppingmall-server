@@ -22,13 +22,6 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      */
     List<UserDetail> findByNameContaining(String keyword);
 
-    /**
-     * 이메일을 기반으로 사용자의 상세 정보를 조회합니다.
-     *
-     * @param email 조회할 사용자의 이메일
-     * @return 주어진 이메일을 가진 사용자의 상세 정보를 포함하는 Optional 객체
-     */
-    Optional<UserDetail> findByEmail(String email);
 
-    UserDetail findByUserId(Long userId);
+    UserDetail findByUser_UserId(Long userId);
 }

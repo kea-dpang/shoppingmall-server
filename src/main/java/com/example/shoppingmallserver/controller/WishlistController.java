@@ -35,7 +35,7 @@ public class WishlistController {
      * @return 성공 응답 메시지와 함께 위시리스트 내용을 담은 DTO를 반환
      */
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<ReadWishlistItemDto>>> getWishlistItemList(@PathVariable Long userId) {
+    public ResponseEntity<SuccessResponse<List<ReadItemsInfoDto>>> getWishlistItemList(@PathVariable Long userId) {
 
         // 사용자 ID를 기반으로 위시리스트 조회
         Wishlist wishlist = wishlistService.getWishlistItemList(userId);
@@ -44,11 +44,11 @@ public class WishlistController {
         List<Long> itemIds = wishlist.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadWishlistItemDto> itemInfos = itemServiceCartItemClient.getWishlistItemsInfo(itemIds);
+        List<ReadItemsInfoDto> itemInfos = itemServiceCartItemClient.getItemsInfo(itemIds);
 
         // 아이템 정보를 이용하여 응답 DTO를 생성
-        List<ReadWishlistItemDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadWishlistItemDto(itemInfos.get(i)))
+        List<ReadItemsInfoDto> data = IntStream.range(0, itemInfos.size())
+                .mapToObj(i -> new ReadItemsInfoDto(itemInfos.get(i)))
                 .toList();
 
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환

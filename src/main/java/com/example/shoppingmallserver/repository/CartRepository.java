@@ -3,6 +3,8 @@ package com.example.shoppingmallserver.repository;
 import com.example.shoppingmallserver.entity.cart.Cart;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -18,8 +20,11 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
    * @param userId 조회할 사용자의 ID
    * @return 조회된 장바구니
    */
-  Cart findCartByUserId(Long userId);
+  Cart findCartByUser_UserId(Long userId);
 
-  void deleteByUserIdAndItemId(Long userId, Long itemId);
+  // JPQL을 사용하여 특정 userId와 itemId에 해당하는 Cart를 삭제하는 쿼리
+  @Modifying
+  @Query("DELETE FROM Cart c WHERE c.user.userId = :userId AND :itemId MEMBER OF c.itemIds")
+  void deleteByUser_UserIdAndItemId(Long userId, Long itemId);
   
 }

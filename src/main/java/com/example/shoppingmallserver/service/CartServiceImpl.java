@@ -6,7 +6,9 @@ import com.example.shoppingmallserver.repository.CartRepository;
 import com.example.shoppingmallserver.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
@@ -15,7 +17,7 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품 조회
     @Override
     public Cart getCartItemList(Long userId) {
-        return cartRepository.findCartByUserId(userId);
+        return cartRepository.findCartByUser_UserId(userId);
     }
 
     // 장바구니 상품 추가
@@ -31,12 +33,12 @@ public class CartServiceImpl implements CartService {
         // 저장
         cartRepository.save(cart);
 
-        cartRepository.findCartByUserId(userId);
+        cartRepository.findCartByUser_UserId(userId);
     }
 
     // 장바구니 상품 삭제
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
-        cartRepository.deleteByUserIdAndItemId(userId, itemId);
+        cartRepository.deleteByUser_UserIdAndItemId(userId, itemId);
     }
 }

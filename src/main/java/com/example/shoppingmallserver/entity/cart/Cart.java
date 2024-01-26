@@ -2,6 +2,7 @@ package com.example.shoppingmallserver.entity.cart;
 
 import com.example.shoppingmallserver.base.BaseEntity;
 
+import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
 
 import lombok.Builder;
@@ -18,7 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "cart_item")
+@Table(name = "cart")
 public class Cart extends BaseEntity {
 
     // 장바구니 ID (PK) = 유저 아이디와 동일하다고 보면 됨
@@ -34,6 +35,10 @@ public class Cart extends BaseEntity {
 
     // 수량
     private int quantity;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     /**
      * 사용자, 상품 ID, 수량, 추가된 날짜를 이용하여 새로운 CartItem 엔티티를 생성합니다.
