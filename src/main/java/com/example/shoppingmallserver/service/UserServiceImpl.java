@@ -13,6 +13,7 @@ import com.example.shoppingmallserver.repository.*;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,16 +28,12 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
-
-    /**
-     * 로깅을 위한 Logger 객체입니다. AuthServiceImpl 클래스의 정보를 이용해 LoggerFactory에서 Logger 인스턴스를 가져옵니다.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     /**
      * 알림과 관련된 기능을 제공하는 Feign 클라이언트입니다.
@@ -58,13 +55,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String email, String password, Role role, Long employeeNumber, String name, LocalDate joinDate) {
 
-        // 이메일로 사용자 찾기
-        Optional<User> user = userRepository.findByEmail(email);
-
-        // 사용자가 이미 존재하는 경우 예외 발생
-        if (user.isPresent()) {
-            throw new EmailAlreadyExistsException(email);
-        }
+        // 이메일로 사용자를 찾고 사용자가 이미 존재하는 경우 예외 발생
+        // 변수 인라인화
+        userRepository.findByEmail(email)
+                .ifPresent(user -> {
+                    throw new EmailAlreadyExistsException(email);
+                });
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(password);
@@ -99,10 +95,10 @@ public class UserServiceImpl implements UserService {
     /**
      * 사용자의 이메일과 비밀번호를 검증하고, 검증이 성공하면 사용자의 고유 식별자를 반환합니다.
      *
-     * @param email 검증할 사용자의 이메일
+     * @param email    검증할 사용자의 이메일
      * @param password 검증할 사용자의 비밀번호
      * @return 사용자의 고유 식별자
-     * @throws UserNotFoundException 이메일에 해당하는 사용자를 찾을 수 없을 때 발생
+     * @throws UserNotFoundException    이메일에 해당하는 사용자를 찾을 수 없을 때 발생
      * @throws InvalidPasswordException 입력받은 비밀번호와 저장된 비밀번호가 일치하지 않을 때 발생
      */
     @Override
@@ -153,9 +149,8 @@ public class UserServiceImpl implements UserService {
                 // 인증번호 저장
                 verificationCodeRepository.save(verificationCodeEntity);
             }
-        }
-        catch (Exception e) {
-            logger.error("비밀번호 재설정 인증번호 전송 중 알 수 없는 예외 발생", e);
+        } catch (Exception e) {
+            log.error("비밀번호 재설정 인증번호 전송 중 알 수 없는 예외 발생", e);
             throw e;
         }
     }
@@ -164,12 +159,12 @@ public class UserServiceImpl implements UserService {
      * 사용자가 제공한 인증 코드를 검증하고, 검증이 성공하면 사용자의 비밀번호를 새로운 비밀번호로 재설정합니다.
      * 인증 코드가 일치하지 않거나, 인증 코드가 존재하지 않는 경우 예외가 발생합니다.
      *
-     * @param email 사용자의 이메일
-     * @param code 사용자가 제공한 인증 코드
+     * @param email       사용자의 이메일
+     * @param code        사용자가 제공한 인증 코드
      * @param newPassword 사용자의 새로운 비밀번호
-     * @throws UserNotFoundException 이메일에 해당하는 사용자가 존재하지 않는 경우
+     * @throws UserNotFoundException             이메일에 해당하는 사용자가 존재하지 않는 경우
      * @throws VerificationCodeNotFoundException 제공된 이메일에 해당하는 인증 코드가 존재하지 않는 경우
-     * @throws InvalidVerificationCodeException 제공된 인증 코드가 저장된 인증 코드와 일치하지 않는 경우
+     * @throws InvalidVerificationCodeException  제공된 인증 코드가 저장된 인증 코드와 일치하지 않는 경우
      */
     @Override
     public void verifyCodeAndResetPassword(String email, String code, String newPassword) {
@@ -198,31 +193,31 @@ public class UserServiceImpl implements UserService {
     /**
      * 사용자의 비밀번호를 변경하는 메소드
      *
-     * @param email 사용자의 이메일 주소
+     * @param email       사용자의 이메일 주소
      * @param oldPassword 사용자의 현재 비밀번호
      * @param newPassword 사용자가 설정하려는 새 비밀번호
-     * @throws UserNotFoundException 해당 이메일을 가진 사용자를 찾을 수 없을 경우 발생
+     * @throws UserNotFoundException    해당 이메일을 가진 사용자를 찾을 수 없을 경우 발생
      * @throws InvalidPasswordException 기존 비밀번호가 일치하지 않을 경우 발생
      */
     @Override
     public void changePassword(String email, String oldPassword, String newPassword) {
-        logger.info("비밀번호 변경 요청. 이메일: " + email);
+        log.info("비밀번호 변경 요청. 이메일: " + email);
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            logger.error("해당 이메일을 가진 사용자를 찾을 수 없음: " + email);
+            log.error("해당 이메일을 가진 사용자를 찾을 수 없음: " + email);
             return new UserNotFoundException(email);
         });
 
         // 기존 비밀번호 확인
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            logger.error("비밀번호 불일치: " + email);
+            log.error("비밀번호 불일치: " + email);
             throw new InvalidPasswordException(email);
         }
 
         // 새 비밀번호 암호화 후 저장
         user.updatePassword(passwordEncoder.encode(newPassword));
 
-        logger.info("비밀번호 변경 완료: " + email);
+        log.info("비밀번호 변경 완료: " + email);
     }
 
     @Override
@@ -261,10 +256,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDetail> getUserList(String keyword) {
 
-        if(keyword != null) {
+        if (keyword != null) {
             return userDetailRepository.findByNameContaining(keyword);
-        }
-        else {
+        } else {
             return userDetailRepository.findAll();
         }
     }
@@ -274,7 +268,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(List<Long> userIds) {
 
         // 사용자 목록 별로 조회
-        for(Long userId : userIds) {
+        for (Long userId : userIds) {
             // 사용자 조회, 없을 경우 예외 발생
             User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
