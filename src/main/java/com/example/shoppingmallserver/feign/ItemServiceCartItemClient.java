@@ -1,6 +1,5 @@
 package com.example.shoppingmallserver.feign;
 
-import com.example.shoppingmallserver.dto.ReadItemsDto;
 import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 // 자바독 주석 나중에 추가
-@FeignClient(name = "item-service")
+@FeignClient(name = "item-server")
 public interface ItemServiceCartItemClient {
 
     // 장바구니 목록 조회를 위한 정보 요청
