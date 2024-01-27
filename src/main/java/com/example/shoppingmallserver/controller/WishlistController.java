@@ -3,8 +3,7 @@ package com.example.shoppingmallserver.controller;
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.wishlist.Wishlist;
-import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
+import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.service.WishlistService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * 위시리스트 상품 정보를 관리하는 Controller 클래스입니다.
@@ -30,7 +28,7 @@ import java.util.stream.IntStream;
 public class WishlistController {
 
     private final WishlistService wishlistService;
-    private final ItemServiceCartItemClient itemServiceCartItemClient;
+    private final ItemFeignClient itemFeignClient;
 
     /**
      * 사용자의 위시리스트의 목록을 조회합니다.

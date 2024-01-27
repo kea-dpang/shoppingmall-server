@@ -9,7 +9,7 @@ import java.util.List;
 
 // 자바독 주석 나중에 추가
 @FeignClient(name = "item-server")
-public interface ItemServiceCartItemClient {
+public interface ItemFeignClient {
 
     // 장바구니 목록 조회를 위한 정보 요청
     // 위시리스트 상품 조회를 위한 정보 요청

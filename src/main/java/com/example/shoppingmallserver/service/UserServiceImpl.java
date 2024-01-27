@@ -6,6 +6,7 @@ import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.entity.user.UserStatus;
 import com.example.shoppingmallserver.exception.*;
+import com.example.shoppingmallserver.feign.MileageFeignClient;
 import com.example.shoppingmallserver.feign.NotificationFeignClient;
 import com.example.shoppingmallserver.redis.entity.VerificationCode;
 import com.example.shoppingmallserver.redis.repository.VerificationCodeRepository;
@@ -52,6 +53,12 @@ public class UserServiceImpl implements UserService {
      */
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 마일리지와 관련된 기능을 제공하는 Feign 클라이언트입니다.
+     * 이 클라이언트를 사용해 마일리지 서비스와 통신할 수 있습니다.
+     */
+    private final MileageFeignClient mileageFeignClient;
+
     @Override
     public void register(String email, String password, Role role, Long employeeNumber, String name, LocalDate joinDate) {
 
@@ -86,6 +93,9 @@ public class UserServiceImpl implements UserService {
                 .address("") // 기본값, 실제로는 사용자로부터 주소를 받아야 합니다.
                 .detailAddress("") // 기본값, 실제로는 사용자로부터 상세 주소를 받아야 합니다.
                 .build();
+
+        // 사용자의 마일리지 생성
+        mileageFeignClient.createMileage(newUserDetail.getUser().getId());
 
         // 사용자 및 정보 저장
         userRepository.save(newUser);
@@ -228,6 +238,9 @@ public class UserServiceImpl implements UserService {
 
         // 계정 삭제
         userRepository.delete(user);
+
+        // 마일리지 삭제
+        mileageFeignClient.deleteMileage(userId);
     }
 
     // 사용자 정보 조회

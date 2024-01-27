@@ -92,7 +92,6 @@ public class UserController {
         );
     }
 
-
     /**
      * 사용자가 요청한 이메일로 인증 코드를 전송합니다.
      *
@@ -101,7 +100,7 @@ public class UserController {
      */
     @PostMapping("/send-verification-code")
     @Operation(summary = "이메일로 인증코드 전송", description = "사용자의 이메일 정보로 인증코드를 전송합니다.")
-    public ResponseEntity<BaseResponse> sendVerificationCode(@RequestParam @Parameter(description = "사용자 이메일") String email) {
+    public ResponseEntity<BaseResponse> sendVerificationCode(@RequestBody @Parameter(description = "사용자 이메일") String email) {
 
         // 이메일로 인증코드 전송
         userService.requestPasswordReset(email);

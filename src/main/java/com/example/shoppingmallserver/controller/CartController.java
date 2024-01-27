@@ -3,9 +3,6 @@ package com.example.shoppingmallserver.controller;
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.ReadItemsDto;
-import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
-import com.example.shoppingmallserver.entity.cart.Cart;
-import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
 import com.example.shoppingmallserver.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * 장바구니 상품 정보를 관리하는 Controller 클래스입니다.

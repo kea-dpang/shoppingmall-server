@@ -2,22 +2,20 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
-import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
-import com.example.shoppingmallserver.repository.UserRepository;
+import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.repository.WishlistRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService {
 
     private final WishlistRepository wishlistRepository;
-    private final ItemServiceCartItemClient itemServiceCartItemClient;
+    private final ItemFeignClient itemFeignClient;
 
     /**
      * 사용자의 위시리스트 목록을 조회합니다.
@@ -35,7 +33,7 @@ public class WishlistServiceImpl implements WishlistService {
         List<Long> itemIds = wishlist.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadItemsInfoDto> itemInfos = itemServiceCartItemClient.getItemsInfo(itemIds);
+        List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(itemIds);
 
         // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
         // + 변수 인라인화
