@@ -59,8 +59,6 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 저장
         wishlistRepository.save(wishlist);
-
-        wishlistRepository.findWishlistByUserId(userId);
     }
 
     /**

@@ -52,8 +52,6 @@ public class CartServiceImpl implements CartService {
 
         // 저장
         cartRepository.save(cart);
-
-        cartRepository.findCartByUserId(userId);
     }
 
     // 장바구니 상품 삭제
