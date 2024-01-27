@@ -4,20 +4,31 @@ import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * 사용자의 상세 정보를 나타내는 엔티티 클래스입니다.
+ * 사용자, 사원 번호, 입사 날짜, 이름, 이메일, 전화번호, 우편번호, 주소, 상세주소 정보를 포함합니다.
+ */
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user_detail")
 public class UserDetail extends BaseEntity {
 
-    // 사용자 ID (FK)
+    // PK
     @Id
+    @Column(name = "user_detail_id")
+    private Long id;
+
+    // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "user_id")
     private User user;
@@ -32,9 +43,6 @@ public class UserDetail extends BaseEntity {
 
     // 이름
     private String name;
-
-    // 이메일
-    private String email;
 
     // 전화번호
     @Column(name = "phone_number")
@@ -51,18 +59,9 @@ public class UserDetail extends BaseEntity {
     @Column(name = "detail_address")
     private String detailAddress;
 
-    @Builder
-    public UserDetail(User user, Long employeeNumber, String email, String name, LocalDate joinDate,
-                      String phoneNumber, String zipCode, String address, String detailAddress) {
-        this.user = user;
-        this.employeeNumber = employeeNumber;
-        this.email = email;
-        this.name = name;
-        this.joinDate = joinDate;
-        this.phoneNumber = phoneNumber;
-        this.zipCode = zipCode;
-        this.address = address;
-        this.detailAddress = detailAddress;
+    public void changeAddress(UserDetail userDetail) {
+        this.zipCode = userDetail.getZipCode();
+        this.address = userDetail.getAddress();
+        this.detailAddress = userDetail.getDetailAddress();
     }
-
 }
