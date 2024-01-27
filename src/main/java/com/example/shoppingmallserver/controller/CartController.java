@@ -47,24 +47,10 @@ public class CartController {
     @Operation(summary = "장바구니 목록 조회", description = "사용자가 장바구니 목록을 조회합니다.")
     public ResponseEntity<SuccessResponse<List<ReadItemsDto>>> getCartItemList(@PathVariable @Parameter(description = "상품 ID(PK)", example = "1") Long userId) {
 
-        // 사용자 ID를 기반으로 장바구니 조회
-        Cart cart = cartService.getCartItemList(userId);
-
-        // 장바구니를 기반으로 장바구니 아이템 목록을 조회
-        List<Long> itemIds = cart.getItemIds();
-
-        // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadItemsInfoDto> itemInfos = itemServiceCartItemClient.getItemsInfo(itemIds);
-
-        // 아이템 정보와 장바구니 아이템의 수량을 이용하여 응답 DTO를 생성
-        List<ReadItemsDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadItemsDto(cart, itemInfos.get(i)))
-                .toList();
-
-        // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
+        // CartService에서 만든 메서드로 DTO를 받아온걸 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", data),
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", cartService.getCartItemList(userId)),
                 HttpStatus.OK
         );
     }
