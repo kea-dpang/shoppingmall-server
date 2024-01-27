@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
 
         // 사용자 및 정보 저장
         userRepository.save(newUser);
-        userDetailRepository.save(newUserDetail);
     }
 
     /**
