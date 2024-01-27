@@ -23,5 +23,5 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     List<UserDetail> findByNameContaining(String keyword);
 
 
-    UserDetail findByUser_UserId(Long userId);
+    UserDetail findByUserId(Long userId);
 }

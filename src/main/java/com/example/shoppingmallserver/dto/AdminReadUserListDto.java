@@ -1,6 +1,5 @@
 package com.example.shoppingmallserver.dto;
 
-import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import lombok.Getter;
 
@@ -24,7 +23,7 @@ public class AdminReadUserListDto {
      * @param userDetail 관리자가 조회하는 사용자의 상세 정보를 담은 엔티티
      */
     public AdminReadUserListDto(UserDetail userDetail) {
-        this.userId = userDetail.getUser().getUserId();
+        this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
         this.email = userDetail.getUser().getEmail();

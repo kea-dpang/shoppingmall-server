@@ -25,8 +25,8 @@ public class UserDetail extends BaseEntity {
 
     // PK
     @Id
-    @Column(name = "user_detail")
-    private Long userDetail;
+    @Column(name = "user_detail_id")
+    private Long id;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)

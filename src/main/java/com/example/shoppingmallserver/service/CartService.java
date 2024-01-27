@@ -1,13 +1,16 @@
 package com.example.shoppingmallserver.service;
 
+import com.example.shoppingmallserver.dto.ReadItemsDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface CartService {
 
     // 장바구니 상품 조회
-    Cart getCartItemList(Long userId);
+    List<ReadItemsDto> getCartItemList(Long userId);
 
     // 장바구니 상품 추가
     void addCartItem(Long userId, Long itemId);

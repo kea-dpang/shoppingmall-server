@@ -1,18 +1,21 @@
 package com.example.shoppingmallserver.service;
 
+import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
-import com.example.shoppingmallserver.repository.UserRepository;
+import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.repository.WishlistRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService {
 
-    private final UserRepository userRepository;
     private final WishlistRepository wishlistRepository;
+    private final ItemFeignClient itemFeignClient;
 
     /**
      * 사용자의 위시리스트 목록을 조회합니다.
@@ -21,8 +24,21 @@ public class WishlistServiceImpl implements WishlistService {
      * @return 사용자의 위시리스트. 위시리스트에 포함된 아이템들이 반환됩니다.
      */
     @Override
-    public Wishlist getWishlistItemList(Long userId) {
-        return wishlistRepository.findWishlistByUser_UserId(userId);
+    public List<ReadItemsInfoDto> getWishlistItemList(Long userId) {
+
+        // 사용자 ID를 기반으로 위시리스트 조회
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
+
+        // 장바구니를 기반으로 위시리스트 아이템 목록을 조회
+        List<Long> itemIds = wishlist.getItemIds();
+
+        // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
+        List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(itemIds);
+
+        // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
+        // + 변수 인라인화
+        return itemInfos.stream().map(ReadItemsInfoDto::new)
+                .toList();
     }
 
     /**
@@ -41,8 +57,6 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 저장
         wishlistRepository.save(wishlist);
-
-        wishlistRepository.findWishlistByUser_UserId(userId);
     }
 
     /**
@@ -53,6 +67,6 @@ public class WishlistServiceImpl implements WishlistService {
      */
     @Override
     public void deleteWishlistItem(Long userId, Long itemId) {
-        wishlistRepository.deleteByUser_UserIdAndItemId(userId, itemId);
+        wishlistRepository.deleteByUserIdAndItemId(userId, itemId);
     }
 }

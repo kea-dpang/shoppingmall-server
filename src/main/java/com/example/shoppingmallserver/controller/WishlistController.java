@@ -3,8 +3,7 @@ package com.example.shoppingmallserver.controller;
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.entity.wishlist.Wishlist;
-import com.example.shoppingmallserver.feign.ItemServiceCartItemClient;
+import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.service.WishlistService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * 위시리스트 상품 정보를 관리하는 Controller 클래스입니다.
@@ -30,7 +28,7 @@ import java.util.stream.IntStream;
 public class WishlistController {
 
     private final WishlistService wishlistService;
-    private final ItemServiceCartItemClient itemServiceCartItemClient;
+    private final ItemFeignClient itemFeignClient;
 
     /**
      * 사용자의 위시리스트의 목록을 조회합니다.
@@ -42,24 +40,10 @@ public class WishlistController {
     @Operation(summary = "위시리스트 목록 조회", description = "사용자가 위시리스트 목록을 조회합니다.")
     public ResponseEntity<SuccessResponse<List<ReadItemsInfoDto>>> getWishlistItemList(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
-        // 사용자 ID를 기반으로 위시리스트 조회
-        Wishlist wishlist = wishlistService.getWishlistItemList(userId);
-
-        // 장바구니를 기반으로 위시리스트 아이템 목록을 조회
-        List<Long> itemIds = wishlist.getItemIds();
-
-        // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadItemsInfoDto> itemInfos = itemServiceCartItemClient.getItemsInfo(itemIds);
-
-        // 아이템 정보를 이용하여 응답 DTO를 생성
-        List<ReadItemsInfoDto> data = IntStream.range(0, itemInfos.size())
-                .mapToObj(i -> new ReadItemsInfoDto(itemInfos.get(i)))
-                .toList();
-
         // 생성한 응답 DTO를 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", data),
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 장바구니 정보를 성공적으로 조회하였습니다.", wishlistService.getWishlistItemList(userId)),
                 HttpStatus.OK
         );
     }

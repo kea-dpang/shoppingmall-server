@@ -20,11 +20,11 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
    * @param userId 조회할 사용자의 ID
    * @return 조회된 장바구니
    */
-  Cart findCartByUser_UserId(Long userId);
+  Cart findCartByUserId(Long userId);
 
   // JPQL을 사용하여 특정 userId와 itemId에 해당하는 Cart를 삭제하는 쿼리
   @Modifying
-  @Query("DELETE FROM Cart c WHERE c.user.userId = :userId AND :itemId MEMBER OF c.itemIds")
-  void deleteByUser_UserIdAndItemId(Long userId, Long itemId);
+  @Query("DELETE FROM Cart c WHERE c.user.id = :userId AND :itemId MEMBER OF c.itemIds")
+  void deleteByUserIdAndItemId(Long userId, Long itemId);
   
 }
