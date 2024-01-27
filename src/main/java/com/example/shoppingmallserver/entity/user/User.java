@@ -52,16 +52,16 @@ public class User extends BaseEntity {
     private LocalDate updatedAt;
 
     // User와 연관되어 있는 엔티티 연쇄 삭제하도록 연관관계 설정
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_detail_id")
     private UserDetail userDetail;
 
     // 유저와 카트는 일대일 관계 (유저가 삭제되면 연쇄적으로 삭제)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
     // 유저와 위시리스트는 일대다 관계 (유저가 삭제되면 연쇄적으로 삭제)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wishlist wishlist;
 
     public void updatePassword(String newPassword) {
