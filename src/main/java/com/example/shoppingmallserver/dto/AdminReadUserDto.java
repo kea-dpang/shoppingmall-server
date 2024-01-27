@@ -25,7 +25,7 @@ public class AdminReadUserDto {
      * @param userDetail 관리자가 조회하는 사용자의 상세 정보를 담은 엔티티
      */
     public AdminReadUserDto (User user, UserDetail userDetail) {
-        this.userId = userDetail.getUser().getUserId();
+        this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
         this.email = user.getEmail();

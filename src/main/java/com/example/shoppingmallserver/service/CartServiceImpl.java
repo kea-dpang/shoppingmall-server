@@ -26,7 +26,7 @@ public class CartServiceImpl implements CartService {
     public List<ReadItemsDto> getCartItemList(Long userId) {
 
         // 사용자 ID 기반으로 장바구니 조회
-        Cart cart = cartRepository.findCartByUser_UserId(userId);
+        Cart cart = cartRepository.findCartByUserId(userId);
 
         // 장바구니 기반으로 아이템 목록 조회한것을 반환
         List<Long> itemIds = cart.getItemIds();
@@ -53,12 +53,12 @@ public class CartServiceImpl implements CartService {
         // 저장
         cartRepository.save(cart);
 
-        cartRepository.findCartByUser_UserId(userId);
+        cartRepository.findCartByUserId(userId);
     }
 
     // 장바구니 상품 삭제
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
-        cartRepository.deleteByUser_UserIdAndItemId(userId, itemId);
+        cartRepository.deleteByUserIdAndItemId(userId, itemId);
     }
 }

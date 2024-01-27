@@ -29,7 +29,7 @@ public class WishlistServiceImpl implements WishlistService {
     public List<ReadItemsInfoDto> getWishlistItemList(Long userId) {
 
         // 사용자 ID를 기반으로 위시리스트 조회
-        Wishlist wishlist = wishlistRepository.findWishlistByUser_UserId(userId);
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
 
         // 장바구니를 기반으로 위시리스트 아이템 목록을 조회
         List<Long> itemIds = wishlist.getItemIds();
@@ -60,7 +60,7 @@ public class WishlistServiceImpl implements WishlistService {
         // 저장
         wishlistRepository.save(wishlist);
 
-        wishlistRepository.findWishlistByUser_UserId(userId);
+        wishlistRepository.findWishlistByUserId(userId);
     }
 
     /**
@@ -71,6 +71,6 @@ public class WishlistServiceImpl implements WishlistService {
      */
     @Override
     public void deleteWishlistItem(Long userId, Long itemId) {
-        wishlistRepository.deleteByUser_UserIdAndItemId(userId, itemId);
+        wishlistRepository.deleteByUserIdAndItemId(userId, itemId);
     }
 }

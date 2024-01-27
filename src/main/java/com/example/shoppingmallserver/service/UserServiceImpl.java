@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 비밀번호가 일치하면 사용자의 고유 식별자 반환
-        return user.getUserId();
+        return user.getId();
     }
 
     /**
@@ -245,7 +245,7 @@ public class UserServiceImpl implements UserService {
     @Override
     // 사용자 주소 변경
     public void updateAddress(Long userId, String zipCode, String address, String detailAddress) {
-        UserDetail userDetail = userDetailRepository.findByUser_UserId(userId);
+        UserDetail userDetail = userDetailRepository.findByUserId(userId);
         userDetail.changeAddress(userDetail);
     }
 
