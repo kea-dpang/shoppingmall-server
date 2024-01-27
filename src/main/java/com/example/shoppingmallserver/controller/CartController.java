@@ -29,12 +29,10 @@ import java.util.stream.IntStream;
 public class CartController {
 
     private final CartService cartService;
-    private final ItemServiceCartItemClient itemServiceCartItemClient;
 
     @Autowired
-    public CartController(CartService cartService, ItemServiceCartItemClient itemServiceCartItemClient) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
-        this.itemServiceCartItemClient = itemServiceCartItemClient;
     }
 
     /**
