@@ -41,7 +41,7 @@ public class Cart extends BaseEntity {
     private User user;
 
     /**
-     * 사용자, 상품 ID, 수량, 추가된 날짜를 이용하여 새로운 CartItem 엔티티를 생성합니다.
+     * 상품 ID, 수량을 이용하여 새로운 Cart 엔티티를 생성합니다.
      *
      * @param itemId 장바구니에 추가된 상품의 ID
      * @param quantity 장바구니 항목의 수량
