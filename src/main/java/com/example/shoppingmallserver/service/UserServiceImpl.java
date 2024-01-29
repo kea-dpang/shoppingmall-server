@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService {
 
         // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         // 계정 삭제
         userRepository.delete(user);
