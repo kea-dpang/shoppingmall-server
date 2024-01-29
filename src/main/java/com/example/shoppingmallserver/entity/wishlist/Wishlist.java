@@ -35,6 +35,11 @@ public class Wishlist extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    /**
+     * 상품 ID를 이용하여 새로운 Wishlist 엔티티를 생성합니다.
+     *
+     * @param itemId 장바구니에 추가된 상품의 ID
+     */
     @Builder
     public Wishlist(Long itemId) {
         itemIds = new ArrayList<>();
