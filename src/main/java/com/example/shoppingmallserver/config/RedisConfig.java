@@ -23,10 +23,10 @@ public class RedisConfig {
     private String host;
 
     @Value("${spring.data.redis.port}")
-    private int port;
+    private String port;
 
-    // @Value("${spring.data.redis.password}")
-    // private String password;
+    @Value("${spring.data.redis.password}")
+    private String password;
 
     /**
      * Redis 연결 팩토리를 생성합니다.
@@ -37,10 +37,10 @@ public class RedisConfig {
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
-        redisStandaloneConfiguration.setPort(port);
-        // if (password != null) {
-        //     redisStandaloneConfiguration.setPassword(password);
-        // }
+        redisStandaloneConfiguration.setPort(Integer.parseInt(port));
+        if (password != null) {
+            redisStandaloneConfiguration.setPassword(password);
+        }
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
