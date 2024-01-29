@@ -15,7 +15,4 @@ public class BaseEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedTime;
-
-    @ColumnDefault("false")
-    private Boolean deleted;
 }
