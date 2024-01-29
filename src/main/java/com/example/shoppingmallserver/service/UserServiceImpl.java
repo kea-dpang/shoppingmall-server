@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         // 사용자의 마일리지 생성
-        mileageFeignClient.createMileage(newUserDetail.getUser().getId());
+        // mileageFeignClient.createMileage(newUserDetail.getUser().getId());
 
         // 사용자 및 정보 저장
         userRepository.save(newUser);
@@ -240,7 +240,7 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
 
         // 마일리지 삭제
-        mileageFeignClient.deleteMileage(userId);
+        //mileageFeignClient.deleteMileage(userId);
     }
 
     // 사용자 정보 조회
