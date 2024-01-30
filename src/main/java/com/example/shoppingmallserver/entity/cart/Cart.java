@@ -56,4 +56,13 @@ public class Cart extends BaseEntity {
             items.put(itemId, currentQuantity + 1);
         }
     }
+
+    /**
+     * 장바구니 엔티티에 상품 삭제하는 메서드
+     *
+     * @param itemId 장바구니에 추가된 상품의 ID
+     */
+    public void removeItem(Long itemId) {
+        items.remove(itemId);
+    }
 }

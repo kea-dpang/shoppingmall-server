@@ -60,9 +60,21 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
-    // 장바구니 상품 삭제
+    /**
+     * 사용자의 장바구니에서 상품을 삭제합니다.
+     *
+     * @param userId 아이템을 삭제할 장바구니를 가진 사용자의 ID
+     * @param itemId 삭제할 아이템의 ID
+     */
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
-        cartRepository.deleteByUserIdAndItemId(userId, itemId);
+        // 사용자 ID로 장바구니를 조회합니다.
+        Cart cart = cartRepository.findCartByUserId(userId);
+
+        // 장바구니에서 아이템을 삭제합니다.
+        cart.removeItem(itemId);
+
+        // 변경사항을 저장합니다.
+        cartRepository.save(cart);
     }
 }

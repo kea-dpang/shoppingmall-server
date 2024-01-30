@@ -52,4 +52,13 @@ public class Wishlist extends BaseEntity {
         // 위시리스트에 동일한 상품이 이미 있는 경우, 아무런 동작 수행 X
     }
 
+    /**
+     * 위시리스트 엔티티에 상품 삭제하는 메서드
+     *
+     * @param itemId 장바구니에 추가된 상품의 ID
+     */
+    public void removeItem(Long itemId) {
+        itemIds.remove(itemId);
+    }
+
 }
