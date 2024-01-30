@@ -21,13 +21,11 @@ import java.time.LocalDate;
 @Table(name = "user_detail")
 public class UserDetail extends BaseEntity {
 
-    // PK
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_detail_id", nullable = false)
+    @Column(name = "user_id")
     private Long id;
 
-    // 사용자 ID (FK)
+    @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
