@@ -5,12 +5,14 @@ import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 장바구니 항목을 나타내는 엔티티 클래스입니다.
@@ -20,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "cart")
+@Builder
+@AllArgsConstructor
 public class Cart extends BaseEntity {
 
     // 장바구니 ID (PK) = 유저 아이디와 동일하다고 보면 됨
@@ -28,28 +32,28 @@ public class Cart extends BaseEntity {
     @Column(name = "cart_id")
     private Long id;
 
-    // 상품 ID
+    // 상품 ID -> 상품에 맞는 수량을 넣도록 변경
     @ElementCollection
-    @Column(name = "item_id")
-    private List<Long> itemIds;
-
-    // 수량
-    private int quantity;
+    private Map<Long, Integer> items; // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     /**
-     * 상품 ID, 수량을 이용하여 새로운 Cart 엔티티를 생성합니다.
+     * 장바구니 엔티티에 상품 추가하는 메서드
      *
      * @param itemId 장바구니에 추가된 상품의 ID
-     * @param quantity 장바구니 항목의 수량
      */
-    @Builder
-    public Cart(Long itemId, int quantity) {
-        itemIds = new ArrayList<>();
-        itemIds.add(itemId);
-        this.quantity += quantity;
+    public void addItem(Long itemId) {
+        // 이미 장바구니에 동일한 상품이 있는지 확인
+        Integer currentQuantity = items.get(itemId);
+        if (currentQuantity == null) {
+            // 장바구니에 동일한 상품이 없는 경우, 새로운 아이템을 추가
+            items.put(itemId, 1);
+        } else {
+            // 장바구니에 동일한 상품이 있는 경우, 수량을 증가
+            items.put(itemId, currentQuantity + 1);
+        }
     }
 }

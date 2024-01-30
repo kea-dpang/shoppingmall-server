@@ -50,10 +50,15 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public void addWishlistItem(Long userId, Long itemId) {
 
-        // Wishlist에 상품 추가(빌더)
-        Wishlist wishlist = Wishlist.builder()
-                .itemId(itemId)
-                .build();
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
+
+        if(wishlist == null) { // 위시리스트가 없을 경우
+            // 새 위시리스트 생성(빌더)
+            wishlist = Wishlist.builder().build();
+        }
+
+        // 위시리스트에 아이템 추가
+        wishlist.addItem(itemId);
 
         // 저장
         wishlistRepository.save(wishlist);

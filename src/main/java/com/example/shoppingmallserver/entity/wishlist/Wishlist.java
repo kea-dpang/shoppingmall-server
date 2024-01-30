@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.entity.wishlist;
 import com.example.shoppingmallserver.base.BaseEntity;
 import com.example.shoppingmallserver.entity.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "wishlist")
+@Builder
+@AllArgsConstructor
 public class Wishlist extends BaseEntity {
 
     // 위시리스트 ID (PK) = 유저 아이디와 동일하다고 보면 됨
@@ -36,14 +39,17 @@ public class Wishlist extends BaseEntity {
     private User user;
 
     /**
-     * 상품 ID를 이용하여 새로운 Wishlist 엔티티를 생성합니다.
+     * 위시리스트 엔티티에 상품 추가하는 메서드
      *
-     * @param itemId 장바구니에 추가된 상품의 ID
+     * @param itemId 위시리스트에 추가된 상품의 ID
      */
-    @Builder
-    public Wishlist(Long itemId) {
-        itemIds = new ArrayList<>();
-        itemIds.add(itemId);
+    public void addItem(Long itemId) {
+        // 이미 위시리스트에 동일한 상품이 있는지 확인
+        if (!itemIds.contains(itemId)) {
+            // 위시리스트에 동일한 상품이 없는 경우, 새로운 아이템을 추가
+            itemIds.add(itemId);
+        }
+        // 위시리스트에 동일한 상품이 이미 있는 경우, 아무런 동작 수행 X
     }
 
 }
