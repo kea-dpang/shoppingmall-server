@@ -297,4 +297,19 @@ public class UserController {
                 HttpStatus.OK
         );
     }
+
+    //==============================Feign요청=======================
+
+    // 상품 서비스에서의 리뷰 이름 요청
+    @GetMapping("/reviewer/{reviewerId}")
+    public ResponseEntity<SuccessResponse<String>> getReviewer(@PathVariable Long reviewerId) {
+
+        // 사용자의 이름 전달
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "리뷰어의 이름 전달 성공", userService.getReviewer(reviewerId).getUserDetail().getName()),
+                HttpStatus.OK
+        );
+    }
+
+
 }
