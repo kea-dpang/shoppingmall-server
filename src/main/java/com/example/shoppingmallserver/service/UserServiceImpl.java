@@ -2,7 +2,6 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
-import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.MileageFeignClient;
@@ -12,10 +11,7 @@ import com.example.shoppingmallserver.redis.repository.VerificationCodeRepositor
 import com.example.shoppingmallserver.repository.*;
 
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
