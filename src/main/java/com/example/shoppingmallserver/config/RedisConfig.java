@@ -25,9 +25,6 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    // @Value("${spring.data.redis.password}")
-    // private String password;
-
     /**
      * Redis 연결 팩토리를 생성합니다.
      *

@@ -25,20 +25,21 @@ public class UserDetail extends BaseEntity {
 
     // PK
     @Id
-    @Column(name = "user_detail_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_detail_id", nullable = false)
     private Long id;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     // 사원번호
-    @Column(name = "employee_number")
+    @Column(name = "employee_number", nullable = false)
     private Long employeeNumber;
 
     // 입사 날짜
-    @Column(name = "join_date")
+    @Column(name = "join_date", nullable = false)
     private LocalDate joinDate;
 
     // 이름
@@ -60,8 +61,8 @@ public class UserDetail extends BaseEntity {
     private String detailAddress;
 
     public void changeAddress(UserDetail userDetail) {
-        this.zipCode = userDetail.getZipCode();
-        this.address = userDetail.getAddress();
-        this.detailAddress = userDetail.getDetailAddress();
+        zipCode = userDetail.getZipCode();
+        address = userDetail.getAddress();
+        detailAddress = userDetail.getDetailAddress();
     }
 }

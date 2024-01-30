@@ -25,12 +25,12 @@ public class RegisterRequestDto {
     private final LocalDate joinDate;
 
 
-    public RegisterRequestDto(User user, UserDetail userDetail) {
-        email = user.getEmail();
-        password = user.getPassword();
-        role = user.getRole();
-        employeeNumber = userDetail.getEmployeeNumber();
-        name = userDetail.getName();
-        joinDate = userDetail.getJoinDate();
+    public RegisterRequestDto(String email, String password, Role role, Long employeeNumber, String name, LocalDate joinDate) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.employeeNumber = employeeNumber;
+        this.name = name;
+        this.joinDate = joinDate;
     }
 }

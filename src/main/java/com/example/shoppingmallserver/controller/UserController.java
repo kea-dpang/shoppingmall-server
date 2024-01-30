@@ -166,10 +166,10 @@ public class UserController {
      */
     @DeleteMapping("/delete-account/{id}")
     @Operation(summary = "사용자 탈퇴", description = "사용자가 탈퇴를 했을 때, 정보를 삭제합니다.")
-    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id) {
+    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id, @RequestBody WithdrawalDto withdrawalDto) {
 
         // 사용자 ID로 계정 삭제
-        userService.deleteAccount(id);
+        userService.deleteAccount(id, withdrawalDto.getOldPassword(), withdrawalDto.getReason(), withdrawalDto.getMessage());
 
         // 성공 응답 생성 및 반환
         return new ResponseEntity<>(

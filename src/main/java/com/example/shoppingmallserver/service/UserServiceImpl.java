@@ -2,9 +2,8 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
-import com.example.shoppingmallserver.entity.user.User;
-import com.example.shoppingmallserver.entity.user.UserDetail;
-import com.example.shoppingmallserver.entity.user.UserStatus;
+import com.example.shoppingmallserver.entity.cart.Cart;
+import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.MileageFeignClient;
 import com.example.shoppingmallserver.feign.NotificationFeignClient;
@@ -35,6 +34,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
+    private final CartRepository cartRepository;
+    private final WishlistRepository wishlistRepository;
 
     /**
      * 알림과 관련된 기능을 제공하는 Feign 클라이언트입니다.
@@ -78,8 +79,6 @@ public class UserServiceImpl implements UserService {
                 .password(encodedPassword)
                 .role(role)
                 .status(UserStatus.USER)
-                .createdAt(LocalDate.now())
-                .updatedAt(LocalDate.now())
                 .build();
 
         // 새로운 유저의 정보 생성
@@ -97,8 +96,11 @@ public class UserServiceImpl implements UserService {
         // 사용자의 마일리지 생성
         mileageFeignClient.createMileage(newUserDetail.getUser().getId());
 
-        // 사용자 및 정보 저장
+        // 사용자 및 정보 저장 후 생성
         userRepository.save(newUser);
+        userDetailRepository.save(newUserDetail);
+
+        log.info("사용자 생성 완료. 사용자 ID: {}", newUser.getId());
     }
 
     /**
@@ -120,6 +122,8 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidPasswordException(email);
         }
+
+        log.info("사용자 비밀번호 검증 완료. 사용자 ID: {}", user.getId());
 
         // 비밀번호가 일치하면 사용자의 고유 식별자 반환
         return user.getId();
@@ -157,6 +161,8 @@ public class UserServiceImpl implements UserService {
 
                 // 인증번호 저장
                 verificationCodeRepository.save(verificationCodeEntity);
+
+                log.info("인증번호 요청 성공. 사용자 이메일: {}", email);
             }
         } catch (Exception e) {
             log.error("비밀번호 재설정 인증번호 전송 중 알 수 없는 예외 발생", e);
@@ -196,6 +202,8 @@ public class UserServiceImpl implements UserService {
 
         // 인증코드 삭제
         verificationCodeRepository.delete(storedCode);
+
+        log.info("비밀번호 변경 성공. 사용자 ID: {}", user.getId());
     }
 
 
@@ -226,26 +234,46 @@ public class UserServiceImpl implements UserService {
         // 새 비밀번호 암호화 후 저장
         user.updatePassword(passwordEncoder.encode(newPassword));
 
-        log.info("비밀번호 변경 완료: " + email);
+        log.info("비밀번호 변경 성공. 사용자 ID: {}", user.getId());
     }
 
     @Override
-    public void deleteAccount(Long userId) {
+    public void deleteAccount(Long userId, String oldPassword, WithdrawalReason reason, String message) {
 
         // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
-        // 계정 삭제
+        // 기존 비밀번호 확인
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            log.error("비밀번호 불일치: " + user.getEmail());
+            throw new InvalidPasswordException(user.getEmail());
+        }
+
+        // 유저 탈퇴 사유 생성
+        UserWithdrawal userWithdrawal = UserWithdrawal
+                .builder()
+                .reason(reason)
+                .message(message)
+                .withdrawalDate(LocalDate.now())
+                .build();
+
+        // 계정, 정보, 장바구니, 위시리스트 삭제
         userRepository.delete(user);
+        userDetailRepository.delete(user.getUserDetail());
+        cartRepository.delete(cartRepository.findCartByUserId(userId));
+        wishlistRepository.delete(wishlistRepository.findWishlistByUserId(userId));
 
         // 마일리지 삭제
         mileageFeignClient.deleteMileage(userId);
+
+        log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
     }
 
     // 사용자 정보 조회
     @Override
     public UserDetail getUserById(Long userId) {
+        log.info("사용자 정보 조회 성공. 사용자 아이디: {}", userId);
         return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
@@ -253,6 +281,7 @@ public class UserServiceImpl implements UserService {
     // 사용자 주소 변경
     public void updateAddress(Long userId, String zipCode, String address, String detailAddress) {
         UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        log.info("사용자 주소 변경 성공. 사용자 ID: {}", userDetail.getUser().getId());
         userDetail.changeAddress(userDetail);
     }
 
@@ -261,6 +290,7 @@ public class UserServiceImpl implements UserService {
     // 관리자의 사용자 정보 조회
     @Override
     public UserDetail getAdminUserById(Long userId) {
+        log.info("사용자 정보 조회 성공. 사용자 아이디: {}", userId);
         return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
@@ -269,8 +299,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDetail> getUserList(String keyword) {
 
         if (keyword != null) {
+            log.info("사용자 정보 조회 성공.");
             return userDetailRepository.findByNameContaining(keyword);
         } else {
+            log.info("사용자 정보 조회 성공.");
             return userDetailRepository.findAll();
         }
     }
@@ -286,6 +318,8 @@ public class UserServiceImpl implements UserService {
 
             // 사용자 삭제
             userRepository.delete(user);
+
+            log.info("사용자 정보 삭제 성공. 삭제된 사용자 아이디: {}", userIds);
         }
     }
 }
