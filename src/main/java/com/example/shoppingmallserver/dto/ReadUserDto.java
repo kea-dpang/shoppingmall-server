@@ -16,7 +16,7 @@ public class ReadUserDto {
     private final Long employeeNumber;
     private final String name;
     private final String email;
-    private final LocalDate join_date;
+    private final LocalDate joinDate;
 
     /**
      * UserDetail 엔티티를 이용하여 ReadUserDto를 생성합니다.
@@ -28,6 +28,6 @@ public class ReadUserDto {
         this.employeeNumber = userDetail.getEmployeeNumber();
         this.name = userDetail.getName();
         this.email = userDetail.getUser().getEmail();
-        this.join_date = userDetail.getJoinDate();
+        this.joinDate = userDetail.getJoinDate();
     }
 }
