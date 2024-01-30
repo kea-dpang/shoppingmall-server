@@ -28,17 +28,20 @@ public class User extends BaseEntity {
     // 사용자 ID (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String email;  // 이메일
 
+    @Column(nullable = false)
     private String password;  // 비밀번호
 
     @Enumerated(EnumType.STRING)
     private Role role;  // 권한*/
 
     // 활성화 상태 (회원, 탈퇴)
+    @Column(nullable = false)
     private UserStatus status;
 
     // 유저와 유저상세는 일대일 관계

@@ -26,7 +26,7 @@ public class UserDetail extends BaseEntity {
     // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_detail_id")
+    @Column(name = "user_detail_id", nullable = false)
     private Long id;
 
     // 사용자 ID (FK)
@@ -35,11 +35,11 @@ public class UserDetail extends BaseEntity {
     private User user;
 
     // 사원번호
-    @Column(name = "employee_number")
+    @Column(name = "employee_number", nullable = false)
     private Long employeeNumber;
 
     // 입사 날짜
-    @Column(name = "join_date")
+    @Column(name = "join_date", nullable = false)
     private LocalDate joinDate;
 
     // 이름

@@ -2,6 +2,7 @@ package com.example.shoppingmallserver.base;
 
 import jakarta.persistence.MappedSuperclass;
 
+import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
