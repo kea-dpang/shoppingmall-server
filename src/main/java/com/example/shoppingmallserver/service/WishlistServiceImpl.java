@@ -6,10 +6,12 @@ import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.repository.WishlistRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService {
@@ -34,6 +36,8 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(itemIds);
+
+        log.info("위시리스트 상품 조회 성공. 사용자 아이디: {}", userId);
 
         // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
         // + 변수 인라인화
@@ -63,6 +67,8 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 저장
         wishlistRepository.save(wishlist);
+
+        log.info("위시리스트 상품 추가 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 
     /**
@@ -81,5 +87,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 변경사항을 저장합니다.
         wishlistRepository.save(wishlist);
+
+        log.info("위시리스트 상품 삭제 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 }

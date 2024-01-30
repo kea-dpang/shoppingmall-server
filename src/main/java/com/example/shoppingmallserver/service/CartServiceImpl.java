@@ -8,12 +8,14 @@ import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -33,6 +35,8 @@ public class CartServiceImpl implements CartService {
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet()));
+
+        log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
         // 장바구니에 있는 각 아이템의 정보와 수량을 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
@@ -58,6 +62,8 @@ public class CartServiceImpl implements CartService {
 
         // 저장
         cartRepository.save(cart);
+
+        log.info("장바구니 상품 추가 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 
     /**
@@ -76,5 +82,7 @@ public class CartServiceImpl implements CartService {
 
         // 변경사항을 저장합니다.
         cartRepository.save(cart);
+
+        log.info("장바구니 상품 삭제 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 }

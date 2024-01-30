@@ -99,6 +99,8 @@ public class UserServiceImpl implements UserService {
         // 사용자 및 정보 저장 후 생성
         userRepository.save(newUser);
         userDetailRepository.save(newUserDetail);
+
+        log.info("사용자 생성 완료. 사용자 ID: {}", newUser.getId());
     }
 
     /**
@@ -120,6 +122,8 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidPasswordException(email);
         }
+
+        log.info("사용자 비밀번호 검증 완료. 사용자 ID: {}", user.getId());
 
         // 비밀번호가 일치하면 사용자의 고유 식별자 반환
         return user.getId();
@@ -157,6 +161,8 @@ public class UserServiceImpl implements UserService {
 
                 // 인증번호 저장
                 verificationCodeRepository.save(verificationCodeEntity);
+
+                log.info("인증번호 요청 성공. 사용자 이메일: {}", email);
             }
         } catch (Exception e) {
             log.error("비밀번호 재설정 인증번호 전송 중 알 수 없는 예외 발생", e);
@@ -196,6 +202,8 @@ public class UserServiceImpl implements UserService {
 
         // 인증코드 삭제
         verificationCodeRepository.delete(storedCode);
+
+        log.info("비밀번호 변경 성공. 사용자 ID: {}", user.getId());
     }
 
 
@@ -226,7 +234,7 @@ public class UserServiceImpl implements UserService {
         // 새 비밀번호 암호화 후 저장
         user.updatePassword(passwordEncoder.encode(newPassword));
 
-        log.info("비밀번호 변경 완료: " + email);
+        log.info("비밀번호 변경 성공. 사용자 ID: {}", user.getId());
     }
 
     @Override
@@ -243,7 +251,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 유저 탈퇴 사유 생성
-        UserWithdrawal
+        UserWithdrawal userWithdrawal = UserWithdrawal
                 .builder()
                 .reason(reason)
                 .message(message)
@@ -258,11 +266,14 @@ public class UserServiceImpl implements UserService {
 
         // 마일리지 삭제
         mileageFeignClient.deleteMileage(userId);
+
+        log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
     }
 
     // 사용자 정보 조회
     @Override
     public UserDetail getUserById(Long userId) {
+        log.info("사용자 정보 조회 성공. 사용자 아이디: {}", userId);
         return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
@@ -270,6 +281,7 @@ public class UserServiceImpl implements UserService {
     // 사용자 주소 변경
     public void updateAddress(Long userId, String zipCode, String address, String detailAddress) {
         UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        log.info("사용자 주소 변경 성공. 사용자 ID: {}", userDetail.getUser().getId());
         userDetail.changeAddress(userDetail);
     }
 
@@ -278,6 +290,7 @@ public class UserServiceImpl implements UserService {
     // 관리자의 사용자 정보 조회
     @Override
     public UserDetail getAdminUserById(Long userId) {
+        log.info("사용자 정보 조회 성공. 사용자 아이디: {}", userId);
         return userDetailRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
@@ -286,8 +299,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDetail> getUserList(String keyword) {
 
         if (keyword != null) {
+            log.info("사용자 정보 조회 성공.");
             return userDetailRepository.findByNameContaining(keyword);
         } else {
+            log.info("사용자 정보 조회 성공.");
             return userDetailRepository.findAll();
         }
     }
@@ -303,6 +318,8 @@ public class UserServiceImpl implements UserService {
 
             // 사용자 삭제
             userRepository.delete(user);
+
+            log.info("사용자 정보 삭제 성공. 삭제된 사용자 아이디: {}", userIds);
         }
     }
 }
