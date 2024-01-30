@@ -25,12 +25,13 @@ public class UserDetail extends BaseEntity {
 
     // PK
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_detail_id")
     private Long id;
 
     // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     // 사원번호
@@ -60,8 +61,8 @@ public class UserDetail extends BaseEntity {
     private String detailAddress;
 
     public void changeAddress(UserDetail userDetail) {
-        this.zipCode = userDetail.getZipCode();
-        this.address = userDetail.getAddress();
-        this.detailAddress = userDetail.getDetailAddress();
+        zipCode = userDetail.getZipCode();
+        address = userDetail.getAddress();
+        detailAddress = userDetail.getDetailAddress();
     }
 }

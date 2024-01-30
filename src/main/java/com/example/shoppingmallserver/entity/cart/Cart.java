@@ -36,7 +36,7 @@ public class Cart extends BaseEntity {
     // 수량
     private int quantity;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

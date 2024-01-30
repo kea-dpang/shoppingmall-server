@@ -31,7 +31,7 @@ public class Wishlist extends BaseEntity {
     @Column(name = "item_id")
     private List<Long> itemIds;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

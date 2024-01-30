@@ -15,8 +15,12 @@ import java.time.LocalDate;
 @Table(name = "user_withdrawal")
 public class UserWithdrawal extends BaseEntity {
 
-    // 사용자 ID (FK)
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_withdrawal_id")
+    private Long id;
+
+    // 사용자 ID (FK)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "user_id")
     private User user;
