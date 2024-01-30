@@ -5,6 +5,7 @@ import com.example.shoppingmallserver.dto.*;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 
+import com.example.shoppingmallserver.entity.user.WithdrawalReason;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -59,7 +60,7 @@ public interface UserService {
      *
      * 사용자의 고유 식별자를 기반으로 해당 사용자 계정을 삭제합니다.
      */
-    void deleteAccount(Long userId);
+    void deleteAccount(Long userId, String oldPassword, WithdrawalReason reason, String message);
 
     // 사용자 정보 조회
     UserDetail getUserById(Long userId);

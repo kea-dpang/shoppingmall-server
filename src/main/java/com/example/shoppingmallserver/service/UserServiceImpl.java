@@ -2,9 +2,8 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
-import com.example.shoppingmallserver.entity.user.User;
-import com.example.shoppingmallserver.entity.user.UserDetail;
-import com.example.shoppingmallserver.entity.user.UserStatus;
+import com.example.shoppingmallserver.entity.cart.Cart;
+import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.MileageFeignClient;
 import com.example.shoppingmallserver.feign.NotificationFeignClient;
@@ -35,6 +34,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
+    private final CartRepository cartRepository;
+    private final WishlistRepository wishlistRepository;
 
     /**
      * 알림과 관련된 기능을 제공하는 Feign 클라이언트입니다.
@@ -229,14 +230,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAccount(Long userId) {
+    public void deleteAccount(Long userId, String oldPassword, WithdrawalReason reason, String message) {
 
         // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        // 계정 삭제
+        // 기존 비밀번호 확인
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            log.error("비밀번호 불일치: " + user.getEmail());
+            throw new InvalidPasswordException(user.getEmail());
+        }
+
+        // 유저 탈퇴 사유 생성
+        UserWithdrawal
+                .builder()
+                .reason(reason)
+                .message(message)
+                .withdrawalDate(LocalDate.now())
+                .build();
+
+        // 계정, 정보, 장바구니, 위시리스트 삭제
         userRepository.delete(user);
+        userDetailRepository.delete(user.getUserDetail());
+        cartRepository.delete(cartRepository.findCartByUserId(userId));
+        wishlistRepository.delete(wishlistRepository.findWishlistByUserId(userId));
 
         // 마일리지 삭제
         //mileageFeignClient.deleteMileage(userId);
