@@ -216,6 +216,7 @@ public class UserServiceImpl implements UserService {
     public void changePassword(String email, String oldPassword, String newPassword) {
         log.info("비밀번호 변경 요청. 이메일: " + email);
 
+        // 이메일로 유저 찾기
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
             log.error("해당 이메일을 가진 사용자를 찾을 수 없음: " + email);
             return new UserNotFoundException(email);
