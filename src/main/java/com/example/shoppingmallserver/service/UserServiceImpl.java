@@ -2,7 +2,6 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
-import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.MileageFeignClient;
@@ -12,10 +11,7 @@ import com.example.shoppingmallserver.redis.repository.VerificationCodeRepositor
 import com.example.shoppingmallserver.repository.*;
 
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,7 +90,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         // 사용자의 마일리지 생성
-        mileageFeignClient.createMileage(newUserDetail.getUser().getId());
+        mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());
 
         // 사용자 및 정보 저장 후 생성
         userRepository.save(newUser);
@@ -220,6 +216,7 @@ public class UserServiceImpl implements UserService {
     public void changePassword(String email, String oldPassword, String newPassword) {
         log.info("비밀번호 변경 요청. 이메일: " + email);
 
+        // 이메일로 유저 찾기
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
             log.error("해당 이메일을 가진 사용자를 찾을 수 없음: " + email);
             return new UserNotFoundException(email);
@@ -265,7 +262,7 @@ public class UserServiceImpl implements UserService {
         wishlistRepository.delete(wishlistRepository.findWishlistByUserId(userId));
 
         // 마일리지 삭제
-        mileageFeignClient.deleteMileage(userId);
+        mileageFeignClient.deleteMileage(userId, userId);
 
         log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
     }
@@ -321,5 +318,13 @@ public class UserServiceImpl implements UserService {
 
             log.info("사용자 정보 삭제 성공. 삭제된 사용자 아이디: {}", userIds);
         }
+    }
+
+    //==============================Feign요청=======================
+
+    // 상품 서비스에서의 리뷰 이름 요청
+    @Override
+    public User getReviewer(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 }
