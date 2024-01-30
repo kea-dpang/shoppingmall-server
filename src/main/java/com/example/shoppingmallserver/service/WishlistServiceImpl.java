@@ -50,6 +50,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public void addWishlistItem(Long userId, Long itemId) {
 
+        // 사용자 ID 기반으로 위시리스트 찾기
         Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
 
         if(wishlist == null) { // 위시리스트가 없을 경우
