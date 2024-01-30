@@ -88,9 +88,12 @@ public class UserServiceImpl implements UserService {
                 .detailAddress("") // 기본값, 실제로는 사용자로부터 상세 주소를 받아야 합니다.
                 .build();
 
+        // 연관 관계 편의 메소드로 user와 userDetail을 서로 참조하도록 설정
+        newUser.assignUserDetail(newUserDetail);
+
         // 사용자 및 정보 저장 후 생성 (사용자 식별자를 얻기 위해 미리 DB에 저장)
+        // Cascade 설정으로 UserDetail도 함께 저장된다.
         userRepository.save(newUser);
-        userDetailRepository.save(newUserDetail);
 
         // 사용자의 마일리지 생성
         mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());

@@ -4,10 +4,7 @@ import com.example.shoppingmallserver.base.BaseEntity;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -16,6 +13,7 @@ import java.time.LocalDate;
  * 사용자, 사원 번호, 입사 날짜, 이름, 이메일, 전화번호, 우편번호, 주소, 상세주소 정보를 포함합니다.
  */
 @Getter
+@Setter(value = AccessLevel.PACKAGE)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
