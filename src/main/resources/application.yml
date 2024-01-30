@@ -2,26 +2,12 @@ spring:
   config:
     import: classpath:secret.yml
 
-  mvc:
-    static-path-pattern: /swagger*
-
   jpa:
     hibernate:
       ddl-auto: update
 
     show-sql: true
 
-springdoc:
-  default-produces-media-type: application/json;charset=UTF-8
-  api-docs:
-    path: /api-docs/json
-    groups:
-      enabled: 'true'
-  default-consumes-media-type: application/json;charset=UTF-8
-  swagger-ui:
-    operations-sorter: alpha
-    tags-sorter: alpha
-    path: swagger-ui.html
-  cache:
-    disabled: 'true'
-  packages-to-scan: com.example.shoppingmallserver
+logging:
+  level:
+    org.springframework.security: DEBUG

@@ -20,16 +20,16 @@ public class ReadItemsDto {
     /**
      * ReadCartItemInfoDto와 수량을 이용하여 ReadCartItemDto를 생성합니다.
      *
-     * @param cart 장바구니 상품 정보를 담은 엔티티
      * @param readItemsInfoDto 장바구니 상품 정보를 담은 DTO
+     * @param quantity 상품의 수량
      */
-    public ReadItemsDto(Cart cart, ReadItemsInfoDto readItemsInfoDto) {
+    public ReadItemsDto(ReadItemsInfoDto readItemsInfoDto, int quantity) {
         this.itemId = readItemsInfoDto.getItemId();
         this.image = readItemsInfoDto.getImage();
         this.name = readItemsInfoDto.getName();
         this.price = readItemsInfoDto.getPrice();
         this.discountRate = readItemsInfoDto.getDiscountRate();
         this.discountPrice = readItemsInfoDto.getDiscountPrice();
-        this.quantity = cart.getQuantity();
+        this.quantity = quantity;
     }
 }

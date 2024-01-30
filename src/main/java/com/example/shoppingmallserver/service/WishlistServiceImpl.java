@@ -6,10 +6,12 @@ import com.example.shoppingmallserver.feign.ItemFeignClient;
 import com.example.shoppingmallserver.repository.WishlistRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService {
@@ -35,6 +37,8 @@ public class WishlistServiceImpl implements WishlistService {
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
         List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(itemIds);
 
+        log.info("위시리스트 상품 조회 성공. 사용자 아이디: {}", userId);
+
         // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
         // + 변수 인라인화
         return itemInfos.stream().map(ReadItemsInfoDto::new)
@@ -50,13 +54,21 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public void addWishlistItem(Long userId, Long itemId) {
 
-        // Wishlist에 상품 추가(빌더)
-        Wishlist wishlist = Wishlist.builder()
-                .itemId(itemId)
-                .build();
+        // 사용자 ID 기반으로 위시리스트 찾기
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
+
+        if(wishlist == null) { // 위시리스트가 없을 경우
+            // 새 위시리스트 생성(빌더)
+            wishlist = Wishlist.builder().build();
+        }
+
+        // 위시리스트에 아이템 추가
+        wishlist.addItem(itemId);
 
         // 저장
         wishlistRepository.save(wishlist);
+
+        log.info("위시리스트 상품 추가 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 
     /**
@@ -67,6 +79,15 @@ public class WishlistServiceImpl implements WishlistService {
      */
     @Override
     public void deleteWishlistItem(Long userId, Long itemId) {
-        wishlistRepository.deleteByUserIdAndItemId(userId, itemId);
+        // 사용자 ID로 위시리스트를 조회합니다.
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
+
+        // 장바구니에서 아이템을 삭제합니다.
+        wishlist.removeItem(itemId);
+
+        // 변경사항을 저장합니다.
+        wishlistRepository.save(wishlist);
+
+        log.info("위시리스트 상품 삭제 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
     }
 }
