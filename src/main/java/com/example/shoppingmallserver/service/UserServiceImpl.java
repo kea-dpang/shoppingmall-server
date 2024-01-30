@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         // 사용자의 마일리지 생성
-        mileageFeignClient.createMileage(newUserDetail.getUser().getId());
+        mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());
 
         // 사용자 및 정보 저장 후 생성
         userRepository.save(newUser);
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
         wishlistRepository.delete(wishlistRepository.findWishlistByUserId(userId));
 
         // 마일리지 삭제
-        mileageFeignClient.deleteMileage(userId);
+        mileageFeignClient.deleteMileage(userId, userId);
 
         log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
     }
