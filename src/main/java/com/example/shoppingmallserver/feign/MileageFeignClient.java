@@ -2,6 +2,8 @@ package com.example.shoppingmallserver.feign;
 
 import com.example.shoppingmallserver.dto.MileageDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import com.example.shoppingmallserver.base.SuccessResponse;
+import com.example.shoppingmallserver.base.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
