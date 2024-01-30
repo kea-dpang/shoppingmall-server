@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.CascadeType.*;
+
 /**
  * 사용자를 나타내는 엔티티 클래스입니다.
  * 사용자 ID, 상태(활성화 상태), 생성 날짜, 변경 날짜 정보를 포함합니다.
@@ -45,7 +47,7 @@ public class User extends BaseEntity {
     private UserStatus status;
 
     // 유저와 유저상세는 일대일 관계
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private UserDetail userDetail;
 
     // 유저와 카트는 일대일 관계
@@ -55,6 +57,19 @@ public class User extends BaseEntity {
     // 유저와 위시리스트는 일대일 관계
     @OneToOne(mappedBy = "user")
     private Wishlist wishlist;
+
+    /**
+     * 연관 관계 편의 메서드
+     *
+     * @param userDetail
+     */
+    public void assignUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+        // UserDetail의 User를 현재 인스턴스로 설정
+        if (userDetail.getUser() != this) {
+            userDetail.setUser(this);
+        }
+    }
 
     /**
      * 비밀번호 변경 메서드
