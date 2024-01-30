@@ -21,7 +21,7 @@ public interface MileageFeignClient {
      * @return API 호출의 결과를 담은 ResponseEntity 객체 (굳이 DTO로 받을 이유는 없긴 함)
      */
     @PostMapping("/api/mileage")
-    ResponseEntity<MileageDto> createMileage(@RequestHeader("X-DPANG-CLIENT-ID") Long id, @RequestParam Long userId);
+    ResponseEntity<SuccessResponse<MileageDto>> createMileage(@RequestHeader("X-DPANG-CLIENT-ID") Long id, @RequestParam Long userId);
 
     /**
      * 사용자의 마일리지를 삭제하는 API를 호출하는 메서드입니다.
@@ -29,7 +29,7 @@ public interface MileageFeignClient {
      * @return API 호출의 결과를 담은 ResponseEntity 객체 (굳이 DTO로 받을 이유는 없지만 오류를 없애기 위함)
      */
     @DeleteMapping("/api/mileage")
-    ResponseEntity<MileageDto> deleteMileage(@RequestHeader("X-DPANG-CLIENT-ID") Long id, @RequestParam Long userId);
+    ResponseEntity<BaseResponse> deleteMileage(@RequestHeader("X-DPANG-CLIENT-ID") Long id, @RequestParam Long userId);
 
 
 }
