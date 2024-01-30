@@ -78,8 +78,6 @@ public class UserServiceImpl implements UserService {
                 .password(encodedPassword)
                 .role(role)
                 .status(UserStatus.USER)
-                .createdAt(LocalDate.now())
-                .updatedAt(LocalDate.now())
                 .build();
 
         // 새로운 유저의 정보 생성
@@ -97,8 +95,9 @@ public class UserServiceImpl implements UserService {
         // 사용자의 마일리지 생성
         // mileageFeignClient.createMileage(newUserDetail.getUser().getId());
 
-        // 사용자 및 정보 저장
+        // 사용자 및 정보 저장 후 생성
         userRepository.save(newUser);
+        userDetailRepository.save(newUserDetail);
     }
 
     /**
