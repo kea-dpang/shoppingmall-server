@@ -319,4 +319,12 @@ public class UserServiceImpl implements UserService {
             log.info("사용자 정보 삭제 성공. 삭제된 사용자 아이디: {}", userIds);
         }
     }
+
+    //==============================Feign요청=======================
+
+    // 상품 서비스에서의 리뷰 이름 요청
+    @Override
+    public User getReviewer(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
 }

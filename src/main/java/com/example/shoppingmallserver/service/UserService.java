@@ -78,4 +78,9 @@ public interface UserService {
     // 관리자의 사용자 정보 삭제
     void deleteUser(List<Long> userIds);
 
+    //==============================Feign요청=======================
+
+    // 상품 서비스에서의 리뷰 이름 요청
+    User getReviewer(Long userId);
+
 }
