@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -89,12 +88,12 @@ public class UserServiceImpl implements UserService {
                 .detailAddress("") // 기본값, 실제로는 사용자로부터 상세 주소를 받아야 합니다.
                 .build();
 
-        // 사용자의 마일리지 생성
-        mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());
-
-        // 사용자 및 정보 저장 후 생성
+        // 사용자 및 정보 저장 후 생성 (사용자 식별자를 얻기 위해 미리 DB에 저장)
         userRepository.save(newUser);
         userDetailRepository.save(newUserDetail);
+
+        // 사용자의 마일리지 생성
+        mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());
 
         log.info("사용자 생성 완료. 사용자 ID: {}", newUser.getId());
     }
