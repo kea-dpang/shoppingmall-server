@@ -1,6 +1,7 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
+import com.example.shoppingmallserver.dto.AdminReadUserListDto;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
 import com.example.shoppingmallserver.dto.QnaAuthorDto;
 import com.example.shoppingmallserver.entity.user.*;
@@ -14,6 +15,8 @@ import com.example.shoppingmallserver.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -300,14 +304,20 @@ public class UserServiceImpl implements UserService {
 
     // 관리자의 사용자 정보 리스트 조회
     @Override
-    public List<UserDetail> getUserList(String keyword) {
+    public List<AdminReadUserListDto> getUserList(Keyword keyword, Pageable pageable) {
 
         if (keyword != null) {
-            log.info("사용자 정보 조회 성공.");
-            return userDetailRepository.findByNameContaining(keyword);
+            Page<UserDetail> userIds = userDetailRepository.findByNameContaining(keyword.name(), pageable);
+            log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
+            return userIds.stream()
+                    .map(AdminReadUserListDto::new)
+                    .collect(Collectors.toList());
         } else {
-            log.info("사용자 정보 조회 성공.");
-            return userDetailRepository.findAll();
+            Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
+            log.info("사용자 전체 정보 조회 성공.");
+            return userIds.stream()
+                    .map(AdminReadUserListDto::new)
+                    .collect(Collectors.toList());
         }
     }
 
