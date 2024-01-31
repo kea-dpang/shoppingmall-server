@@ -44,6 +44,7 @@ public class User extends BaseEntity {
 
     // 활성화 상태 (회원, 탈퇴)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     // 유저와 유저상세는 일대일 관계
