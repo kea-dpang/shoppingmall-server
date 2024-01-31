@@ -311,5 +311,15 @@ public class UserController {
         );
     }
 
+    // QNA 서비스에서의 작성자 정보(이름, 이메일) 요청
+    @GetMapping("/qna-find/{authorId}")
+    public ResponseEntity<SuccessResponse<QnaAuthorDto>> getQnaAuthor(@PathVariable Long authorId) {
+
+        // 사용자의 이름 전달
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "작성자의 정보 전달 성공", userService.getQnaReviewer(authorId)),
+                HttpStatus.OK
+        );
+    }
 
 }

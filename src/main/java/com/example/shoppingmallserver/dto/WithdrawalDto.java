@@ -4,9 +4,10 @@ import com.example.shoppingmallserver.entity.user.WithdrawalReason;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
-@Schema(description = "회원가입 정보")
+@Schema(description = "탈퇴 정보")
 @Getter
 public class WithdrawalDto {
+    @Schema(description = "비밀번호 확인", example = "qwer1234!@#$")
     private final String oldPassword;
     @Schema(description = "탈퇴 사유(enum)")
     private final WithdrawalReason reason;

@@ -2,6 +2,7 @@ package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.EmailNotificationDto;
+import com.example.shoppingmallserver.dto.QnaAuthorDto;
 import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
 import com.example.shoppingmallserver.feign.MileageFeignClient;
@@ -332,5 +333,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getReviewer(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    @Override
+    public QnaAuthorDto getQnaReviewer(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        return new QnaAuthorDto(user.getUserDetail().getName(), user.getEmail());
     }
 }
