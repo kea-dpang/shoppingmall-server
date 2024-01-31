@@ -83,4 +83,6 @@ public interface UserService {
     // 상품 서비스에서의 리뷰 이름 요청
     User getReviewer(Long userId);
 
+    // Qna 서비스에서의 작성자 정보 요청
+    QnaAuthorDto getQnaReviewer(Long userId);
 }
