@@ -4,13 +4,13 @@ import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.dto.*;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
-
 import com.example.shoppingmallserver.entity.user.WithdrawalReason;
+
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface UserService {
@@ -65,7 +65,7 @@ public interface UserService {
     // 사용자 정보 조회
     UserDetail getUserById(Long userId);
 
-    void updateAddress(Long userId, String name, String phoneNumber, String zipCode, String address, String detailAddress);
+    void updateAddress(Long userId, String phoneNumber, String zipCode, String address, String detailAddress);
 
     // ==========================관리자===========================
 
@@ -73,7 +73,7 @@ public interface UserService {
     UserDetail getAdminUserById(Long userId);
 
     // 관리자의 사용자 정보 리스트 조회
-    List<UserDetail> getUserList(String keyword);
+    List<AdminReadUserListDto> getUserList(Keyword keyword, Pageable pageable);
 
     // 관리자의 사용자 정보 삭제
     void deleteUser(List<Long> userIds);

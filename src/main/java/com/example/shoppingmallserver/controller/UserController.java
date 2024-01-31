@@ -5,6 +5,7 @@ import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.*;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
+import com.example.shoppingmallserver.service.Keyword;
 import com.example.shoppingmallserver.service.UserService;
 
 import com.example.shoppingmallserver.utils.JwtTokenProvider;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -214,7 +216,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Parameter(description = "사용자가 입력한 주소") AddressDto addressDto) {
 
         // 받은 정보를 통해 주소지 변경
-        userService.updateAddress(userId, addressDto.getName(), addressDto.getPhoneNumber(), addressDto.getZipCode(), addressDto.getAddress(), addressDto.getDetailAddress());
+        userService.updateAddress(userId, addressDto.getPhoneNumber(), addressDto.getZipCode(), addressDto.getAddress(), addressDto.getDetailAddress());
 
         //  변경 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 주소가 성공적으로 변경되었음을 알림
@@ -260,18 +262,21 @@ public class UserController {
      */
     @GetMapping("/admin/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") Keyword keyword, Pageable pageable) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
-        List<UserDetail> userDetails = userService.getUserList(keyword);
+        List<AdminReadUserListDto> userDetails = userService.getUserList(keyword, pageable);
 
-        // 조회한 사용자 정보 목록을 이용하여 응답 DTO 목록을 생성 (관리자용)
-        List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
+//        // 조회한 사용자 정보 목록을 이용하여 응답 DTO 목록을 생성 (관리자용)
+//        List<AdminReadUserListDto> data = userDetails
+//                .stream()
+//                .map(AdminReadUserListDto::new)
+//                .toList();
 
         // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보 목록이 성공적으로 조회되었음을 알림
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", userDetails),
                 HttpStatus.OK
         );
 
