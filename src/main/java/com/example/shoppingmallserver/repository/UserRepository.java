@@ -2,6 +2,9 @@ package com.example.shoppingmallserver.repository;
 
 import com.example.shoppingmallserver.entity.user.User;
 
+import com.example.shoppingmallserver.entity.user.UserDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -15,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return 이메일에 해당하는 User 엔티티. 해당 이메일을 가진 사용자가 없는 경우 빈 Optional을 반환
      */
     Optional<User> findByEmail(String email);
+
+    Page<UserDetail> findByEmailContaining(String keyword, Pageable pageable);
 }
