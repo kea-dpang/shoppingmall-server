@@ -48,15 +48,15 @@ public class User extends BaseEntity {
     private UserStatus status;
 
     // 유저와 유저상세는 일대일 관계
-    @OneToOne(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private UserDetail userDetail;
 
     // 유저와 카트는 일대일 관계
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cart cart;
 
     // 유저와 위시리스트는 일대일 관계
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Wishlist wishlist;
 
     /**
