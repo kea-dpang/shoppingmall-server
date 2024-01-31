@@ -22,7 +22,7 @@ import java.time.LocalDate;
 public class UserDetail extends BaseEntity {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_detail_id")
     private Long id;
 
     @MapsId
