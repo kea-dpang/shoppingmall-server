@@ -73,7 +73,7 @@ public interface UserService {
     UserDetail getAdminUserById(Long userId);
 
     // 관리자의 사용자 정보 리스트 조회
-    List<AdminReadUserListDto> getUserList(Keyword keyword, Pageable pageable);
+    List<AdminReadUserListDto> getUserList(Category category, String keyword, Pageable pageable);
 
     // 관리자의 사용자 정보 삭제
     void deleteUser(List<Long> userIds);

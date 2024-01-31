@@ -14,6 +14,10 @@ import java.util.List;
  */
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
 
+    Page<UserDetail> findByEmployeeNumberContaining(String keyword, Pageable pageable);
+
+    Page<UserDetail> findByEmailContaining(String keyword, Pageable pageable);
+
     /**
      * 사용자 이름에 특정 키워드가 포함된 사용자의 상세 정보 목록을 조회합니다.
      * 이 메서드는 주로 관리자가 사용자 정보를 검색할 때 사용됩니다.
@@ -23,6 +27,8 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      * @return 키워드가 포함된 사용자 이름을 가진 사용자의 상세 정보 목록
      */
     Page<UserDetail> findByNameContaining(String keyword, Pageable pageable);
+
+    Page<UserDetail> findByJoinDateContaining(String keyword, Pageable pageable);
 
 
     UserDetail findByUserId(Long userId);

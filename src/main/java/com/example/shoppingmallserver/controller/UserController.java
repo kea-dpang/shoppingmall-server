@@ -5,7 +5,7 @@ import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.*;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
-import com.example.shoppingmallserver.service.Keyword;
+import com.example.shoppingmallserver.service.Category;
 import com.example.shoppingmallserver.service.UserService;
 
 import com.example.shoppingmallserver.utils.JwtTokenProvider;
@@ -257,21 +257,15 @@ public class UserController {
     /**
      * 관리자가 키워드를 기반으로 사용자 정보 목록을 조회합니다.
      *
-     * @param keyword 사용자 정보에서 검색할 키워드
+     * @param category 사용자 정보에서 검색할 키워드
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보 목록을 담은 DTO 목록을 반환
      */
     @GetMapping("/admin/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") Keyword keyword, Pageable pageable) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "category", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") Category category, String keyword, Pageable pageable) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
-        List<AdminReadUserListDto> userDetails = userService.getUserList(keyword, pageable);
-
-//        // 조회한 사용자 정보 목록을 이용하여 응답 DTO 목록을 생성 (관리자용)
-//        List<AdminReadUserListDto> data = userDetails
-//                .stream()
-//                .map(AdminReadUserListDto::new)
-//                .toList();
+        List<AdminReadUserListDto> userDetails = userService.getUserList(category, keyword, pageable);
 
         // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보 목록이 성공적으로 조회되었음을 알림
