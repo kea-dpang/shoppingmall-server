@@ -316,7 +316,7 @@ public class UserServiceImpl implements UserService {
                             .collect(Collectors.toList());
                 }
                 case EMAIL -> {
-                    Page<UserDetail> userIds = userDetailRepository.findByEmailContaining(keyword, pageable);
+                    Page<UserDetail> userIds = userRepository.findByEmailContaining(keyword, pageable);
                     log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
                     return userIds.stream()
                             .map(AdminReadUserListDto::new)
@@ -376,5 +376,10 @@ public class UserServiceImpl implements UserService {
     public QnaAuthorDto getQnaReviewer(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return new QnaAuthorDto(user.getUserDetail().getName(), user.getEmail());
+    }
+
+    // 인증 서비스에서의 사용자 리스트 요청
+    public List<UserDetail> getUserList() {
+        return userDetailRepository.findAll();
     }
 }

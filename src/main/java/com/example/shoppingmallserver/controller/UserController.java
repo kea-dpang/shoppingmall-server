@@ -321,4 +321,21 @@ public class UserController {
         );
     }
 
+    @GetMapping("/list")
+    @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword) {
+
+        List<UserDetail> userDetails = userService.getUserList();
+
+        List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
+
+        // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
+        // 이를 통해 API 호출한 클라이언트에게 사용자 정보 목록이 성공적으로 조회되었음을 알림
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", data),
+                HttpStatus.OK
+        );
+
+    }
+
 }
