@@ -65,7 +65,7 @@ public interface UserService {
     // 사용자 정보 조회
     UserDetail getUserById(Long userId);
 
-    void updateAddress(Long userId, String zipCode, String address, String detailAddress);
+    void updateAddress(Long userId, String name, String phoneNumber, String zipCode, String address, String detailAddress);
 
     // ==========================관리자===========================
 

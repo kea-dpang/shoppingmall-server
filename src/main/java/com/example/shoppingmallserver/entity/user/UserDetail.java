@@ -56,9 +56,11 @@ public class UserDetail extends BaseEntity {
     @Column(name = "detail_address")
     private String detailAddress;
 
-    public void changeAddress(UserDetail userDetail) {
-        zipCode = userDetail.getZipCode();
-        address = userDetail.getAddress();
-        detailAddress = userDetail.getDetailAddress();
+    public void changeAddress(String name, String phoneNumber, String zipCode, String address, String detailAddress) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.detailAddress = detailAddress;
     }
 }
