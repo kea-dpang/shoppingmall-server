@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.service;
 
-public enum Keyword {
+public enum Category {
     EMPLOYEENUMBER,
     EMAIL,
     NAME,
