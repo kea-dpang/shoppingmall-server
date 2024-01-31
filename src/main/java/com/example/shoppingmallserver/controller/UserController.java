@@ -323,7 +323,7 @@ public class UserController {
 
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "keyword", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList() {
 
         List<UserDetail> userDetails = userService.getUserList();
 
