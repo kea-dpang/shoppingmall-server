@@ -280,20 +280,20 @@ public class UserController {
     /**
      * 관리자가 요청 본문으로 받은 사용자 ID 목록을 이용하여 해당 사용자들을 삭제합니다.
      *
-     * @param userIds 삭제할 사용자들의 ID 목록
+     * @param deleteListDto 삭제할 사용자의 ID 리스트
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
     @DeleteMapping("/admin/delete")
     @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
-    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") List<Long> userIds) {
+    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListDto deleteListDto) {
 
         // 요청 본문으로 받은 사용자 ID 목록을 이용하여 해당 사용자들을 삭제
-        userService.deleteUser(userIds);
+        userService.deleteUser(deleteListDto.getUserIds());
 
         // 삭제한 사용자 ID 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보가 성공적으로 삭제되었음을 알림
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 삭제하였습니다.", "Deleted user IDs: " + userIds),
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 삭제하였습니다.", "Deleted user IDs: " + deleteListDto.getUserIds()),
                 HttpStatus.OK
         );
     }
