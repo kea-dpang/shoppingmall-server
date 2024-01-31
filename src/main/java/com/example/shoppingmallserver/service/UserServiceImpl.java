@@ -279,11 +279,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     // 사용자 주소 변경
-    public void updateAddress(Long userId, String name, String phoneNumber, String zipCode, String address, String detailAddress) {
+    public void updateAddress(Long userId, String phoneNumber, String zipCode, String address, String detailAddress) {
         // 사용자 정보 찾기
         UserDetail userDetail = userDetailRepository.findByUserId(userId);
         // 엔티티 변경
-        userDetail.changeAddress(name, phoneNumber, zipCode, address, detailAddress);
+        userDetail.changeAddress(phoneNumber, zipCode, address, detailAddress);
         // 변경된 내용을 데이터베이스에 반영
         userDetailRepository.save(userDetail);
         log.info("사용자 주소 변경 성공. 사용자 ID: {}", userDetail.getUser().getId());

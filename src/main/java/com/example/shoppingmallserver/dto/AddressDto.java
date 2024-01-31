@@ -6,8 +6,6 @@ import lombok.Getter;
 @Schema(description = "주소 정보")
 @Getter
 public class AddressDto {
-    @Schema(description = "이름", example = "디팡이")
-    private final String name;
     @Schema(description = "전화번호", example = "010-1234-5678")
     private final String phoneNumber;
     @Schema(description = "우편번호", example = "461831")
@@ -17,8 +15,7 @@ public class AddressDto {
     @Schema(description = "상세주소", example = "AI공학관 411")
     private final String detailAddress;
 
-    public AddressDto(String name, String phoneNumber, String zipCode, String address, String detailAddress) {
-        this.name = name;
+    public AddressDto(String phoneNumber, String zipCode, String address, String detailAddress) {
         this.phoneNumber = phoneNumber;
         this.zipCode = zipCode;
         this.address = address;

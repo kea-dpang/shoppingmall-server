@@ -214,7 +214,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Parameter(description = "사용자가 입력한 주소") AddressDto addressDto) {
 
         // 받은 정보를 통해 주소지 변경
-        userService.updateAddress(userId, addressDto.getName(), addressDto.getPhoneNumber(), addressDto.getZipCode(), addressDto.getAddress(), addressDto.getDetailAddress());
+        userService.updateAddress(userId, addressDto.getPhoneNumber(), addressDto.getZipCode(), addressDto.getAddress(), addressDto.getDetailAddress());
 
         //  변경 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 주소가 성공적으로 변경되었음을 알림
