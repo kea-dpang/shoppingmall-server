@@ -6,6 +6,7 @@ import com.example.shoppingmallserver.dto.*;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import com.example.shoppingmallserver.service.Category;
+import com.example.shoppingmallserver.service.TokenService;
 import com.example.shoppingmallserver.service.UserService;
 
 import com.example.shoppingmallserver.utils.JwtTokenProvider;
@@ -35,7 +36,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
     /**
@@ -75,21 +76,14 @@ public class UserController {
     @Operation(summary = "사용자 로그인", description = "사용자의 정보로 로그인합니다.")
     public ResponseEntity<SuccessResponse<Token>> login(@RequestBody @Parameter(description = "사용자 로그인 정보") LoginRequestDto loginRequestDto) throws Exception {
 
-        // 사용자가 입력한 이메일과 비밀번호를 이용해 UsernamePasswordAuthenticationToken 객체 생성
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-
-        // AuthenticationManager를 이용해 생성한 토큰으로 사용자 인증 시도
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-        // authService를 이용해 사용자 인증 정보 검증
+        // userService를 이용해 사용자 인증 정보 검증
         Long userId = userService.verifyUser(loginRequestDto.getEmail(), loginRequestDto.getPassword());
 
         // 인증된 사용자에 대한 JWT 토큰 생성
-        Token jwtToken = jwtTokenProvider.createTokens(authentication, userId);
+        Token token = tokenService.createToken(userId);
 
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "성공적으로 로그인 하였습니다.", jwtToken),
+                new SuccessResponse<>(HttpStatus.OK.value(), "성공적으로 로그인 하였습니다.", token),
                 HttpStatus.OK
         );
     }
