@@ -20,11 +20,11 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     /**
      * 사용자의 사원 번호에 특정 키워드가 포함된 사용자의 상세 정보 목록을 페이지네이션하여 조회합니다.
      *
-     * @param keyword  사원 번호에서 검색할 키워드
+     * @param employeeNumber  사원 번호에서 검색할 키워드
      * @param pageable 페이지네이션 정보
      * @return 키워드가 포함된 사원 번호를 가진 사용자의 상세 정보 목록
      */
-    Page<UserDetail> findByEmployeeNumberContaining(String keyword, Pageable pageable);
+    Page<UserDetail> findByEmployeeNumber(Long employeeNumber, Pageable pageable);
 
     /**
      * 사용자의 이름에 특정 키워드가 포함된 사용자의 상세 정보 목록을 페이지네이션하여 조회합니다.
@@ -34,15 +34,6 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      * @return 키워드가 포함된 사용자 이름을 가진 사용자의 상세 정보 목록
      */
     Page<UserDetail> findByNameContaining(String keyword, Pageable pageable);
-
-    /**
-     * 사용자의 가입 날짜에 특정 키워드가 포함된 사용자의 상세 정보 목록을 페이지네이션하여 조회합니다.
-     *
-     * @param keyword  가입 날짜에서 검색할 키워드
-     * @param pageable 페이지네이션 정보
-     * @return 키워드가 포함된 가입 날짜를 가진 사용자의 상세 정보 목록
-     */
-    Page<UserDetail> findByJoinDateContaining(String keyword, Pageable pageable);
 
     /**
      * 사용자 ID에 해당하는 사용자의 상세 정보를 조회합니다.

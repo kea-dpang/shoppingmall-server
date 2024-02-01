@@ -262,7 +262,7 @@ public class UserController {
      */
     @GetMapping("/admin/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam(value = "category", required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") Category category, String keyword, Pageable pageable) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category, @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword, Pageable pageable) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
         List<AdminReadUserListDto> userDetails = userService.getUserList(category, keyword, pageable);
@@ -273,7 +273,6 @@ public class UserController {
                 new SuccessResponse<>(HttpStatus.OK.value(), "사용자 정보를 성공적으로 조회하였습니다.", userDetails),
                 HttpStatus.OK
         );
-
     }
 
     /**
