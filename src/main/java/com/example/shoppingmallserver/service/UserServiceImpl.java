@@ -310,12 +310,17 @@ public class UserServiceImpl implements UserService {
         if(keyword != null) {
             switch (category) {
                 case EMPLOYEENUMBER -> {
-                    Long employeeNumber = Long.parseLong(keyword);
-                    Page<UserDetail> userIds = userDetailRepository.findByEmployeeNumber(employeeNumber, pageable);
-                    log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
-                    return userIds.stream()
-                            .map(AdminReadUserListDto::new)
-                            .collect(Collectors.toList());
+                    if(keyword.matches("\\d+")) {
+                        Long employeeNumber = Long.parseLong(keyword);
+                        Page<UserDetail> userIds = userDetailRepository.findByEmployeeNumber(employeeNumber, pageable);
+                        log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
+                        return userIds.stream()
+                                .map(AdminReadUserListDto::new)
+                                .collect(Collectors.toList());
+                    }
+                    else {
+                        return null;
+                    }
                 }
                 case EMAIL -> {
                     Page<User> userIds = userRepository.findByEmailContaining(keyword, pageable);
