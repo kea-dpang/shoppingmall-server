@@ -306,46 +306,49 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AdminReadUserListDto> getUserList(Category category, String keyword, Pageable pageable) {
 
-        if (category != null) {
+        // 키워드가 있는 경우
+        if(keyword != null) {
             switch (category) {
                 case EMPLOYEENUMBER -> {
-                    Page<UserDetail> userIds = userDetailRepository.findByEmployeeNumberContaining(keyword, pageable);
-                    log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
+                    Long employeeNumber = Long.parseLong(keyword);
+                    Page<UserDetail> userIds = userDetailRepository.findByEmployeeNumber(employeeNumber, pageable);
+                    log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
                     return userIds.stream()
                             .map(AdminReadUserListDto::new)
                             .collect(Collectors.toList());
                 }
                 case EMAIL -> {
-                    Page<UserDetail> userIds = userRepository.findByEmailContaining(keyword, pageable);
+                    Page<User> userIds = userRepository.findByEmailContaining(keyword, pageable);
                     log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
                     return userIds.stream()
-                            .map(AdminReadUserListDto::new)
+                            .map(this::convertToDto)
                             .collect(Collectors.toList());
                 }
                 case NAME -> {
                     Page<UserDetail> userIds = userDetailRepository.findByNameContaining(keyword, pageable);
-                    log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
-                    return userIds.stream()
-                            .map(AdminReadUserListDto::new)
-                            .collect(Collectors.toList());
-                }
-                case JOINDATE -> {
-                    Page<UserDetail> userIds = userDetailRepository.findByJoinDateContaining(keyword, pageable);
-                    log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
+                    log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
                     return userIds.stream()
                             .map(AdminReadUserListDto::new)
                             .collect(Collectors.toList());
                 }
             }
-        } else {
+        }
+        else {
             Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
             log.info("사용자 전체 정보 조회 성공.");
             return userIds.stream()
                     .map(AdminReadUserListDto::new)
                     .collect(Collectors.toList());
         }
-        log.info("조건을 잘못 입력하였습니다. 사실 이 로그는 시스템적으로 볼 수 없습니다. 만약 이 로그를 보게 된다면 당장 파드를 종료하고 새로운 버전으로 릴리즈 하십시오.");
-        return null;
+        Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
+        log.info("사용자 전체 정보 조회 성공.");
+        return userIds.stream()
+                .map(AdminReadUserListDto::new)
+                .collect(Collectors.toList());
+    }
+
+    private AdminReadUserListDto convertToDto(User user) {
+        return new AdminReadUserListDto(user.getUserDetail());
     }
 
     // 관리자의 사용자 정보 삭제

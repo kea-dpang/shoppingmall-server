@@ -7,10 +7,7 @@ import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.CascadeType.*;
 
@@ -20,6 +17,7 @@ import static jakarta.persistence.CascadeType.*;
  * 사용자 상세, 장바구니 항목, 위시리스트 항목, 마일리지와의 관계를 정의합니다.
  */
 @Getter
+@Setter(value = AccessLevel.PACKAGE)
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
