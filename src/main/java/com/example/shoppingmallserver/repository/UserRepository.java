@@ -21,7 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     Optional<User> findByEmail(String email);
 
-    Page<UserDetail> findByEmailContaining(String keyword, Pageable pageable);
+  
+    Page<User> findByEmailContaining(String keyword, Pageable pageable);
 
     /**
      * 사용자 ID에 해당하는 사용자와 그에 연관된 사용자의 상세 정보를 함께 조회합니다.
