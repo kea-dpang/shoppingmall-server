@@ -336,6 +336,13 @@ public class UserServiceImpl implements UserService {
                             .map(AdminReadUserListDto::new)
                             .collect(Collectors.toList());
                 }
+                case ALL -> {
+                    Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
+                    log.info("사용자 전체 정보 조회 성공.");
+                    return userIds.stream()
+                            .map(AdminReadUserListDto::new)
+                            .collect(Collectors.toList());
+                }
             }
         }
         else {
