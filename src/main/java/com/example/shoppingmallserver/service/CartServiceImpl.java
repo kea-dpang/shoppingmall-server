@@ -2,7 +2,7 @@ package com.example.shoppingmallserver.service;
 
 
 import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
-import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsInfoDto;
+import com.example.shoppingmallserver.dto.cart_wishlist.ItemCartInquiryDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
         Map<Long, Integer> items = cart.getItems();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ReadItemsInfoDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet()));
+        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet()));
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
