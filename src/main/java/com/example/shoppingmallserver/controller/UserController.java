@@ -46,7 +46,7 @@ public class UserController {
      * @return HTTP 상태 코드 201 (CREATED)
      */
     @PostMapping("/register")
-    @Operation(summary = "사용자 등록", description = "사용자를 생성합니다.")
+    @Operation(summary = "사용자 등록", description = "사용자를 생성합니다.", hidden = true)
     public ResponseEntity<BaseResponse> register(@RequestBody @Parameter(description = "사용자 등록 정보") RegisterRequestDto requestDto) {
 
         // 사용자 등록
@@ -139,7 +139,7 @@ public class UserController {
      * @param userId 조회할 사용자의 ID
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
-    @GetMapping("/admin/{userId}")
+    @GetMapping("/{userId}/temp") // AI에 물어봐서 고치기 // @PreAuthorize -> 찾아보기
     @Operation(summary = "(관리자) 사용자 상세 정보 조회", description = "관리자가 사용자 상세 정보를 조회합니다.")
     public ResponseEntity<SuccessResponse<AdminReadUserResponseDto>> adminGetUser(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
@@ -165,7 +165,7 @@ public class UserController {
      * @param category 사용자 정보에서 검색할 키워드
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보 목록을 담은 DTO 목록을 반환
      */
-    @GetMapping("/admin/find")
+    @GetMapping("/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
     public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> adminGetUserList(@RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category, @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword, Pageable pageable) {
 
@@ -186,7 +186,7 @@ public class UserController {
      * @param deleteListRequestDto 삭제할 사용자의 ID 리스트
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
-    @DeleteMapping("/admin")
+    @DeleteMapping("/list")// 내가 승현이한테 요청하기(feign) -> 바꾸기
     @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
     public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListRequestDto deleteListRequestDto) {
 
