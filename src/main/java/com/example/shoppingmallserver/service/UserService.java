@@ -49,12 +49,6 @@ public interface UserService {
 
     //==============================Feign요청=======================
 
-    // 상품 서비스에서의 리뷰 이름 요청
-    User getReviewer(Long userId);
-
-    // Qna 서비스에서의 작성자 정보 요청
-    QnaAuthorDto getQnaAuthor(Long userId);
-
     // Auth 서비스에서 유저 리스트 요청
     List<UserDetail> getUserList(List<Long> userIds);
 }
