@@ -203,30 +203,6 @@ public class UserController {
 
     //==============================Feign요청=======================
 
-    // 상품 서비스에서의 리뷰 이름 요청
-    @GetMapping("/reviewer/{reviewerId}")
-    @Operation(summary = "(백엔드) 사용자 정보 이름 조회", description = "백엔드에서 사용자 정보 이름을 조회합니다.")
-    public ResponseEntity<SuccessResponse<String>> getReviewer(@PathVariable Long reviewerId) {
-
-        // 사용자의 이름 전달
-        return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "리뷰어의 이름 전달 성공", userService.getReviewer(reviewerId).getUserDetail().getName()),
-                HttpStatus.OK
-        );
-    }
-
-    // QNA 서비스에서의 작성자 정보(이름, 이메일) 요청
-    @GetMapping("/qna-find/{authorId}")
-    @Operation(summary = "(백엔드) 사용자 정보 이름, 이메일 조회", description = "백엔드에서 사용자 정보 이름, 이메일을 조회합니다.")
-    public ResponseEntity<SuccessResponse<QnaAuthorDto>> getQnaAuthor(@PathVariable Long authorId) {
-
-        // 사용자의 이름 전달
-        return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "작성자의 정보 전달 성공", userService.getQnaAuthor(authorId)),
-                HttpStatus.OK
-        );
-    }
-
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
     public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> getUsersInfo(@RequestParam List<Long> userIds) {
