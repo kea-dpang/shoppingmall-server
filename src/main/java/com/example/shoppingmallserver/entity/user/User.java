@@ -1,7 +1,6 @@
 package com.example.shoppingmallserver.entity.user;
 
 import com.example.shoppingmallserver.base.BaseEntity;
-import com.example.shoppingmallserver.base.Role;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 
@@ -34,12 +33,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;  // 이메일
 
-    @Column(nullable = false)
-    private String password;  // 비밀번호
-
-    @Enumerated(EnumType.STRING)
-    private Role role;  // 권한*/
-
     // 활성화 상태 (회원, 탈퇴)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -68,14 +61,5 @@ public class User extends BaseEntity {
         if (userDetail.getUser() != this) {
             userDetail.setUser(this);
         }
-    }
-
-    /**
-     * 비밀번호 변경 메서드
-     *
-     * @param newPassword 새 비밀번호
-     */
-    public void updatePassword(String newPassword) {
-        this.password = newPassword;
     }
 }

@@ -1,8 +1,5 @@
-package com.example.shoppingmallserver.dto;
+package com.example.shoppingmallserver.dto.request.user;
 
-import com.example.shoppingmallserver.base.Role;
-import com.example.shoppingmallserver.entity.user.User;
-import com.example.shoppingmallserver.entity.user.UserDetail;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -13,10 +10,6 @@ import java.time.LocalDate;
 public class RegisterRequestDto {
     @Schema(description = "이메일", example = "qwer1234@naver.com")
     private final String email;
-    @Schema(description = "비밀번호", example = "qwer1234!@#$")
-    private final String password;
-    @Schema(description = "역할", example = "USER")
-    private final Role role;
     @Schema(description = "사원번호", example = "1")
     private final Long employeeNumber;
     @Schema(description = "이름", example = "김디팡")
@@ -25,10 +18,8 @@ public class RegisterRequestDto {
     private final LocalDate joinDate;
 
 
-    public RegisterRequestDto(String email, String password, Role role, Long employeeNumber, String name, LocalDate joinDate) {
+    public RegisterRequestDto(String email, Long employeeNumber, String name, LocalDate joinDate) {
         this.email = email;
-        this.password = password;
-        this.role = role;
         this.employeeNumber = employeeNumber;
         this.name = name;
         this.joinDate = joinDate;

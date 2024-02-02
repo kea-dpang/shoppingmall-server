@@ -1,7 +1,6 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
-import com.example.shoppingmallserver.entity.wishlist.Wishlist;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsInfoDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
