@@ -4,6 +4,7 @@ import com.example.shoppingmallserver.dto.response.user.AdminReadUserListRespons
 import com.example.shoppingmallserver.dto.response.feign.QnaAuthorDto;
 import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.exception.*;
+import com.example.shoppingmallserver.feign.auth.AuthFeignClient;
 import com.example.shoppingmallserver.feign.mileage.MileageFeignClient;
 import com.example.shoppingmallserver.repository.*;
 
@@ -34,6 +35,12 @@ public class UserServiceImpl implements UserService {
      * 이 클라이언트를 사용해 마일리지 서비스와 통신할 수 있습니다.
      */
     private final MileageFeignClient mileageFeignClient;
+
+    /**
+     * 인증과 관련된 기능을 제공하는 Feign 클라이언트입니다.
+     * 이 클라이언트를 사용해 인증 서비스와 통신할 수 있습니다.
+     */
+    private final AuthFeignClient authFeignClient;
 
     @Override
     public void register(String email, Long employeeNumber, String name, LocalDate joinDate) {
@@ -99,6 +106,9 @@ public class UserServiceImpl implements UserService {
 
         // 마일리지 삭제
         mileageFeignClient.deleteMileage(userId, userId);
+
+        // 인증 삭제
+        authFeignClient.deleteUser(userId);
 
         log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
     }

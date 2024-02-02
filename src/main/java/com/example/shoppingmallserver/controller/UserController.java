@@ -5,7 +5,6 @@ import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.request.user.AddressRequestDto;
 import com.example.shoppingmallserver.dto.request.user.RegisterRequestDto;
 import com.example.shoppingmallserver.dto.request.user.WithdrawalRequestDto;
-import com.example.shoppingmallserver.dto.response.feign.QnaAuthorDto;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserListResponseDto;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserResponseDto;
 import com.example.shoppingmallserver.dto.request.user.DeleteListRequestDto;
@@ -186,7 +185,7 @@ public class UserController {
      * @param deleteListRequestDto 삭제할 사용자의 ID 리스트
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
-    @DeleteMapping("/list")// 내가 승현이한테 요청하기(feign) -> 바꾸기
+    @DeleteMapping("/list")// 이거는 일단 냅둬
     @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
     public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListRequestDto deleteListRequestDto) {
 
