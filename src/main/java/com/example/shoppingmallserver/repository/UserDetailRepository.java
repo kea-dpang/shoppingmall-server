@@ -42,4 +42,12 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      * @return 사용자 ID에 해당하는 사용자의 상세 정보
      */
     UserDetail findByUserId(Long userId);
+
+    /**
+     * 사용자 ID 리스트에 해당하는 사용자의 상세 정보 리스트를 조회합니다.
+     *
+     * @param userIds 조회할 사용자의 ID 리스트
+     * @return 사용자 정보 리스트
+     */
+    List<UserDetail> findAllByIdIn(List<Long> userIds);
 }

@@ -9,7 +9,6 @@ import com.example.shoppingmallserver.service.Category;
 import com.example.shoppingmallserver.service.TokenService;
 import com.example.shoppingmallserver.service.UserService;
 
-import com.example.shoppingmallserver.utils.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -294,6 +291,7 @@ public class UserController {
 
     // 상품 서비스에서의 리뷰 이름 요청
     @GetMapping("/reviewer/{reviewerId}")
+    @Operation(summary = "(백엔드) 사용자 정보 이름 조회", description = "백엔드에서 사용자 정보 이름을 조회합니다.")
     public ResponseEntity<SuccessResponse<String>> getReviewer(@PathVariable Long reviewerId) {
 
         // 사용자의 이름 전달
@@ -305,21 +303,24 @@ public class UserController {
 
     // QNA 서비스에서의 작성자 정보(이름, 이메일) 요청
     @GetMapping("/qna-find/{authorId}")
+    @Operation(summary = "(백엔드) 사용자 정보 이름, 이메일 조회", description = "백엔드에서 사용자 정보 이름, 이메일을 조회합니다.")
     public ResponseEntity<SuccessResponse<QnaAuthorDto>> getQnaAuthor(@PathVariable Long authorId) {
 
         // 사용자의 이름 전달
         return new ResponseEntity<>(
-                new SuccessResponse<>(HttpStatus.OK.value(), "작성자의 정보 전달 성공", userService.getQnaReviewer(authorId)),
+                new SuccessResponse<>(HttpStatus.OK.value(), "작성자의 정보 전달 성공", userService.getQnaAuthor(authorId)),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList() {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam List<Long> userIds) {
 
-        List<UserDetail> userDetails = userService.getUserList();
+        // Auth 서비스에서 이쪽으로 전해줄 DTO를 받아서 유저 아이디 리스트로 유저 정보 리스트를 요청
+        List<UserDetail> userDetails = userService.getUserList(userIds);
 
+        // DTO 리스트 생성
         List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
 
         // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
