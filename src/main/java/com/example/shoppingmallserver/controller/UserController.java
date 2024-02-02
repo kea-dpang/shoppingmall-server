@@ -316,10 +316,12 @@ public class UserController {
 
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList() {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListDto>>> adminGetUserList(@RequestParam List<Long> userIds) {
 
-        List<UserDetail> userDetails = userService.getUserList();
+        // Auth 서비스에서 이쪽으로 전해줄 DTO를 받아서 유저 아이디 리스트로 유저 정보 리스트를 요청
+        List<UserDetail> userDetails = userService.getUserList(userIds);
 
+        // DTO 리스트 생성
         List<AdminReadUserListDto> data = userDetails.stream().map(AdminReadUserListDto::new).toList();
 
         // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환

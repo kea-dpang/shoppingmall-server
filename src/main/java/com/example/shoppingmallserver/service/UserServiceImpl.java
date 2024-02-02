@@ -394,7 +394,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // 인증 서비스에서의 사용자 리스트 요청
-    public List<UserDetail> getUserList() {
-        return userDetailRepository.findAll();
+    public List<UserDetail> getUserList(List<Long> userIds) {
+        return userDetailRepository.findAllByIdIn(userIds);
     }
 }
