@@ -381,14 +381,15 @@ public class UserServiceImpl implements UserService {
 
     //==============================Feign요청=======================
 
-    // 상품 서비스에서의 리뷰 이름 요청
+    // 상품 서비스에서의 리뷰자 이름 요청
     @Override
     public User getReviewer(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    // QNA 서비스에서의 작성자 이름 및 이메일 요청
     @Override
-    public QnaAuthorDto getQnaReviewer(Long userId) {
+    public QnaAuthorDto getQnaAuthor(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return new QnaAuthorDto(user.getUserDetail().getName(), user.getEmail());
     }

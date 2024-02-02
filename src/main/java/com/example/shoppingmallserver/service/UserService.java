@@ -84,7 +84,7 @@ public interface UserService {
     User getReviewer(Long userId);
 
     // Qna 서비스에서의 작성자 정보 요청
-    QnaAuthorDto getQnaReviewer(Long userId);
+    QnaAuthorDto getQnaAuthor(Long userId);
 
     // Auth 서비스에서 유저 리스트 요청
     List<UserDetail> getUserList(List<Long> userIds);
