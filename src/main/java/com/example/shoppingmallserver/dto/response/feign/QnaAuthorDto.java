@@ -1,4 +1,4 @@
-package com.example.shoppingmallserver.dto;
+package com.example.shoppingmallserver.dto.response.feign;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

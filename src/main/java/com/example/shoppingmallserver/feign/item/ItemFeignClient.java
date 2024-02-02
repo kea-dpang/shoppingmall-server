@@ -1,6 +1,6 @@
-package com.example.shoppingmallserver.feign;
+package com.example.shoppingmallserver.feign.item;
 
-import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;

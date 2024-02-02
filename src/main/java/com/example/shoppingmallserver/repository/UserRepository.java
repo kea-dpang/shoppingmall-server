@@ -22,14 +22,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Page<User> findByEmailContaining(String keyword, Pageable pageable);
-
-    /**
-     * 사용자 ID에 해당하는 사용자와 그에 연관된 사용자의 상세 정보를 함께 조회합니다.
-     * 이 메서드는 사용자의 상세 정보를 함께 로딩하여 사용자의 상세 정보를 사용할 때 추가적인 쿼리를 방지합니다.
-     *
-     * @param userId 조회할 사용자의 ID
-     * @return 사용자 ID에 해당하는 사용자와 그에 연관된 사용자의 상세 정보
-     */
-    @Query("SELECT u FROM User u JOIN FETCH u.userDetail WHERE u.id = :userId")
-    User findWithUserDetailById(@Param("userId") Long userId);
 }

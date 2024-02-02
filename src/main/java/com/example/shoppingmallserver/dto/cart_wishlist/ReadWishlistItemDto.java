@@ -1,6 +1,5 @@
-package com.example.shoppingmallserver.dto;
+package com.example.shoppingmallserver.dto.cart_wishlist;
 
-import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 import lombok.Getter;
 
 @Getter

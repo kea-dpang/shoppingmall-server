@@ -1,11 +1,11 @@
-package com.example.shoppingmallserver.dto;
+package com.example.shoppingmallserver.feign.mileage;
 
-public class MileageDto {
+public class MileageResponseDto {
     public final Long userId;
     public final int mileage;
     public final int personalChargedMileage;
 
-    public MileageDto(Long userId, int mileage, int personalChargedMileage) {
+    public MileageResponseDto(Long userId, int mileage, int personalChargedMileage) {
         this.userId = userId;
         this.mileage = mileage;
         this.personalChargedMileage = personalChargedMileage;
