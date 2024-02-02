@@ -71,7 +71,7 @@ public class UserController {
      * @param id 삭제할 계정의 식별자
      * @return 성공 응답을 포함한 ResponseEntity. 계정 삭제가 성공하면 200 상태 코드와 성공 메시지를 반환
      */
-    @DeleteMapping("/delete-account/{id}")
+    @DeleteMapping("/withdrawal/{id}")
     @Operation(summary = "사용자 탈퇴", description = "사용자가 탈퇴를 했을 때, 정보를 삭제합니다.")
     public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id, @RequestBody WithdrawalRequestDto withdrawalRequestDto) {
 
@@ -186,7 +186,7 @@ public class UserController {
      * @param deleteListRequestDto 삭제할 사용자의 ID 리스트
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
-    @DeleteMapping("/admin/delete")
+    @DeleteMapping("/admin")
     @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
     public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListRequestDto deleteListRequestDto) {
 
@@ -229,7 +229,7 @@ public class UserController {
 
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> adminGetUserList(@RequestParam List<Long> userIds) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> getUsersInfo(@RequestParam List<Long> userIds) {
 
         // Auth 서비스에서 이쪽으로 전해줄 DTO를 받아서 유저 아이디 리스트로 유저 정보 리스트를 요청
         List<UserDetail> userDetails = userService.getUserList(userIds);
