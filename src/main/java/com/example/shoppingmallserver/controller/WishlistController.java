@@ -2,8 +2,8 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.*;
-import com.example.shoppingmallserver.feign.ItemFeignClient;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsInfoDto;
+import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.service.WishlistService;
 
 import io.swagger.v3.oas.annotations.Operation;

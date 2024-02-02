@@ -10,5 +10,4 @@ spring:
 
 logging:
   level:
-    org.springframework.security: DEBUG
-    com.example.shoppingmallserver.feign.*: DEBUG
+    com.example.shoppingmallserver.*: DEBUG

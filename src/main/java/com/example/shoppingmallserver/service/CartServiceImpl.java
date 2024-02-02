@@ -1,10 +1,10 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.ReadItemsDto;
-import com.example.shoppingmallserver.dto.ReadItemsInfoDto;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsInfoDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
-import com.example.shoppingmallserver.feign.ItemFeignClient;
+import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.ReadItemsDto;
+import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
 import com.example.shoppingmallserver.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
