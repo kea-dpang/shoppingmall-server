@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -222,6 +223,12 @@ public class UserServiceImpl implements UserService {
 
     // 인증 서비스에서의 사용자 리스트 요청
     public List<UserDetail> getUserList(List<Long> userIds) {
-        return userDetailRepository.findAllByIdIn(userIds);
+        List<UserDetail> userDetails = new ArrayList<>();
+        for (Long userId : userIds) {
+            UserDetail userDetail = userDetailRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException(userId));
+            userDetails.add(userDetail);
+        }
+        return userDetails;
     }
 }
