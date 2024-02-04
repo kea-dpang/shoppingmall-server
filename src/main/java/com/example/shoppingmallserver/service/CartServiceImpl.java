@@ -1,8 +1,8 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
-import com.example.shoppingmallserver.dto.cart_wishlist.ItemCartInquiryDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 조회
     @Override
-    public List<ReadItemsDto> getCartItemList(Long userId) {
+    public List<ReadCartItemResponseDto> getCartItemList(Long userId) {
 
         // 없는 사용자의 장바구니를 조회할 경우 예외 발생
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -48,14 +47,14 @@ public class CartServiceImpl implements CartService {
         Map<Long, Integer> items = cart.getItems();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
+        List<ItemCartInquiryResponseDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
         // 장바구니에 있는 각 아이템의 정보와 수량을 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
             Integer quantity = items.get(itemInfo.getItemId()); // 아이템의 수량을 조회
-            return new ReadItemsDto(itemInfo, quantity); // 아이템 정보와 수량을 이용하여 ReadItemsDto 객체를 생성
+            return new ReadCartItemResponseDto(itemInfo, quantity); // 아이템 정보와 수량을 이용하여 ReadItemsDto 객체를 생성
         }).toList();
     }
 

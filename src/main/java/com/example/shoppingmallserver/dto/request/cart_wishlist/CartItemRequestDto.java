@@ -1,4 +1,4 @@
-package com.example.shoppingmallserver.dto.cart_wishlist;
+package com.example.shoppingmallserver.dto.request.cart_wishlist;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

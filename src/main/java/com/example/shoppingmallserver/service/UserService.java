@@ -1,10 +1,7 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.response.feign.QnaAuthorDto;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserListResponseDto;
-import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
-import com.example.shoppingmallserver.entity.user.WithdrawalReason;
 
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
