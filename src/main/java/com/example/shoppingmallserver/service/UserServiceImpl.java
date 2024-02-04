@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAccount(Long userId, String oldPassword, WithdrawalReason reason, String message) {
+    public void deleteAccount(Long userId, String oldPassword, List<WithdrawalReason> reason, String message) {
 
         // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
         User user = userRepository.findById(userId)
