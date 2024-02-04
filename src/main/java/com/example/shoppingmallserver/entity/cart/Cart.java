@@ -35,6 +35,7 @@ public class Cart extends BaseEntity {
 
     // 상품 ID -> 상품에 맞는 수량을 넣도록 변경
     @ElementCollection
+    @Builder.Default
     private Map<Long, Integer> items = new HashMap<>(); // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
 
     @OneToOne(fetch = FetchType.LAZY)
