@@ -41,7 +41,14 @@ public class WishlistServiceImpl implements WishlistService {
 
         // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
         // + 변수 인라인화
-        return itemInfos.stream().map(ItemCartInquiryDto::new)
+        return itemInfos.stream()
+                .map(itemInfo -> new ItemCartInquiryDto(
+                        itemInfo.getItemId(),
+                        itemInfo.getImage(),
+                        itemInfo.getName(),
+                        itemInfo.getPrice(),
+                        itemInfo.getDiscountRate(),
+                        itemInfo.getDiscountPrice()))
                 .toList();
     }
 
