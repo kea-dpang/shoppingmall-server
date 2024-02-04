@@ -5,6 +5,7 @@ import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemRes
 import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
+import com.example.shoppingmallserver.exception.ItemNotInCartException;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
@@ -91,6 +92,13 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 해당 사용자의 없는 상품을 찾으려고 할 때 예외 발생
+        cartRepository.findByUserIdAndItemsContains(userId, itemId).orElseThrow(() -> new ItemNotInCartException(itemId));
+
         // 사용자 ID로 장바구니를 조회합니다.
         Cart cart = cartRepository.findCartByUserId(userId);
 
@@ -108,6 +116,9 @@ public class CartServiceImpl implements CartService {
 
         // 없는 사용자의 장바구니를 조회할 경우 예외 발생
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 해당 사용자의 없는 상품을 찾으려고 할 때 예외 발생
+        cartRepository.findByUserIdAndItemsContains(userId, itemId).orElseThrow(() -> new ItemNotInCartException(itemId));
 
         // 특정 사용자의 장바구니를 찾는다.
         Cart cart = cartRepository.findCartByUserId(userId);
