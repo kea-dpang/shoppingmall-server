@@ -1,10 +1,11 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
-import com.example.shoppingmallserver.dto.cart_wishlist.ItemCartInquiryDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
+import com.example.shoppingmallserver.exception.ItemNotInCartException;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
@@ -15,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 조회
     @Override
-    public List<ReadItemsDto> getCartItemList(Long userId) {
+    public List<ReadCartItemResponseDto> getCartItemList(Long userId) {
 
         // 없는 사용자의 장바구니를 조회할 경우 예외 발생
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -48,20 +48,23 @@ public class CartServiceImpl implements CartService {
         Map<Long, Integer> items = cart.getItems();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
+        List<ItemCartInquiryResponseDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
         // 장바구니에 있는 각 아이템의 정보와 수량을 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
             Integer quantity = items.get(itemInfo.getItemId()); // 아이템의 수량을 조회
-            return new ReadItemsDto(itemInfo, quantity); // 아이템 정보와 수량을 이용하여 ReadItemsDto 객체를 생성
+            return new ReadCartItemResponseDto(itemInfo, quantity); // 아이템 정보와 수량을 이용하여 ReadItemsDto 객체를 생성
         }).toList();
     }
 
     // 장바구니 상품 추가
     @Override
     public void addCartItem(Long userId, Long itemId, int quantity) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         // 특정 사용자의 장바구니를 찾는다.
         Cart cart = cartRepository.findCartByUserId(userId);
@@ -89,6 +92,13 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public void deleteCartItem(Long userId, Long itemId) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 해당 사용자의 없는 상품을 찾으려고 할 때 예외 발생
+        cartRepository.findByUserIdAndItemsContains(userId, itemId).orElseThrow(() -> new ItemNotInCartException(itemId));
+
         // 사용자 ID로 장바구니를 조회합니다.
         Cart cart = cartRepository.findCartByUserId(userId);
 
@@ -99,5 +109,26 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
 
         log.info("장바구니 상품 삭제 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
+    }
+
+    @Override
+    public void minusCartItem(Long userId, Long itemId) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 해당 사용자의 없는 상품을 찾으려고 할 때 예외 발생
+        cartRepository.findByUserIdAndItemsContains(userId, itemId).orElseThrow(() -> new ItemNotInCartException(itemId));
+
+        // 특정 사용자의 장바구니를 찾는다.
+        Cart cart = cartRepository.findCartByUserId(userId);
+
+        // 장바구니에 아이템 갯수 -1
+        cart.addItem(itemId, -1); // 개수에 -1을 더하면 한개 빼게 되는 로직임
+
+        // 저장
+        cartRepository.save(cart);
+
+        log.info("장바구니 상품 갯수 감소 성공. 사용자 아이디: {}, 상품 아이디: {}, 상품의 개수 : {} -> {}", userId, itemId, cart.getItems().get(itemId), cart.getItems().get(itemId) - 1);
     }
 }
