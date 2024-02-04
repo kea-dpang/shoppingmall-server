@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 장바구니 항목에 대한 데이터 접근을 담당하는 레포지토리 인터페이스입니다.
@@ -21,4 +22,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
    * @return 조회된 장바구니
    */
   Cart findCartByUserId(Long userId);
+
+  Optional<Cart> findByUserIdAndItemsContains(Long userId, Long itemId);
 }
