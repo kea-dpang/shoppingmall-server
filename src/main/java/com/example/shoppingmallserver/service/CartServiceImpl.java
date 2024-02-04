@@ -4,9 +4,11 @@ package com.example.shoppingmallserver.service;
 import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
 import com.example.shoppingmallserver.dto.cart_wishlist.ItemCartInquiryDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
+import com.example.shoppingmallserver.exception.UserNotFoundException;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
 
+import com.example.shoppingmallserver.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
+    private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ItemFeignClient itemFeignClient;
 
     // 장바구니 상품 조회
     @Override
     public List<ReadItemsDto> getCartItemList(Long userId) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         // 사용자 ID 기반으로 장바구니 조회
         Cart cart = cartRepository.findCartByUserId(userId);

@@ -47,6 +47,12 @@ public class Cart extends BaseEntity {
      * @param itemId 장바구니에 추가된 상품의 ID
      */
     public void addItem(Long itemId, int quantity) {
+
+        // 혹시 장바구니가 비어있는 상황을 없애기 위한 코드
+        if (items == null) {
+            items = new HashMap<>();
+        }
+
         // 이미 장바구니에 동일한 상품이 있는지 확인
         Integer currentQuantity = items.get(itemId);
         if (currentQuantity == null) {
