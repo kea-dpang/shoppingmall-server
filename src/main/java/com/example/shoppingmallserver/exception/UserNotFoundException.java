@@ -16,11 +16,11 @@ public class UserNotFoundException extends RuntimeException {
     }
 
     /**
-     * 이메일을 통해 사용자를 찾을 수 없을 때 이 예외를 생성합니다.
+     * 일반적인 경우로 사용자를 찾을 수 없을 때 이 예외를 생성합니다.
      *
-     * @param email 찾을 수 없는 사용자의 이메일
+     * @param status 찾을 수 없는 경우의 예외 상태 설명
      */
-    public UserNotFoundException(String email) {
-        super("해당 이메일을 가진 사용자를 찾을 수 없습니다: " + email);
+    public UserNotFoundException(String status) {
+        super(status);
     }
 }
