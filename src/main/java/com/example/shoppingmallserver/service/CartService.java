@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public interface CartService {
 
     // 장바구니 상품 조회
-    List<ReadItemsDto> getCartItemList(Long userId);
+    List<ReadCartItemResponseDto> getCartItemList(Long userId);
 
     // 장바구니 상품 추가
     void addCartItem(Long userId, Long itemId, int quantity);

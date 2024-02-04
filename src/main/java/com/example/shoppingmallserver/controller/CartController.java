@@ -2,8 +2,8 @@ package com.example.shoppingmallserver.controller;
 
 import com.example.shoppingmallserver.base.BaseResponse;
 import com.example.shoppingmallserver.base.SuccessResponse;
-import com.example.shoppingmallserver.dto.cart_wishlist.CartItemRequestDto;
-import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
+import com.example.shoppingmallserver.dto.request.cart_wishlist.CartItemRequestDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
 import com.example.shoppingmallserver.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +41,7 @@ public class CartController {
      */
     @GetMapping
     @Operation(summary = "장바구니 목록 조회", description = "사용자가 장바구니 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<ReadItemsDto>>> getCartItemList(@PathVariable @Parameter(description = "유저 ID(PK)", example = "3") Long userId) {
+    public ResponseEntity<SuccessResponse<List<ReadCartItemResponseDto>>> getCartItemList(@PathVariable @Parameter(description = "유저 ID(PK)", example = "3") Long userId) {
 
         // CartService에서 만든 메서드로 DTO를 받아온걸 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림

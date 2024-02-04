@@ -1,4 +1,4 @@
-package com.example.shoppingmallserver.dto.cart_wishlist;
+package com.example.shoppingmallserver.dto.response.cart_wishlist;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemCartInquiryDto {
+public class ItemCartInquiryResponseDto {
     private Long itemId; // 상품 ID
     private String image; // 상품 이미지 URL
     private String name; // 상품 이름
