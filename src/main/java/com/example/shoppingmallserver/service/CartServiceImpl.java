@@ -95,7 +95,7 @@ public class CartServiceImpl implements CartService {
 
         // 없는 사용자의 장바구니를 조회할 경우 예외 발생
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        
+      
         // 사용자 ID로 장바구니를 조회합니다.
         Cart cart = cartRepository.findCartByUserId(userId);
 
