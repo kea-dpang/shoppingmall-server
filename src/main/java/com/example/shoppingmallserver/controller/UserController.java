@@ -70,12 +70,12 @@ public class UserController {
      * @param id 삭제할 계정의 식별자
      * @return 성공 응답을 포함한 ResponseEntity. 계정 삭제가 성공하면 200 상태 코드와 성공 메시지를 반환
      */
-    @DeleteMapping("/withdrawal/{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "사용자 탈퇴", description = "사용자가 탈퇴를 했을 때, 정보를 삭제합니다.")
     public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id, @RequestBody WithdrawalRequestDto withdrawalRequestDto) {
 
         // 사용자 ID로 계정 삭제
-        userService.deleteAccount(id, withdrawalRequestDto.getOldPassword(), withdrawalRequestDto.getReason(), withdrawalRequestDto.getMessage());
+        userService.deleteAccount(id, withdrawalRequestDto.getReason(), withdrawalRequestDto.getMessage());
 
         // 성공 응답 생성 및 반환
         return new ResponseEntity<>(

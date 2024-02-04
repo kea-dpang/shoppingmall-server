@@ -9,15 +9,12 @@ import java.util.List;
 @Schema(description = "탈퇴 정보")
 @Getter
 public class WithdrawalRequestDto {
-    @Schema(description = "비밀번호 확인", example = "qwer1234!@#$")
-    private final String oldPassword;
     @Schema(description = "탈퇴 사유(enum)")
-    private final List<WithdrawalReason> reason;
-    @Schema(description = "남길 말씀", example = "서비스가 맘에 안드네요")
+    private final List<String> reason;
+    @Schema(description = "남길 말씀", example  = "서비스가 맘에 안드네요")
     private final String message;
 
-    public WithdrawalRequestDto(List<WithdrawalReason> reason, String message, String oldPassword) {
-        this.oldPassword = oldPassword;
+    public WithdrawalRequestDto(List<String> reason, String message) {
         this.reason = reason;
         this.message = message;
     }

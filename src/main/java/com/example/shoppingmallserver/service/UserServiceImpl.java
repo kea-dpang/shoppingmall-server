@@ -1,10 +1,10 @@
 package com.example.shoppingmallserver.service;
 
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserListResponseDto;
-import com.example.shoppingmallserver.dto.response.feign.QnaAuthorDto;
+import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.*;
+import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 import com.example.shoppingmallserver.exception.*;
-import com.example.shoppingmallserver.feign.auth.AuthFeignClient;
 import com.example.shoppingmallserver.feign.mileage.MileageFeignClient;
 import com.example.shoppingmallserver.repository.*;
 
@@ -36,12 +36,6 @@ public class UserServiceImpl implements UserService {
      * 이 클라이언트를 사용해 마일리지 서비스와 통신할 수 있습니다.
      */
     private final MileageFeignClient mileageFeignClient;
-
-    /**
-     * 인증과 관련된 기능을 제공하는 Feign 클라이언트입니다.
-     * 이 클라이언트를 사용해 인증 서비스와 통신할 수 있습니다.
-     */
-    private final AuthFeignClient authFeignClient;
 
     @Override
     public void register(String email, Long employeeNumber, String name, LocalDate joinDate) {
@@ -85,33 +79,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAccount(Long userId, String oldPassword, List<WithdrawalReason> reason, String message) {
+    public void deleteAccount(Long userId, List<String> reasons, String message) {
 
         // 식별자로 계정 조회. 계정이 존재하지 않으면 예외 발생
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
+        List<WithdrawalReason> enumReasons = new ArrayList<>();
+
+        // reason을 String에서 enum으로 변경
+        for(String reason : reasons) {
+            enumReasons.add(WithdrawalReason.valueOf(reason));
+        }
+
         // 유저 탈퇴 사유 생성
         UserWithdrawal userWithdrawal = UserWithdrawal
                 .builder()
-                .reason(reason)
+                .reason(enumReasons)
                 .message(message)
                 .withdrawalDate(LocalDate.now())
                 .build();
 
         // 계정, 정보, 장바구니, 위시리스트 삭제
-        userRepository.delete(user);
-        userDetailRepository.delete(user.getUserDetail());
-        cartRepository.delete(cartRepository.findCartByUserId(userId));
-        wishlistRepository.delete(wishlistRepository.findWishlistByUserId(userId));
+        if(userRepository.existsById(userId)) {
+            userRepository.delete(user);
+        }
+
+        UserDetail userDetail = user.getUserDetail();
+        if(userDetail != null && userDetailRepository.existsById(userDetail.getId())) {
+            userDetailRepository.delete(userDetail);
+        }
+
+        Cart cart = cartRepository.findCartByUserId(userId);
+        if(cart != null && cartRepository.existsById(cart.getId())) {
+            cartRepository.delete(cart);
+        }
+
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
+        if(wishlist != null && wishlistRepository.existsById(wishlist.getId())) {
+            wishlistRepository.delete(wishlist);
+        }
 
         // 마일리지 삭제
-        mileageFeignClient.deleteMileage(userId, userId);
+        //mileageFeignClient.deleteMileage(userId, userId);
 
-        // 인증 삭제
-        authFeignClient.deleteUser(userId);
-
-        log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}", userWithdrawal.getId());
+        log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}. 탈퇴 사유: {}", userWithdrawal.getId(), userWithdrawal.getReason());
     }
 
     // 사용자 정보 조회
