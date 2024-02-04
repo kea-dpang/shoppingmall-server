@@ -39,7 +39,8 @@ public class CartServiceImpl implements CartService {
 
         // 장바구니가 비어있으면 빈 리스트 반환
         if (cart == null) {
-            return Collections.emptyList();
+            // 새 카트 생성 (빌더)
+            cart = Cart.builder().build();
         }
 
         // 장바구니 기반으로 아이템 목록 조회
