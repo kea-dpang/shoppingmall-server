@@ -22,6 +22,4 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
    * @return 조회된 장바구니
    */
   Cart findCartByUserId(Long userId);
-
-  Optional<Cart> findByUserIdAndItemsContains(Long userId, Long itemId);
 }
