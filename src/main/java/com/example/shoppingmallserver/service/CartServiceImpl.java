@@ -4,6 +4,7 @@ package com.example.shoppingmallserver.service;
 import com.example.shoppingmallserver.dto.cart_wishlist.ReadItemsDto;
 import com.example.shoppingmallserver.dto.cart_wishlist.ItemCartInquiryDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
+import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
@@ -67,7 +68,8 @@ public class CartServiceImpl implements CartService {
 
         if(cart == null) { // 카트가 없을 경우
             // 새 카트 생성 (빌더)
-            cart = Cart.builder().build();
+            User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+            cart = Cart.builder().user(user).build();
         }
 
         // 장바구니에 아이템 추가
