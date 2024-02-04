@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
+    private final UserWithdrawalRepository userWithdrawalRepository;
     private final CartRepository cartRepository;
     private final WishlistRepository wishlistRepository;
 
@@ -99,6 +100,9 @@ public class UserServiceImpl implements UserService {
                 .message(message)
                 .withdrawalDate(LocalDate.now())
                 .build();
+
+        // 유저 탈퇴 사유 저장
+        userWithdrawalRepository.save(userWithdrawal);
 
         // 계정, 정보, 장바구니, 위시리스트 삭제
         if(userRepository.existsById(userId)) {
