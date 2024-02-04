@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class Cart extends BaseEntity {
 
     // 상품 ID -> 상품에 맞는 수량을 넣도록 변경
     @ElementCollection
-    private Map<Long, Integer> items; // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
+    private Map<Long, Integer> items = new HashMap<>(); // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -45,15 +46,15 @@ public class Cart extends BaseEntity {
      *
      * @param itemId 장바구니에 추가된 상품의 ID
      */
-    public void addItem(Long itemId) {
+    public void addItem(Long itemId, int quantity) {
         // 이미 장바구니에 동일한 상품이 있는지 확인
         Integer currentQuantity = items.get(itemId);
         if (currentQuantity == null) {
             // 장바구니에 동일한 상품이 없는 경우, 새로운 아이템을 추가
-            items.put(itemId, 1);
+            items.put(itemId, quantity);
         } else {
             // 장바구니에 동일한 상품이 있는 경우, 수량을 증가
-            items.put(itemId, currentQuantity + 1);
+            items.put(itemId, currentQuantity + quantity);
         }
     }
 
