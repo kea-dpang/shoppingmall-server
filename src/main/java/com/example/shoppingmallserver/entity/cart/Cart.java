@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class Cart extends BaseEntity {
 
     // 상품 ID -> 상품에 맞는 수량을 넣도록 변경
     @ElementCollection
-    private Map<Long, Integer> items; // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
+    private Map<Long, Integer> items = new HashMap<>(); // 장바구니에 담긴 상품들. key는 상품 ID, value는 수량
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
