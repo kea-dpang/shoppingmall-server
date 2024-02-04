@@ -35,7 +35,7 @@ public class WishlistServiceImpl implements WishlistService {
         List<Long> itemIds = wishlist.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(itemIds);
+        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(itemIds).getBody().getData();
 
         log.info("위시리스트 상품 조회 성공. 사용자 아이디: {}", userId);
 

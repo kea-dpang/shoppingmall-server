@@ -48,7 +48,7 @@ public class CartServiceImpl implements CartService {
         Map<Long, Integer> items = cart.getItems();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet()));
+        List<ItemCartInquiryDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
