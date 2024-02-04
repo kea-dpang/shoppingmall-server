@@ -45,15 +45,15 @@ public class Cart extends BaseEntity {
      *
      * @param itemId 장바구니에 추가된 상품의 ID
      */
-    public void addItem(Long itemId) {
+    public void addItem(Long itemId, int quantity) {
         // 이미 장바구니에 동일한 상품이 있는지 확인
         Integer currentQuantity = items.get(itemId);
         if (currentQuantity == null) {
             // 장바구니에 동일한 상품이 없는 경우, 새로운 아이템을 추가
-            items.put(itemId, 1);
+            items.put(itemId, quantity);
         } else {
             // 장바구니에 동일한 상품이 있는 경우, 수량을 증가
-            items.put(itemId, currentQuantity + 1);
+            items.put(itemId, currentQuantity + quantity);
         }
     }
 

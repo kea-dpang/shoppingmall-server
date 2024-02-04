@@ -47,7 +47,7 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니 상품 추가
     @Override
-    public void addCartItem(Long userId, Long itemId) {
+    public void addCartItem(Long userId, Long itemId, int quantity) {
 
         // 특정 사용자의 장바구니를 찾는다.
         Cart cart = cartRepository.findCartByUserId(userId);
@@ -58,7 +58,7 @@ public class CartServiceImpl implements CartService {
         }
 
         // 장바구니에 아이템 추가
-        cart.addItem(itemId);
+        cart.addItem(itemId, quantity);
 
         // 저장
         cartRepository.save(cart);
