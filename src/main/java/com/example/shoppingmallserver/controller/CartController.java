@@ -81,7 +81,7 @@ public class CartController {
      */
     @DeleteMapping("/{itemId}")
     @Operation(summary = "장바구니 상품 삭제", description = "사용자가 장바구니 상품을 삭제합니다.")
-    public ResponseEntity<BaseResponse> deleteCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "1") Long itemId) {
+    public ResponseEntity<BaseResponse> deleteCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 삭제
         cartService.deleteCartItem(userId, itemId);
@@ -89,6 +89,27 @@ public class CartController {
         // API 호출한 곳에 전달
         return new ResponseEntity<>(
                 new BaseResponse(HttpStatus.NO_CONTENT.value(), "장바구니에서 상품을 성공적으로 삭제하였습니다."),
+                HttpStatus.NO_CONTENT
+        );
+    }
+
+    /**
+     * 사용자의 장바구니에서 아이템에 해당하는 장바구니 항목의 개수를 1개 감소시킵니다.
+     *
+     * @param userId 사용자 ID
+     * @param itemId 감소할 장바구니 항목 ID
+     * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
+     */
+    @PostMapping("/{itemId}/minus")
+    @Operation(summary = "장바구니 상품 1개 감소", description = "사용자가 장바구니 상품의 개수를 1개 감소 시킵니다.")
+    public ResponseEntity<BaseResponse> minusCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
+
+        // 사용자 아이디와 아이템 정보를 통해 감소
+        cartService.minusCartItem(userId, itemId);
+
+        // API 호출한 곳에 전달
+        return new ResponseEntity<>(
+                new BaseResponse(HttpStatus.NO_CONTENT.value(), "장바구니에 상품의 개수를 성공적으로 감소시켰습니다."),
                 HttpStatus.NO_CONTENT
         );
     }
