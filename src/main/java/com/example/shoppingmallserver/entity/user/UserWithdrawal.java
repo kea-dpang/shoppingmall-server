@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class UserWithdrawal extends BaseEntity {
     private Long id;
 
     // 탈퇴 사유 (1. 고객서비스 불만 2. ~~)
-    private WithdrawalReason reason;
+    private List<WithdrawalReason> reason;
 
     // 남길 말씀
     private String message;
