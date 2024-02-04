@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,11 @@ public class CartServiceImpl implements CartService {
 
         // 사용자 ID 기반으로 장바구니 조회
         Cart cart = cartRepository.findCartByUserId(userId);
+
+        // 장바구니가 비어있으면 빈 리스트 반환
+        if (cart == null) {
+            return Collections.emptyList();
+        }
 
         // 장바구니 기반으로 아이템 목록 조회
         Map<Long, Integer> items = cart.getItems();
