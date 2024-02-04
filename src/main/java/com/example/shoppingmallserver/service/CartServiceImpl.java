@@ -62,6 +62,9 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addCartItem(Long userId, Long itemId, int quantity) {
 
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         // 특정 사용자의 장바구니를 찾는다.
         Cart cart = cartRepository.findCartByUserId(userId);
 
@@ -98,5 +101,23 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
 
         log.info("장바구니 상품 삭제 성공. 사용자 아이디: {}, 상품 아이디: {}", userId, itemId);
+    }
+
+    @Override
+    public void minusCartItem(Long userId, Long itemId) {
+
+        // 없는 사용자의 장바구니를 조회할 경우 예외 발생
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 특정 사용자의 장바구니를 찾는다.
+        Cart cart = cartRepository.findCartByUserId(userId);
+
+        // 장바구니에 아이템 갯수 -1
+        cart.addItem(itemId, -1); // 개수에 -1을 더하면 한개 빼게 되는 로직임
+
+        // 저장
+        cartRepository.save(cart);
+
+        log.info("장바구니 상품 갯수 감소 성공. 사용자 아이디: {}, 상품 아이디: {}, 상품의 개수 : {} -> {}", userId, itemId, cart.getItems().get(itemId), cart.getItems().get(itemId) - 1);
     }
 }

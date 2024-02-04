@@ -17,4 +17,7 @@ public interface CartService {
     // 장바구니 상품 삭제
     void deleteCartItem(Long userId, Long itemId);
 
+    // 장바구니 상품 1개 감소
+    void minusCartItem(Long userId, Long itemId);
+
 }
