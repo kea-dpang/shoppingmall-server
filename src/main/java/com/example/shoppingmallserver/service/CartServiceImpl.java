@@ -53,9 +53,13 @@ public class CartServiceImpl implements CartService {
         ResponseEntity<SuccessResponse<List<ItemDto>>> response = itemFeignClient.getItemList(itemIds);
 
         // 응답 본문에서 itemInfos를 추출합니다.
-        List<ItemDto> itemInfos = Objects.requireNonNull(response.getBody()).getData();
+        List<ItemDto> itemInfos = response.getBody().getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
+
+        for(ItemDto itemDto : itemInfos) {
+            log.info("아이템 정보 {}", itemDto);
+        }
 
         // 장바구니에 있는 각 아이템의 정보를 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
