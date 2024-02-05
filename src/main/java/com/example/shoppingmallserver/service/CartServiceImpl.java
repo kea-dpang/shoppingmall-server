@@ -46,10 +46,16 @@ public class CartServiceImpl implements CartService {
             cart = Cart.builder().build();
         }
 
+        log.info("cart: {}", cart);
+
         // 장바구니 기반으로 아이템 목록 조회
         Map<Long, Integer> items = cart.getItems();
 
+        log.info("items: {}", items);
+
         List<Long> itemIds = new ArrayList<>(items.keySet());
+
+        log.info("itemId{}", itemIds);
 
         ResponseEntity<SuccessResponse<List<ItemDto>>> response = itemFeignClient.getItemList(itemIds);
 
