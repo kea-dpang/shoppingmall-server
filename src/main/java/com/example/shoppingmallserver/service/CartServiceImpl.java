@@ -52,13 +52,11 @@ public class CartServiceImpl implements CartService {
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
-        // 장바구니에 있는 각 아이템의 정보와 수량을 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
+        // 장바구니에 있는 각 아이템의 정보를 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
-            Integer quantity = items.get(itemInfo.getItemId()); // 아이템의 수량을 조회
-            if (quantity == null) {
-                quantity = 0; // quantity가 null인 경우 기본값 0을 사용
-            }
-            return new ReadCartItemResponseDto(itemInfo, quantity); // 아이템 정보와 수량을 이용하여 ReadItemsDto 객체를 생성
+            // Cart.java에서 아이템의 수량을 가져옵니다.
+            Integer quantity = items.get(itemInfo.getItemId());
+            return new ReadCartItemResponseDto(itemInfo, quantity);
         }).toList();
     }
 
