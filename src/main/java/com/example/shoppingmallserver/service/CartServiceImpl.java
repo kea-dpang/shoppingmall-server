@@ -58,7 +58,7 @@ public class CartServiceImpl implements CartService {
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
         for(ItemDto itemDto : itemInfos) {
-            log.info("아이템 정보 {}", itemDto);
+            log.info("아이템 정보 {}", itemDto.getItemId());
         }
 
         // 장바구니에 있는 각 아이템의 정보를 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
