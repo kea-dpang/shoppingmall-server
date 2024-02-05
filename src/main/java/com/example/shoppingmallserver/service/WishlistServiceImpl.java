@@ -48,6 +48,7 @@ public class WishlistServiceImpl implements WishlistService {
                         itemInfo.getImage(),
                         itemInfo.getName(),
                         itemInfo.getPrice(),
+                        itemInfo.getQuantity(),
                         itemInfo.getDiscountRate(),
                         itemInfo.getDiscountPrice()))
                 .toList();
