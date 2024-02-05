@@ -1,6 +1,5 @@
 package com.example.shoppingmallserver.dto.response.cart_wishlist;
 
-import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
 import lombok.Getter;
 
 /**
@@ -20,16 +19,16 @@ public class ReadCartItemResponseDto {
     /**
      * ItemCartInquiry와 수량을 이용하여 ReadCartItemResponseDto를 생성합니다.
      *
-     * @param itemCartInquiryResponseDto 장바구니 상품 정보를 담은 DTO
+     * @param itemDto 장바구니 상품 정보를 담은 DTO
      * @param quantity 상품의 수량
      */
-    public ReadCartItemResponseDto(ItemCartInquiryResponseDto itemCartInquiryResponseDto, int quantity) {
-        this.itemId = itemCartInquiryResponseDto.getItemId();
-        this.image = itemCartInquiryResponseDto.getImage();
-        this.name = itemCartInquiryResponseDto.getName();
-        this.price = itemCartInquiryResponseDto.getPrice();
-        this.discountRate = itemCartInquiryResponseDto.getDiscountRate();
-        this.discountPrice = itemCartInquiryResponseDto.getDiscountPrice();
+    public ReadCartItemResponseDto(ItemDto itemDto, int quantity) {
+        this.itemId = itemDto.getItemId();
+        this.image = itemDto.getImage();
+        this.name = itemDto.getName();
+        this.price = itemDto.getPrice();
+        this.discountRate = itemDto.getDiscountRate();
+        this.discountPrice = itemDto.getDiscountPrice();
         this.quantity = quantity;
     }
 }
