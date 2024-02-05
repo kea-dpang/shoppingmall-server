@@ -46,16 +46,10 @@ public class CartServiceImpl implements CartService {
             cart = Cart.builder().build();
         }
 
-        log.info("cart: {}", cart);
-
         // 장바구니 기반으로 아이템 목록 조회
         Map<Long, Integer> items = cart.getItems();
 
-        log.info("items: {}", items);
-
         List<Long> itemIds = new ArrayList<>(items.keySet());
-
-        log.info("itemId{}", itemIds);
 
         ResponseEntity<SuccessResponse<List<ItemDto>>> response = itemFeignClient.getItemList(itemIds);
 
@@ -66,7 +60,7 @@ public class CartServiceImpl implements CartService {
 
         // 장바구니에 있는 각 아이템의 정보를 이용하여 ReadItemsDto 객체를 생성하고, 이를 리스트로 변환하여 반환
         return itemInfos.stream().map(itemInfo -> {
-            Integer quantity = items.get(itemInfo.getItemId());
+            Integer quantity = items.get(itemInfo.getId());
             return new ReadCartItemResponseDto(itemInfo, quantity);
         }).toList();
     }
