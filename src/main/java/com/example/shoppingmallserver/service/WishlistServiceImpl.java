@@ -44,8 +44,8 @@ public class WishlistServiceImpl implements WishlistService {
         // + 변수 인라인화
         return itemInfos.stream()
                 .map(itemInfo -> new ItemDto(
-                        itemInfo.getItemId(),
-                        itemInfo.getImage(),
+                        itemInfo.getId(),
+                        itemInfo.getThumbnailImage(),
                         itemInfo.getName(),
                         itemInfo.getPrice(),
                         itemInfo.getQuantity(),
