@@ -1,8 +1,9 @@
 package com.example.shoppingmallserver.service;
 
 
-import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
+import com.example.shoppingmallserver.base.SuccessResponse;
 import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
@@ -12,6 +13,7 @@ import com.example.shoppingmallserver.repository.CartRepository;
 import com.example.shoppingmallserver.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,8 +49,11 @@ public class CartServiceImpl implements CartService {
         // 장바구니 기반으로 아이템 목록 조회
         Map<Long, Integer> items = cart.getItems();
 
-        // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemDto> itemInfos = Objects.requireNonNull(itemFeignClient.getItemList(new ArrayList<>(items.keySet())).getBody()).getData();
+        List<Long> itemIds = new ArrayList<>(items.keySet());
+        ResponseEntity<SuccessResponse<List<ItemDto>>> response = itemFeignClient.getItemList(itemIds);
+
+        // 응답 본문에서 itemInfos를 추출합니다.
+        List<ItemDto> itemInfos = Objects.requireNonNull(response.getBody()).getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 
