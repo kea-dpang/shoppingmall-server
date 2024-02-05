@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -166,10 +167,10 @@ public class UserController {
      */
     @GetMapping("/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> adminGetUserList(@RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category, @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword, Pageable pageable) {
+    public ResponseEntity<SuccessResponse<Page<AdminReadUserListResponseDto>>> adminGetUserList(@RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category, @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword, Pageable pageable) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
-        List<AdminReadUserListResponseDto> userDetails = userService.getUserList(category, keyword, pageable);
+        Page<AdminReadUserListResponseDto> userDetails = userService.getUserList(category, keyword, pageable);
 
         // 생성한 응답 DTO 목록을 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 사용자 정보 목록이 성공적으로 조회되었음을 알림
