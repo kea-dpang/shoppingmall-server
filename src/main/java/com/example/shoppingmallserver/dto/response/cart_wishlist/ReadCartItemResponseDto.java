@@ -23,8 +23,8 @@ public class ReadCartItemResponseDto {
      * @param quantity 상품의 수량
      */
     public ReadCartItemResponseDto(ItemDto itemDto, int quantity) {
-        this.itemId = itemDto.getItemId();
-        this.image = itemDto.getImage();
+        this.itemId = itemDto.getId();
+        this.image = itemDto.getThumbnailImage();
         this.name = itemDto.getName();
         this.price = itemDto.getPrice();
         this.discountRate = itemDto.getDiscountRate();
