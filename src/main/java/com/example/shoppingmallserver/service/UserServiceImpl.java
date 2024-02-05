@@ -19,7 +19,6 @@ import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -160,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
     // 관리자의 사용자 정보 리스트 조회
     @Override
-    public List<AdminReadUserListResponseDto> getUserList(Category category, String keyword, Pageable pageable) {
+    public Page<AdminReadUserListResponseDto> getUserList(Category category, String keyword, Pageable pageable) {
 
         // 키워드가 있는 경우
         if(keyword != null) {
@@ -170,49 +169,37 @@ public class UserServiceImpl implements UserService {
                         Long employeeNumber = Long.parseLong(keyword);
                         Page<UserDetail> userIds = userDetailRepository.findByEmployeeNumber(employeeNumber, pageable);
                         log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
-                        return userIds.stream()
-                                .map(AdminReadUserListResponseDto::new)
-                                .collect(Collectors.toList());
+                        return userIds.map(AdminReadUserListResponseDto::new);
                     }
                     else {
-                        return null;
+                        return Page.empty();
                     }
                 }
                 case EMAIL -> {
                     Page<User> userIds = userRepository.findByEmailContaining(keyword, pageable);
                     log.info("조건에 따른 사용자 정보 조회 성공. 조건: {}", keyword);
-                    return userIds.stream()
-                            .map(this::convertToDto)
-                            .collect(Collectors.toList());
+                    return userIds.map(this::convertToDto);
                 }
                 case NAME -> {
                     Page<UserDetail> userIds = userDetailRepository.findByNameContaining(keyword, pageable);
                     log.info("키워드 조건에 따른 사용자 정보 조회 성공. 조건: {}. 키워드: {}.", category, keyword);
-                    return userIds.stream()
-                            .map(AdminReadUserListResponseDto::new)
-                            .collect(Collectors.toList());
+                    return userIds.map(AdminReadUserListResponseDto::new);
                 }
                 case ALL -> {
                     Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
                     log.info("사용자 전체 정보 조회 성공.");
-                    return userIds.stream()
-                            .map(AdminReadUserListResponseDto::new)
-                            .collect(Collectors.toList());
+                    return userIds.map(AdminReadUserListResponseDto::new);
                 }
             }
         }
         else {
             Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
             log.info("사용자 전체 정보 조회 성공.");
-            return userIds.stream()
-                    .map(AdminReadUserListResponseDto::new)
-                    .collect(Collectors.toList());
+            return userIds.map(AdminReadUserListResponseDto::new);
         }
         Page<UserDetail> userIds = userDetailRepository.findAll(pageable);
         log.info("사용자 전체 정보 조회 성공.");
-        return userIds.stream()
-                .map(AdminReadUserListResponseDto::new)
-                .collect(Collectors.toList());
+        return userIds.map(AdminReadUserListResponseDto::new);
     }
 
     private AdminReadUserListResponseDto convertToDto(User user) {
