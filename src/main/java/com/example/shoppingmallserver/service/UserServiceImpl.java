@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
                         return userIds.map(AdminReadUserListResponseDto::new);
                     }
                     else {
-                        return Page.empty();
+                        return null;
                     }
                 }
                 case EMAIL -> {
