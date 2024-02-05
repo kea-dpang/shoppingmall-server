@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.service;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserListResponseDto;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
@@ -39,7 +40,7 @@ public interface UserService {
     UserDetail getAdminUserById(Long userId);
 
     // 관리자의 사용자 정보 리스트 조회
-    List<AdminReadUserListResponseDto> getUserList(Category category, String keyword, Pageable pageable);
+    Page<AdminReadUserListResponseDto> getUserList(Category category, String keyword, Pageable pageable);
 
     // 관리자의 사용자 정보 삭제
     void deleteUser(List<Long> userIds);
