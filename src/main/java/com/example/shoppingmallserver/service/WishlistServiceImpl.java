@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemDto;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.WishlistRepository;
@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -26,7 +27,7 @@ public class WishlistServiceImpl implements WishlistService {
      * @return 사용자의 위시리스트. 위시리스트에 포함된 아이템들이 반환됩니다.
      */
     @Override
-    public List<ItemCartInquiryResponseDto> getWishlistItemList(Long userId) {
+    public List<ItemDto> getWishlistItemList(Long userId) {
 
         // 사용자 ID를 기반으로 위시리스트 조회
         Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId);
@@ -35,14 +36,14 @@ public class WishlistServiceImpl implements WishlistService {
         List<Long> itemIds = wishlist.getItemIds();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryResponseDto> itemInfos = itemFeignClient.getItemsInfo(itemIds).getBody().getData();
+        List<ItemDto> itemInfos = Objects.requireNonNull(itemFeignClient.getItemList(itemIds).getBody()).getData();
 
         log.info("위시리스트 상품 조회 성공. 사용자 아이디: {}", userId);
 
         // 아이템 정보를 이용하여 응답 DTO를 생성후 반환 (mapToObj -> map)요소반복으로 변경)
         // + 변수 인라인화
         return itemInfos.stream()
-                .map(itemInfo -> new ItemCartInquiryResponseDto(
+                .map(itemInfo -> new ItemDto(
                         itemInfo.getItemId(),
                         itemInfo.getImage(),
                         itemInfo.getName(),

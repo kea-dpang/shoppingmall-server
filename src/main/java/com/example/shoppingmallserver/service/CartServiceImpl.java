@@ -2,10 +2,9 @@ package com.example.shoppingmallserver.service;
 
 
 import com.example.shoppingmallserver.dto.response.cart_wishlist.ReadCartItemResponseDto;
-import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemDto;
 import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.User;
-import com.example.shoppingmallserver.exception.ItemNotInCartException;
 import com.example.shoppingmallserver.exception.UserNotFoundException;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.repository.CartRepository;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -48,7 +48,7 @@ public class CartServiceImpl implements CartService {
         Map<Long, Integer> items = cart.getItems();
 
         // 아이템 ID 리스트를 이용하여 각 아이템의 상세 정보를 조회
-        List<ItemCartInquiryResponseDto> itemInfos = itemFeignClient.getItemsInfo(new ArrayList<>(items.keySet())).getBody().getData();
+        List<ItemDto> itemInfos = Objects.requireNonNull(itemFeignClient.getItemList(new ArrayList<>(items.keySet())).getBody()).getData();
 
         log.info("장바구니 상품 조회 성공. 사용자 아이디: {}", userId);
 

@@ -1,6 +1,6 @@
 package com.example.shoppingmallserver.service;
 
-import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemCartInquiryResponseDto;
+import com.example.shoppingmallserver.dto.response.cart_wishlist.ItemDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface WishlistService {
      * @param userId 위시리스트를 조회할 사용자의 ID
      * @return 사용자의 위시리스트. 위시리스트에 포함된 아이템들이 반환됩니다.
      */
-    List<ItemCartInquiryResponseDto> getWishlistItemList(Long userId);
+    List<ItemDto> getWishlistItemList(Long userId);
 
     /**
      * 사용자의 위시리스트에 상품을 추가합니다.
