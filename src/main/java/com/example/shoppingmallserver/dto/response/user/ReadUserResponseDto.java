@@ -26,9 +26,23 @@ public class ReadUserResponseDto {
     public ReadUserResponseDto(UserDetail userDetail) {
         this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
-        this.name = userDetail.getName();
+        this.name = maskName(userDetail.getName());
         this.email = maskEmail(userDetail.getUser().getEmail());
         this.joinDate = userDetail.getJoinDate();
+    }
+
+    /**
+     * 사용자 이름을 마스킹 처리합니다.
+     *
+     * @param name 마스킹 처리할 사용자 이름
+     * @return 마스킹 처리된 사용자 이름
+     */
+    private String maskName(String name) {
+        if (name.length() <= 2) {
+            return name;
+        } else {
+            return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
+        }
     }
 
     /**

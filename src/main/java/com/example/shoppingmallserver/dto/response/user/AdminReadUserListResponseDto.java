@@ -31,6 +31,20 @@ public class AdminReadUserListResponseDto {
     }
 
     /**
+     * 사용자 이름을 마스킹 처리합니다.
+     *
+     * @param name 마스킹 처리할 사용자 이름
+     * @return 마스킹 처리된 사용자 이름
+     */
+    private String maskName(String name) {
+        if (name.length() <= 2) {
+            return name;
+        } else {
+            return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
+        }
+    }
+
+    /**
      * 이메일 주소를 마스킹 처리합니다.
      *
      * @param email 마스킹 처리할 이메일 주소
