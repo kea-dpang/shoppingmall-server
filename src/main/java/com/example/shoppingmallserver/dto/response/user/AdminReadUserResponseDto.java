@@ -4,7 +4,9 @@ import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import lombok.Getter;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 /**
  * 관리자가 조회하는 사용자 정보를 담는 DTO 클래스입니다.
@@ -30,7 +32,21 @@ public class AdminReadUserResponseDto {
         this.name = userDetail.getName();
         this.email = maskEmail(user.getEmail());
         this.joinDate = userDetail.getJoinDate();
-        this.defaultAddress = maskAddress(userDetail.getAddress());
+        this.defaultAddress = maskAddress(userDetail.getZipCode(), userDetail.getAddress());
+    }
+
+    /**
+     * 사용자 이름을 마스킹 처리합니다.
+     *
+     * @param name 마스킹 처리할 사용자 이름
+     * @return 마스킹 처리된 사용자 이름
+     */
+    private String maskName(String name) {
+        if (name.length() <= 2) {
+            return name;
+        } else {
+            return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
+        }
     }
 
     /**
@@ -48,12 +64,31 @@ public class AdminReadUserResponseDto {
         }
     }
 
-    private String maskAddress(String address) {
-        String maskedZipCode = "****";
+    /**
+     * 주어진 우편번호와 주소를 마스킹 처리합니다.
+     * 우편번호는 전체가 '*', 주소는 처음 두 단어 이후가 '****'로 마스킹 됩니다.
+     *
+     * @param zipCode 마스킹 처리할 우편번호
+     * @param address 마스킹 처리할 주소
+     * @return 마스킹 처리된 우편번호와 주소
+     */
+    private String maskAddress(String zipCode, String address) {
+        String maskedZipCode = maskZipCode(zipCode);
         String[] addressParts = address.split(" ", 3);
         String maskedAddress = addressParts[0] + " " + addressParts[1] + " ****";
         return maskedZipCode + " " + maskedAddress;
     }
 
-
+    /**
+     * 주어진 우편번호를 '*'로 마스킹 처리합니다.
+     * 우편번호의 길이만큼 '*'로 변경됩니다.
+     *
+     * @param zipCode 마스킹 처리할 우편번호
+     * @return 마스킹 처리된 우편번호
+     */
+    private String maskZipCode(String zipCode) {
+        char[] maskedChars =  new char[zipCode.length()];
+        Arrays.fill(maskedChars, '*');
+        return new String(maskedChars);
+    }
 }
