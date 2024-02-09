@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.dto.response.user;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Arrays;
  * 사용자 ID, 사원 번호, 이름, 이메일, 입사일, 기본 주소 정보를 포함합니다.
  */
 @Getter
+@Slf4j
 public class AdminReadUserResponseDto {
     private final Long userId;
     private final Long employeeNumber;
@@ -62,7 +64,11 @@ public class AdminReadUserResponseDto {
         if (index <= 1) {
             return email;
         } else {
-            return email.charAt(0) + email.substring(1, index).replaceAll("\\.", "*") + email.substring(index);
+            String newEmail = email.charAt(0) + email.substring(1, index).replaceAll("\\.", "*") + email.substring(index);
+            log.info("이메일 첫글자는 email.charAt(0): {}", email.charAt(0));
+            log.info("마스킹된 이메일의 두번째 글자는 {}", newEmail.charAt(1));
+            log.info("마스킹된 이메일은 {}", newEmail);
+            return newEmail;
         }
     }
 
