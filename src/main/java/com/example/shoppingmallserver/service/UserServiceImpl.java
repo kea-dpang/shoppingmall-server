@@ -5,7 +5,6 @@ import com.example.shoppingmallserver.entity.cart.Cart;
 import com.example.shoppingmallserver.entity.user.*;
 import com.example.shoppingmallserver.entity.wishlist.Wishlist;
 import com.example.shoppingmallserver.exception.*;
-import com.example.shoppingmallserver.feign.auth.AuthFeignClient;
 import com.example.shoppingmallserver.feign.item.ItemFeignClient;
 import com.example.shoppingmallserver.feign.mileage.MileageFeignClient;
 import com.example.shoppingmallserver.feign.order.OrderFeignClient;
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserService {
     private final MileageFeignClient mileageFeignClient;
     private final ItemFeignClient itemFeignClient;
     private final OrderFeignClient orderFeignClient;
-    private final AuthFeignClient authFeignClient;
 
 
 
@@ -131,8 +129,10 @@ public class UserServiceImpl implements UserService {
             wishlistRepository.delete(wishlist);
         }
 
-        // 마일리지 삭제
-        //mileageFeignClient.deleteMileage(userId, userId);
+        // 사용자가 남긴 모든 기록 삭제
+        mileageFeignClient.deleteMileage(userId, userId);
+        itemFeignClient.deleteReview(userId);
+        // Todo: orderService 삭제
 
         log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}. 탈퇴 사유: {}", userWithdrawal.getId(), userWithdrawal.getReason());
     }
