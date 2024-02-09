@@ -3,6 +3,7 @@ package com.example.shoppingmallserver.dto.response.user;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Arrays;
  * 사용자 ID, 사원 번호, 이름, 이메일, 입사일, 기본 주소 정보를 포함합니다.
  */
 @Getter
+@Slf4j
 public class AdminReadUserResponseDto {
     private final Long userId;
     private final Long employeeNumber;
@@ -29,7 +31,7 @@ public class AdminReadUserResponseDto {
     public AdminReadUserResponseDto(User user, UserDetail userDetail) {
         this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
-        this.name = userDetail.getName();
+        this.name = maskName(userDetail.getName());
         this.email = maskEmail(user.getEmail());
         this.joinDate = userDetail.getJoinDate();
         this.defaultAddress = maskAddress(userDetail.getZipCode(), userDetail.getAddress());
@@ -42,8 +44,10 @@ public class AdminReadUserResponseDto {
      * @return 마스킹 처리된 사용자 이름
      */
     private String maskName(String name) {
-        if (name.length() <= 2) {
+        if (name.length() <= 1) {
             return name;
+        } else if (name.length() == 2) {
+            return name.charAt(0) + "*";
         } else {
             return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
         }
@@ -60,7 +64,11 @@ public class AdminReadUserResponseDto {
         if (index <= 1) {
             return email;
         } else {
-            return email.charAt(0) + email.substring(1, index).replaceAll("\\.", "*") + email.substring(index);
+            String newEmail = email.charAt(0) + email.substring(1, index).replaceAll("\\.", "*") + email.substring(index);
+            log.info("이메일 첫글자는 email.charAt(0): {}", email.charAt(0));
+            log.info("마스킹된 이메일의 두번째 글자는 {}", newEmail.charAt(1));
+            log.info("마스킹된 이메일은 {}", newEmail);
+            return newEmail;
         }
     }
 
@@ -74,9 +82,24 @@ public class AdminReadUserResponseDto {
      */
     private String maskAddress(String zipCode, String address) {
         String maskedZipCode = maskZipCode(zipCode);
-        String[] addressParts = address.split(" ", 3);
-        String maskedAddress = addressParts[0] + " " + addressParts[1] + " ****";
-        return maskedZipCode + " " + maskedAddress;
+        if (address == null || address.isEmpty()) {
+            // 주소가 없을 경우 (null)
+            return null;
+        } else {
+            String[] addressParts = address.split(" ", 3);
+            String maskedAddress;
+            if (addressParts.length >= 2) {
+                // 주소가 세 단어 이상일 경우 ex) 경기도 수원시 ***
+                maskedAddress = addressParts[0] + " " + addressParts[1] + " ****";
+            } else if (addressParts.length == 1) {
+                // 주소가 두 단어일 경우 ex) 서울시 ***
+                maskedAddress = addressParts[0] + " ****";
+            } else {
+                // 주소가 한 단어일 경우 ex) 서울
+                maskedAddress = address;
+            }
+            return maskedZipCode + " " + maskedAddress;
+        }
     }
 
     /**
