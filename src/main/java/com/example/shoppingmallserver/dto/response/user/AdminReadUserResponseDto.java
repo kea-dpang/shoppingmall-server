@@ -76,9 +76,24 @@ public class AdminReadUserResponseDto {
      */
     private String maskAddress(String zipCode, String address) {
         String maskedZipCode = maskZipCode(zipCode);
-        String[] addressParts = address.split(" ", 3);
-        String maskedAddress = addressParts[0] + " " + addressParts[1] + " ****";
-        return maskedZipCode + " " + maskedAddress;
+        if (address == null || address.isEmpty()) {
+            // 주소가 없을 경우 (null)
+            return null;
+        } else {
+            String[] addressParts = address.split(" ", 3);
+            String maskedAddress;
+            if (addressParts.length >= 2) {
+                // 주소가 세 단어 이상일 경우 ex) 경기도 수원시 ***
+                maskedAddress = addressParts[0] + " " + addressParts[1] + " ****";
+            } else if (addressParts.length == 1) {
+                // 주소가 두 단어일 경우 ex) 서울시 ***
+                maskedAddress = addressParts[0] + " ****";
+            } else {
+                // 주소가 한 단어일 경우 ex) 서울
+                maskedAddress = address;
+            }
+            return maskedZipCode + " " + maskedAddress;
+        }
     }
 
     /**
