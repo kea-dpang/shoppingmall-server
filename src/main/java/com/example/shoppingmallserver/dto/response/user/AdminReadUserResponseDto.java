@@ -29,7 +29,7 @@ public class AdminReadUserResponseDto {
     public AdminReadUserResponseDto(User user, UserDetail userDetail) {
         this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
-        this.name = userDetail.getName();
+        this.name = maskName(userDetail.getName());
         this.email = maskEmail(user.getEmail());
         this.joinDate = userDetail.getJoinDate();
         this.defaultAddress = maskAddress(userDetail.getZipCode(), userDetail.getAddress());
@@ -42,8 +42,10 @@ public class AdminReadUserResponseDto {
      * @return 마스킹 처리된 사용자 이름
      */
     private String maskName(String name) {
-        if (name.length() <= 2) {
+        if (name.length() <= 1) {
             return name;
+        } else if (name.length() == 2) {
+            return name.charAt(0) + "*";
         } else {
             return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
         }

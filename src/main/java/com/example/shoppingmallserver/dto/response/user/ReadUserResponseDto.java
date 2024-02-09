@@ -38,8 +38,10 @@ public class ReadUserResponseDto {
      * @return 마스킹 처리된 사용자 이름
      */
     private String maskName(String name) {
-        if (name.length() <= 2) {
+        if (name.length() <= 1) {
             return name;
+        } else if (name.length() == 2) {
+            return name.charAt(0) + "*";
         } else {
             return name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
         }
