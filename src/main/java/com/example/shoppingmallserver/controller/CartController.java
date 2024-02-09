@@ -58,7 +58,7 @@ public class CartController {
      * @param cartItemRequestDto 추가할 아이템의 ID와 수량이 들어있는 요청 정보
      * @return 성공 메시지와 함께 HTTP 상태 코드 201(CREATED)를 반환
      */
-    @PostMapping("/{itemId}")
+    @PostMapping
     @Operation(summary = "장바구니 상품 추가", description = "사용자가 장바구니 상품을 추가합니다.")
     public ResponseEntity<BaseResponse> addCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Valid CartItemRequestDto cartItemRequestDto) {
 
