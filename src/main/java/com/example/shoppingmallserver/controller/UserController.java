@@ -8,6 +8,7 @@ import com.example.shoppingmallserver.dto.request.user.WithdrawalRequestDto;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserListResponseDto;
 import com.example.shoppingmallserver.dto.response.user.AdminReadUserResponseDto;
 import com.example.shoppingmallserver.dto.request.user.DeleteListRequestDto;
+import com.example.shoppingmallserver.dto.response.user.ReadUserAddressResponseDto;
 import com.example.shoppingmallserver.dto.response.user.ReadUserResponseDto;
 import com.example.shoppingmallserver.entity.user.User;
 import com.example.shoppingmallserver.entity.user.UserDetail;
@@ -108,6 +109,22 @@ public class UserController {
                 HttpStatus.OK
         );
 
+    }
+
+    @GetMapping("/{userId}/address")
+    @Operation(summary = "사용자 주소 조회", description = "사용자가 입력한 주소를 조회합니다.")
+    public ResponseEntity<SuccessResponse<ReadUserAddressResponseDto>> getAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
+
+        // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
+        UserDetail userDetail = userService.getUserById(userId);
+
+        // 조회한 사용자 정보를 이용하여 응답 DTO를 생성
+        ReadUserAddressResponseDto data = new ReadUserAddressResponseDto(userDetail);
+
+        return new ResponseEntity<>(
+                new SuccessResponse<>(HttpStatus.OK.value(), "사용자의 주소를 성공적으로 조회하였습니다.", data),
+                HttpStatus.OK
+        );
     }
 
     /**
