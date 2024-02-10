@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
 
         // 사용자의 마일리지 생성
-        mileageFeignClient.createMileage(newUserDetail.getUser().getId(), newUserDetail.getUser().getId());
+        mileageFeignClient.createMileage(newUserDetail.getUser().getId());
 
         log.info("사용자 생성 완료. 사용자 ID: {}", newUser.getId());
     }
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 사용자가 남긴 모든 기록 삭제
-        mileageFeignClient.deleteMileage(userId, userId);
+        mileageFeignClient.deleteMileage(userId);
         itemFeignClient.deleteReview(userId);
         // Todo: orderService 삭제
 
