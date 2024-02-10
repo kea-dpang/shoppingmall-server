@@ -1,23 +1,21 @@
-package com.example.shoppingmallserver.config;
+package com.example.shoppingmallserver.config.security;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security 설정을 위한 클래스입니다.
  */
 @Configuration
 public class SecurityConfig {
+
+    DpangServiceNameHeaderFilter dpangServiceNameHeaderFilter = new DpangServiceNameHeaderFilter();
 
     /**
      * Spring Security의 필터 체인을 구성합니다.
@@ -39,8 +37,9 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable) // 로그아웃 기능 비활성화.
                 .authorizeHttpRequests(
                         request -> request
-                                .anyRequest().permitAll()//.authenticated() // 모든 요청이 인증을 필요로 하도록 설정
+                                .anyRequest().authenticated() // 모든 요청이 인증을 필요로 하도록 설정
                 )
+                .addFilterBefore(dpangServiceNameHeaderFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
