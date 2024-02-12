@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,9 +40,13 @@ public class CartController {
      * @param userId 사용자 ID
      * @return 성공 응답 메시지와 함께 장바구니 내용을 담은 DTO를 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @GetMapping
     @Operation(summary = "장바구니 목록 조회", description = "사용자가 장바구니 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<ReadCartItemResponseDto>>> getCartItemList(@PathVariable @Parameter(description = "유저 ID(PK)", example = "3") Long userId) {
+    public ResponseEntity<SuccessResponse<List<ReadCartItemResponseDto>>> getCartItemList(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "유저 ID(PK)", example = "3") Long userId) {
 
         // CartService에서 만든 메서드로 DTO를 받아온걸 포함하는 성공 응답 메시지를 생성하고, 이를 ResponseEntity로 감싸어 반환
         // 이를 통해 API 호출한 클라이언트에게 장바구니 정보가 성공적으로 조회되었음을 알림
@@ -58,9 +63,14 @@ public class CartController {
      * @param cartItemRequestDto 추가할 아이템의 ID와 수량이 들어있는 요청 정보
      * @return 성공 메시지와 함께 HTTP 상태 코드 201(CREATED)를 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @PostMapping
     @Operation(summary = "장바구니 상품 추가", description = "사용자가 장바구니 상품을 추가합니다.")
-    public ResponseEntity<BaseResponse> addCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Valid CartItemRequestDto cartItemRequestDto) {
+    public ResponseEntity<BaseResponse> addCartItem(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId,
+            @RequestBody @Valid CartItemRequestDto cartItemRequestDto) {
 
         // 상품 정보와 사용자 아이디를 통해 장바구니에 아이템 추가
         cartService.addCartItem(userId, cartItemRequestDto.getItemId(), cartItemRequestDto.getQuantity());
@@ -79,9 +89,14 @@ public class CartController {
      * @param itemId 삭제할 장바구니 항목 ID
      * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @DeleteMapping("/{itemId}")
     @Operation(summary = "장바구니 상품 삭제", description = "사용자가 장바구니 상품을 삭제합니다.")
-    public ResponseEntity<BaseResponse> deleteCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
+    public ResponseEntity<BaseResponse> deleteCartItem(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId,
+            @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 삭제
         cartService.deleteCartItem(userId, itemId);
@@ -100,9 +115,14 @@ public class CartController {
      * @param itemId 감소할 장바구니 항목 ID
      * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @PostMapping("/{itemId}/minus")
     @Operation(summary = "장바구니 상품 1개 감소", description = "사용자가 장바구니 상품의 개수를 1개 감소 시킵니다.")
-    public ResponseEntity<BaseResponse> minusCartItem(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId, @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
+    public ResponseEntity<BaseResponse> minusCartItem(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "3") Long userId,
+            @PathVariable @Parameter(description = "상품 ID(PK)", example = "405") Long itemId) {
 
         // 사용자 아이디와 아이템 정보를 통해 감소
         cartService.minusCartItem(userId, itemId);

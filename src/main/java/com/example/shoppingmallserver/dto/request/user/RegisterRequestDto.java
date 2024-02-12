@@ -2,6 +2,7 @@ package com.example.shoppingmallserver.dto.request.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,7 @@ public class RegisterRequestDto {
     @Schema(description = "이름", example = "김디팡")
     private final String name;
     @Schema(description = "입사날짜", example = "2024-01-01")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private final LocalDate joinDate;
 
 

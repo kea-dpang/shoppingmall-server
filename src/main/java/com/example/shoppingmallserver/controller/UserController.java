@@ -24,6 +24,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,15 +71,20 @@ public class UserController {
      * 클라이언트가 제공한 사용자ID를 이용하여 계정을 삭제하고, 성공 메시지를 반환합니다.
      * 계정 삭제가 실패하면 UserNotFoundException이 발생하게 됩니다.
      *
-     * @param id 삭제할 계정의 식별자
+     * @param userId 삭제할 계정의 식별자
      * @return 성공 응답을 포함한 ResponseEntity. 계정 삭제가 성공하면 200 상태 코드와 성공 메시지를 반환
      */
-    @DeleteMapping("/{id}")
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
+    @DeleteMapping("/{userId}")
     @Operation(summary = "사용자 탈퇴", description = "사용자가 탈퇴를 했을 때, 정보를 삭제합니다.")
-    public ResponseEntity<BaseResponse> deleteAccount(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long id, @RequestBody WithdrawalRequestDto withdrawalRequestDto) {
+    public ResponseEntity<BaseResponse> deleteAccount(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId,
+            @RequestBody @Parameter(description = "탈퇴 정보") WithdrawalRequestDto withdrawalRequestDto) {
 
         // 사용자 ID로 계정 삭제
-        userService.deleteAccount(id, withdrawalRequestDto.getReason(), withdrawalRequestDto.getMessage());
+        userService.deleteAccount(userId, withdrawalRequestDto.getReason(), withdrawalRequestDto.getMessage());
 
         // 성공 응답 생성 및 반환
         return new ResponseEntity<>(
@@ -92,9 +99,13 @@ public class UserController {
      * @param userId 조회할 사용자의 ID
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @GetMapping("/{userId}")
     @Operation(summary = "사용자 상세 정보 조회", description = "사용자의 상세 정보를 조회합니다.")
-    public ResponseEntity<SuccessResponse<ReadUserResponseDto>> getUser(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
+    public ResponseEntity<SuccessResponse<ReadUserResponseDto>> getUser(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getUserById(userId);
@@ -111,9 +122,13 @@ public class UserController {
 
     }
 
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @GetMapping("/{userId}/address")
     @Operation(summary = "사용자 주소 조회", description = "사용자가 입력한 주소를 조회합니다.")
-    public ResponseEntity<SuccessResponse<ReadUserAddressResponseDto>> getAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
+    public ResponseEntity<SuccessResponse<ReadUserAddressResponseDto>> getAddress(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getUserById(userId);
@@ -133,9 +148,14 @@ public class UserController {
      * @param userId 조회할 사용자의 ID
      * @return 성공 응답 메시지와 204코드 반환
      */
+    @PreAuthorize("#role == 'USER' and #clientId == #userId")
     @PatchMapping("/{userId}/address")
     @Operation(summary = "사용자 주소 변경", description = "사용자가 입력한 주소로 변경합니다.")
-    public ResponseEntity<SuccessResponse<Void>> updateAddress(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId, @RequestBody @Parameter(description = "사용자가 입력한 주소") AddressRequestDto addressRequestDto) {
+    public ResponseEntity<SuccessResponse<Void>> updateAddress(
+            @RequestHeader("X-DPANG-CLIENT-ID") @Parameter(hidden = true) Long clientId,
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId,
+            @RequestBody @Parameter(description = "사용자가 입력한 주소") AddressRequestDto addressRequestDto) {
 
         // 받은 정보를 통해 주소지 변경
         userService.updateAddress(userId, addressRequestDto.getPhoneNumber(), addressRequestDto.getZipCode(), addressRequestDto.getAddress(), addressRequestDto.getDetailAddress());
@@ -156,9 +176,12 @@ public class UserController {
      * @param userId 조회할 사용자의 ID
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
+    @PreAuthorize("#role = 'ADMIN' or #role = 'SUPER_ADMIN'")
     @GetMapping("/{userId}/temp") // AI에 물어봐서 고치기 // @PreAuthorize -> 찾아보기
     @Operation(summary = "(관리자) 사용자 상세 정보 조회", description = "관리자가 사용자 상세 정보를 조회합니다.")
-    public ResponseEntity<SuccessResponse<AdminReadUserResponseDto>> adminGetUser(@PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
+    public ResponseEntity<SuccessResponse<AdminReadUserResponseDto>> adminGetUser(
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @PathVariable @Parameter(description = "사용자 ID(PK)", example = "1") Long userId) {
 
         // 사용자 ID를 기반으로 사용자의 상세 정보를 조회
         UserDetail userDetail = userService.getAdminUserById(userId);
@@ -182,9 +205,14 @@ public class UserController {
      * @param category 사용자 정보에서 검색할 키워드
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보 목록을 담은 DTO 목록을 반환
      */
+    @PreAuthorize("#role = 'ADMIN' or #role = 'SUPER_ADMIN'")
     @GetMapping("/find")
     @Operation(summary = "(관리자) 사용자 정보 목록 조회", description = "관리자가 사용자 정보 목록을 조회합니다.")
-    public ResponseEntity<SuccessResponse<Page<AdminReadUserListResponseDto>>> adminGetUserList(@RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category, @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword, Pageable pageable) {
+    public ResponseEntity<SuccessResponse<Page<AdminReadUserListResponseDto>>> adminGetUserList(
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @RequestParam @Parameter(description = "(관리자) 사용자 검색 카테고리", example = "NULL") Category category,
+            @RequestParam(required = false) @Parameter(description = "(관리자) 사용자 검색 키워드", example = "김디팡") String keyword,
+            Pageable pageable) {
 
         // 키워드를 기반으로 사용자 정보 목록을 조회 (관리자용)
         Page<AdminReadUserListResponseDto> userDetails = userService.getUserList(category, keyword, pageable);
@@ -203,9 +231,12 @@ public class UserController {
      * @param deleteListRequestDto 삭제할 사용자의 ID 리스트
      * @return 성공 응답 메시지와 함께 삭제된 사용자의 ID 목록을 반환
      */
-    @DeleteMapping("/list")// 이거는 일단 냅둬
+    @PreAuthorize("#role = 'ADMIN' or #role = 'SUPER_ADMIN'")
+    @DeleteMapping("/list")
     @Operation(summary = "(관리자) 사용자 삭제", description = "관리자가 사용자를 삭제합니다.")
-    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(@RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListRequestDto deleteListRequestDto) {
+    public ResponseEntity<SuccessResponse<String>> adminDeleteUser(
+            @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
+            @RequestBody @Parameter(description = "사용자 ID(PK) 목록") DeleteListRequestDto deleteListRequestDto) {
 
         // 요청 본문으로 받은 사용자 ID 목록을 이용하여 해당 사용자들을 삭제
         userService.deleteUser(deleteListRequestDto.getUserIds());
@@ -222,7 +253,8 @@ public class UserController {
 
     @GetMapping("/list")
     @Operation(summary = "(백엔드) 사용자 상세 정보 리스트로 조회", description = "백엔드에서 사용자 상세 정보 리스트를 조회합니다.")
-    public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> getUsersInfo(@RequestParam List<Long> userIds) {
+    public ResponseEntity<SuccessResponse<List<AdminReadUserListResponseDto>>> getUsersInfo(
+            @RequestParam List<Long> userIds) {
 
         // Auth 서비스에서 이쪽으로 전해줄 DTO를 받아서 유저 아이디 리스트로 유저 정보 리스트를 요청
         List<UserDetail> userDetails = userService.getUserList(userIds);
