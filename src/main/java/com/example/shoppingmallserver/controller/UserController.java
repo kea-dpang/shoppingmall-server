@@ -177,7 +177,7 @@ public class UserController {
      * @return 성공 응답 메시지와 함께 조회한 사용자 정보를 담은 DTO를 반환
      */
     @PreAuthorize("#role = 'ADMIN' or #role = 'SUPER_ADMIN'")
-    @GetMapping("/{userId}/temp") // AI에 물어봐서 고치기 // @PreAuthorize -> 찾아보기
+    @GetMapping("/{userId}/admin")
     @Operation(summary = "(관리자) 사용자 상세 정보 조회", description = "관리자가 사용자 상세 정보를 조회합니다.")
     public ResponseEntity<SuccessResponse<AdminReadUserResponseDto>> adminGetUser(
             @RequestHeader("X-DPANG-CLIENT-ROLE") @Parameter(hidden = true) String role,
