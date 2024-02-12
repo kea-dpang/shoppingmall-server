@@ -40,7 +40,7 @@ public class CartController {
      * @param userId 사용자 ID
      * @return 성공 응답 메시지와 함께 장바구니 내용을 담은 DTO를 반환
      */
-    @PreAuthorize("#role == 'USER' and #clientId == #userId")
+    @PreAuthorize("#clientId == #userId")
     @GetMapping
     @Operation(summary = "장바구니 목록 조회", description = "사용자가 장바구니 목록을 조회합니다.")
     public ResponseEntity<SuccessResponse<List<ReadCartItemResponseDto>>> getCartItemList(
@@ -63,7 +63,7 @@ public class CartController {
      * @param cartItemRequestDto 추가할 아이템의 ID와 수량이 들어있는 요청 정보
      * @return 성공 메시지와 함께 HTTP 상태 코드 201(CREATED)를 반환
      */
-    @PreAuthorize("#role == 'USER' and #clientId == #userId")
+    @PreAuthorize("#clientId == #userId")
     @PostMapping
     @Operation(summary = "장바구니 상품 추가", description = "사용자가 장바구니 상품을 추가합니다.")
     public ResponseEntity<BaseResponse> addCartItem(
@@ -89,7 +89,7 @@ public class CartController {
      * @param itemId 삭제할 장바구니 항목 ID
      * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
-    @PreAuthorize("#role == 'USER' and #clientId == #userId")
+    @PreAuthorize("#clientId == #userId")
     @DeleteMapping("/{itemId}")
     @Operation(summary = "장바구니 상품 삭제", description = "사용자가 장바구니 상품을 삭제합니다.")
     public ResponseEntity<BaseResponse> deleteCartItem(
@@ -115,7 +115,7 @@ public class CartController {
      * @param itemId 감소할 장바구니 항목 ID
      * @return 성공 메시지와 함께 HTTP 상태 코드 204(NO_CONTENT)를 반환
      */
-    @PreAuthorize("#role == 'USER' and #clientId == #userId")
+    @PreAuthorize("#clientId == #userId")
     @PostMapping("/{itemId}/minus")
     @Operation(summary = "장바구니 상품 1개 감소", description = "사용자가 장바구니 상품의 개수를 1개 감소 시킵니다.")
     public ResponseEntity<BaseResponse> minusCartItem(
