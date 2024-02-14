@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
         // 사용자가 남긴 모든 기록 삭제
         mileageFeignClient.deleteMileage(userId, userId);
-        itemFeignClient.deleteReview(userId);
+        // itemFeignClient.deleteReview(userId);
         // Todo: orderService 삭제
 
         log.info("탈퇴 성공 후 탈퇴 사유 생성 성공. 탈퇴 ID: {}. 탈퇴 사유: {}", userWithdrawal.getId(), userWithdrawal.getReason());
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
 
             // 사용자가 남긴 모든 기록 삭제
             mileageFeignClient.deleteMileage(userId, userId);
-            itemFeignClient.deleteReview(userId);
+            // itemFeignClient.deleteReview(userId);
             // Todo: orderService 삭제
 
             log.info("사용자 정보 삭제 성공. 삭제된 사용자 아이디: {}", userIds);
