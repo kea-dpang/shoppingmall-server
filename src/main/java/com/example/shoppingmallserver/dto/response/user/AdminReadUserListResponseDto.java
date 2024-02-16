@@ -25,7 +25,7 @@ public class AdminReadUserListResponseDto {
     public AdminReadUserListResponseDto(UserDetail userDetail) {
         this.userId = userDetail.getUser().getId();
         this.employeeNumber = userDetail.getEmployeeNumber();
-        this.name = userDetail.getName();
+        this.name = maskName(userDetail.getName());
         this.email = maskEmail(userDetail.getUser().getEmail());
         this.joinDate = userDetail.getJoinDate();
     }
